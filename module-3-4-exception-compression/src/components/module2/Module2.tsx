@@ -222,7 +222,7 @@ export default function Module2({ onBack }: Props) {
 
   const dotColor = (status: DataDot['status']) => {
     switch (status) {
-      case 'raw': return '#64748b';
+      case 'raw': return '#7d8590';
       case 'exc-pass': return '#3b82f6';
       case 'exc-discard': return '#ef4444';
       case 'buffered': return '#f97316';
@@ -231,25 +231,31 @@ export default function Module2({ onBack }: Props) {
       case 'queued': return '#22c55e';
       case 'archived': return '#22c55e';
       case 'ooo': return '#ef4444';
-      default: return '#64748b';
+      default: return '#7d8590';
     }
   };
 
   const canvas = (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full" style={{ maxHeight: '380px' }}>
-      <rect width={W} height={H} fill="#0f172a" rx={8} />
+      <defs>
+        <filter id="canvasShadow" x="-2%" y="-2%" width="104%" height="104%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000" floodOpacity="0.06" />
+        </filter>
+      </defs>
+
+      <rect width={W} height={H} fill="#ffffff" rx={8} filter="url(#canvasShadow)" />
 
       {/* Stage boxes */}
       {STAGES.map((s, i) => (
         <g key={s.label}>
           <rect x={s.x - 30} y={240} width={60} height={40} rx={4}
-            fill={i === 0 ? '#1e3a5f' : '#1e293b'}
-            stroke={networkDown && i === 2 ? '#ef4444' : '#334155'} strokeWidth={networkDown && i === 2 ? 2 : 1} />
-          <text x={s.x} y={264} textAnchor="middle" fill={networkDown && i === 2 ? '#ef4444' : '#94a3b8'} fontSize={8} fontWeight="bold">{s.label}</text>
+            fill={i === 0 ? '#e8f0fe' : '#f0f2f5'}
+            stroke={networkDown && i === 2 ? '#ef4444' : '#d1d5db'} strokeWidth={networkDown && i === 2 ? 2 : 1} />
+          <text x={s.x} y={264} textAnchor="middle" fill={networkDown && i === 2 ? '#ef4444' : '#596168'} fontSize={8} fontWeight="bold">{s.label}</text>
           {/* Connection lines */}
           {i < STAGES.length - 1 && (
             <line x1={s.x + 30} y1={260} x2={STAGES[i + 1].x - 30} y2={260}
-              stroke={networkDown && i === 1 ? '#ef444480' : '#334155'} strokeWidth={1}
+              stroke={networkDown && i === 1 ? 'rgba(239, 68, 68, 0.4)' : '#d1d5db'} strokeWidth={1}
               strokeDasharray={networkDown && i === 1 ? '4 4' : 'none'} />
           )}
         </g>
@@ -264,17 +270,17 @@ export default function Module2({ onBack }: Props) {
       )}
 
       {/* Stage labels */}
-      <text x={STAGES[0].x} y={300} textAnchor="middle" fill="#475569" fontSize={7}>Scan Source</text>
-      <text x={STAGES[1].x} y={300} textAnchor="middle" fill="#475569" fontSize={7}>Exception Filter</text>
-      <text x={STAGES[2].x} y={300} textAnchor="middle" fill="#475569" fontSize={7}>Store & Forward</text>
-      <text x={STAGES[3].x} y={300} textAnchor="middle" fill="#475569" fontSize={7}>Compression</text>
-      <text x={STAGES[4].x} y={300} textAnchor="middle" fill="#475569" fontSize={7}>pimapevq.dat</text>
-      <text x={STAGES[5].x} y={300} textAnchor="middle" fill="#475569" fontSize={7}>Archive Files</text>
+      <text x={STAGES[0].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>Scan Source</text>
+      <text x={STAGES[1].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>Exception Filter</text>
+      <text x={STAGES[2].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>Store & Forward</text>
+      <text x={STAGES[3].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>Compression</text>
+      <text x={STAGES[4].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>pimapevq.dat</text>
+      <text x={STAGES[5].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>Archive Files</text>
 
       {/* Snapshot value display */}
-      <rect x={370} y={310} width={60} height={22} rx={3} fill="#1e293b" stroke="#334155" />
+      <rect x={370} y={310} width={60} height={22} rx={3} fill="#f0f2f5" stroke="#d1d5db" />
       <text x={400} y={325} textAnchor="middle" fill="#3b82f6" fontSize={9} fontFamily="monospace">{snapshotValue.toFixed(1)}</text>
-      <text x={400} y={340} textAnchor="middle" fill="#475569" fontSize={7}>Snapshot</text>
+      <text x={400} y={340} textAnchor="middle" fill="#9ca3af" fontSize={7}>Snapshot</text>
 
       {/* Event queue ring */}
       <g transform={`translate(${STAGES[4].x}, 345)`}>
@@ -284,7 +290,7 @@ export default function Module2({ onBack }: Props) {
           const filled = i < Math.min(stats.queueDepth, 12);
           return (
             <circle key={i} cx={Math.cos(angle) * r} cy={Math.sin(angle) * r} r={3}
-              fill={filled ? '#22c55e' : '#1e293b'} stroke="#334155" strokeWidth={0.5} />
+              fill={filled ? '#22c55e' : '#f0f2f5'} stroke="#d1d5db" strokeWidth={0.5} />
           );
         })}
       </g>
@@ -293,7 +299,7 @@ export default function Module2({ onBack }: Props) {
       {networkDown && stats.buffered > 0 && (
         <g transform={`translate(${STAGES[2].x}, 310)`}>
           {Array.from({ length: Math.min(stats.buffered, 8) }, (_, i) => (
-            <rect key={i} x={-15} y={-i * 6} width={30} height={5} rx={1} fill="#f9731640" stroke="#f97316" strokeWidth={0.5} />
+            <rect key={i} x={-15} y={-i * 6} width={30} height={5} rx={1} fill="rgba(249, 115, 22, 0.1)" stroke="#f97316" strokeWidth={0.5} />
           ))}
           <text x={0} y={18} textAnchor="middle" fill="#f97316" fontSize={8}>{stats.buffered} queued</text>
         </g>
@@ -301,8 +307,8 @@ export default function Module2({ onBack }: Props) {
 
       {/* OOO bypass arrow */}
       <path d={`M${STAGES[3].x},230 Q${STAGES[3].x + 40},210 ${STAGES[4].x},230`}
-        fill="none" stroke="#ef444430" strokeWidth={1} strokeDasharray="3 3" />
-      <text x={(STAGES[3].x + STAGES[4].x) / 2} y={210} textAnchor="middle" fill="#ef444450" fontSize={7}>OOO bypass</text>
+        fill="none" stroke="rgba(239, 68, 68, 0.2)" strokeWidth={1} strokeDasharray="3 3" />
+      <text x={(STAGES[3].x + STAGES[4].x) / 2} y={210} textAnchor="middle" fill="rgba(239, 68, 68, 0.35)" fontSize={7}>OOO bypass</text>
 
       {/* Data dots */}
       {dots.map(d => d.opacity > 0 && (
@@ -318,7 +324,7 @@ export default function Module2({ onBack }: Props) {
 
       {/* Legend */}
       <g transform="translate(20, 20)">
-        <LegendDot y={0} color="#64748b" label="Raw scan" />
+        <LegendDot y={0} color="#7d8590" label="Raw scan" />
         <LegendDot y={14} color="#3b82f6" label="Exc pass" />
         <LegendDot y={28} color="#ef4444" label="Discarded / OOO" />
         <LegendDot y={42} color="#f97316" label="Buffered" />
@@ -328,14 +334,14 @@ export default function Module2({ onBack }: Props) {
   );
 
   const statsBar = (
-    <div className="flex items-center gap-4 px-3 py-2 bg-slate-900/80 rounded-lg border border-slate-800 text-center">
-      <StatCell label="Received" value={stats.received} color="text-slate-300" />
-      <div className="w-px h-6 bg-slate-700" />
-      <StatCell label="Exc Filtered" value={stats.excDiscarded} color="text-red-400" />
-      <div className="w-px h-6 bg-slate-700" />
-      <StatCell label="Comp Filtered" value={stats.compDiscarded} color="text-red-400" />
-      <div className="w-px h-6 bg-slate-700" />
-      <StatCell label="Archived" value={stats.archived} color="text-green-400" />
+    <div className="flex items-center gap-4 px-3 py-2 rounded-lg text-center" style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-card-border)', backdropFilter: 'blur(12px)' }}>
+      <StatCell label="Received" value={stats.received} color="var(--color-heading)" />
+      <Div />
+      <StatCell label="Exc Filtered" value={stats.excDiscarded} color="#ef4444" />
+      <Div />
+      <StatCell label="Comp Filtered" value={stats.compDiscarded} color="#ef4444" />
+      <Div />
+      <StatCell label="Archived" value={stats.archived} color="#16a34a" />
     </div>
   );
 
@@ -343,38 +349,41 @@ export default function Module2({ onBack }: Props) {
     <div className="p-3 flex flex-col gap-4 flex-1">
       <WalkthroughBase steps={STEPS} currentStep={currentStep} onStepChange={setCurrentStep} />
 
-      <div className="border-t border-slate-800 pt-3 space-y-3">
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Simulation Controls</h3>
+      <div className="pt-3 space-y-3" style={{ borderTop: '1px solid var(--color-card-border)' }}>
+        <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-label)' }}>Simulation Controls</h3>
 
         <div className="flex items-center gap-2">
           <button onClick={() => setIsRunning(r => !r)}
-            className="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition-colors">
+            className="px-3 py-1 rounded-lg text-xs transition-colors hover:opacity-80"
+            style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-heading)' }}>
             {isRunning ? 'Pause' : 'Resume'}
           </button>
           <button onClick={() => { setDots([]); setStats({ received: 0, excDiscarded: 0, compDiscarded: 0, archived: 0, buffered: 0, queueDepth: 0 }); }}
-            className="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-400 transition-colors">
+            className="px-3 py-1 rounded-lg text-xs transition-colors hover:opacity-80"
+            style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-label)' }}>
             Reset
           </button>
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          <span className="w-24 text-slate-400">Data Rate</span>
-          <input type="range" min={1} max={10} step={1} value={dataRate} onChange={e => setDataRate(Number(e.target.value))} className="flex-1 h-1 accent-blue-500" />
-          <span className="w-16 text-right text-slate-300 font-mono text-[11px]">{dataRate}/s</span>
+          <span className="w-24" style={{ color: 'var(--color-label)' }}>Data Rate</span>
+          <input type="range" min={1} max={10} step={1} value={dataRate} onChange={e => setDataRate(Number(e.target.value))} className="flex-1 h-1" style={{ accentColor: 'var(--color-accent)' }} />
+          <span className="w-16 text-right font-mono text-[11px]" style={{ color: 'var(--color-heading)' }}>{dataRate}/s</span>
         </div>
 
-        <label className="flex items-center gap-2 text-xs text-slate-400 cursor-pointer">
-          <input type="checkbox" checked={networkDown} onChange={e => setNetworkDown(e.target.checked)} className="accent-red-500" />
+        <label className="flex items-center gap-2 text-xs cursor-pointer" style={{ color: 'var(--color-body)' }}>
+          <input type="checkbox" checked={networkDown} onChange={e => setNetworkDown(e.target.checked)} style={{ accentColor: '#ef4444' }} />
           Network Drop (buffer queues)
         </label>
 
-        <label className="flex items-center gap-2 text-xs text-slate-400 cursor-pointer">
-          <input type="checkbox" checked={compressionOn} onChange={e => setCompressionOn(e.target.checked)} className="accent-green-500" />
+        <label className="flex items-center gap-2 text-xs cursor-pointer" style={{ color: 'var(--color-body)' }}>
+          <input type="checkbox" checked={compressionOn} onChange={e => setCompressionOn(e.target.checked)} style={{ accentColor: '#16a34a' }} />
           Compression ON
         </label>
 
         <button onClick={sendOOO}
-          className="w-full px-3 py-1.5 rounded bg-red-900/50 hover:bg-red-900/70 text-red-400 text-xs border border-red-800/50 transition-colors">
+          className="w-full px-3 py-1.5 rounded-lg text-xs transition-colors hover:opacity-80"
+          style={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
           Send OOO Event
         </button>
       </div>
@@ -401,7 +410,7 @@ function LegendDot({ y, color, label }: { y: number; color: string; label: strin
   return (
     <g transform={`translate(0, ${y})`}>
       <circle cx={4} cy={0} r={3} fill={color} />
-      <text x={12} y={3} fill="#94a3b8" fontSize={9}>{label}</text>
+      <text x={12} y={3} fill="#596168" fontSize={9}>{label}</text>
     </g>
   );
 }
@@ -409,8 +418,12 @@ function LegendDot({ y, color, label }: { y: number; color: string; label: strin
 function StatCell({ label, value, color }: { label: string; value: number; color: string }) {
   return (
     <div>
-      <div className={`text-sm font-bold font-mono ${color}`}>{value}</div>
-      <div className="text-[10px] text-slate-500">{label}</div>
+      <div className="text-sm font-bold font-mono" style={{ color }}>{value}</div>
+      <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>{label}</div>
     </div>
   );
+}
+
+function Div() {
+  return <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />;
 }

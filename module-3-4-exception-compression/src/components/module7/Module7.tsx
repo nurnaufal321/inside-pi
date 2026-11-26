@@ -104,37 +104,42 @@ function ArchiveCanvas({
   function blockColor(a: ArchiveFile) {
     if (a.state === 'primary') return '#3b82f6';
     if (a.state === 'historical') return '#22c55e';
-    if (a.state === 'unused') return '#374151';
-    return '#64748b';
+    if (a.state === 'unused') return '#d1d5db';
+    return '#9ca3af';
   }
 
   function blockStroke(a: ArchiveFile) {
     if (a.state === 'primary') return '#60a5fa';
     if (a.state === 'historical') return '#4ade80';
-    return '#4b5563';
+    return '#d1d5db';
   }
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full" style={{ maxHeight: '380px' }}>
-      <rect width={W} height={H} fill="#0f172a" rx={8} />
+      <defs>
+        <filter id="canvasShadow" x="-2%" y="-2%" width="104%" height="104%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000" floodOpacity="0.06" />
+        </filter>
+      </defs>
+      <rect width={W} height={H} fill="#ffffff" rx={8} filter="url(#canvasShadow)" />
 
       {/* Title */}
-      <text x={W / 2} y={28} textAnchor="middle" fill="#94a3b8" fontSize={12} fontWeight="bold">
+      <text x={W / 2} y={28} textAnchor="middle" fill="#596168" fontSize={12} fontWeight="bold">
         Archive File Timeline
       </text>
 
       {/* Legend */}
       <g transform={`translate(${PAD.left}, 42)`}>
         <circle cx={0} cy={0} r={4} fill="#3b82f6" />
-        <text x={8} y={3} fill="#94a3b8" fontSize={9}>Primary</text>
+        <text x={8} y={3} fill="#596168" fontSize={9}>Primary</text>
         <circle cx={70} cy={0} r={4} fill="#22c55e" />
-        <text x={78} y={3} fill="#94a3b8" fontSize={9}>Historical</text>
-        <circle cx={150} cy={0} r={4} fill="#374151" />
-        <text x={158} y={3} fill="#94a3b8" fontSize={9}>Unused</text>
+        <text x={78} y={3} fill="#596168" fontSize={9}>Historical</text>
+        <circle cx={150} cy={0} r={4} fill="#d1d5db" />
+        <text x={158} y={3} fill="#596168" fontSize={9}>Unused</text>
         {archiveType === 'dynamic' && (
           <>
             <circle cx={220} cy={0} r={4} fill="#f97316" />
-            <text x={228} y={3} fill="#94a3b8" fontSize={9}>Dynamic</text>
+            <text x={228} y={3} fill="#596168" fontSize={9}>Dynamic</text>
           </>
         )}
       </g>
@@ -152,12 +157,12 @@ function ArchiveCanvas({
             {/* Block outline */}
             <rect
               x={x} y={blockY} width={blockW} height={blockH}
-              fill="#1e293b" stroke={stroke} strokeWidth={isPrimary ? 2 : 1} rx={4}
+              fill="#f8fafc" stroke={stroke} strokeWidth={isPrimary ? 2 : 1} rx={4}
             />
             {/* Fill level */}
             <rect
               x={x + 1} y={blockY + blockH - fillH} width={blockW - 2} height={fillH}
-              fill={fill} opacity={0.3} rx={3}
+              fill={fill} opacity={0.2} rx={3}
             />
             {/* Primary pulsing outline */}
             {isPrimary && currentStep <= 1 && (
@@ -170,15 +175,15 @@ function ArchiveCanvas({
               </rect>
             )}
             {/* Used% */}
-            <text x={x + blockW / 2} y={blockY + 20} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">
+            <text x={x + blockW / 2} y={blockY + 20} textAnchor="middle" fill="#13171b" fontSize={11} fontWeight="bold">
               {a.usedPct.toFixed(0)}%
             </text>
             {/* Type label */}
-            <text x={x + blockW / 2} y={blockY + 36} textAnchor="middle" fill="#64748b" fontSize={8}>
+            <text x={x + blockW / 2} y={blockY + 36} textAnchor="middle" fill="#7d8590" fontSize={8}>
               {a.type === 'fixed' ? 'Fixed' : 'Dynamic'}
             </text>
             {/* Records */}
-            <text x={x + blockW / 2} y={blockY + 50} textAnchor="middle" fill="#475569" fontSize={8}>
+            <text x={x + blockW / 2} y={blockY + 50} textAnchor="middle" fill="#9ca3af" fontSize={8}>
               {a.recordCount.toLocaleString()} rec
             </text>
             {/* State label */}
@@ -187,12 +192,12 @@ function ArchiveCanvas({
             </text>
             {/* Write flag */}
             {a.writeFlag && (
-              <text x={x + blockW / 2} y={blockY + blockH + 26} textAnchor="middle" fill="#fbbf24" fontSize={8}>
+              <text x={x + blockW / 2} y={blockY + blockH + 26} textAnchor="middle" fill="#ca8a04" fontSize={8}>
                 Write=1
               </text>
             )}
             {/* Time range */}
-            <text x={x + blockW / 2} y={blockY + blockH + 38} textAnchor="middle" fill="#475569" fontSize={7}>
+            <text x={x + blockW / 2} y={blockY + blockH + 38} textAnchor="middle" fill="#9ca3af" fontSize={7}>
               {a.state === 'unused' ? 'No data' : `${formatTime(a.startTime)}–${formatTime(a.endTime)}`}
             </text>
           </g>
@@ -201,15 +206,15 @@ function ArchiveCanvas({
 
       {/* Disk usage ruler */}
       <g transform={`translate(${PAD.left}, ${blockY + blockH + 55})`}>
-        <line x1={0} y1={0} x2={plotW} y2={0} stroke="#334155" strokeWidth={1} />
+        <line x1={0} y1={0} x2={plotW} y2={0} stroke="#e2e6e9" strokeWidth={1} />
         {archives.map((a, i) => {
           const x = i * (blockW + gap);
           const w = a.type === 'dynamic' ? blockW * (a.usedPct / 100) : blockW;
           return (
-            <rect key={a.id} x={x} y={2} width={Math.max(2, w)} height={8} fill={blockColor(a)} opacity={0.4} rx={2} />
+            <rect key={a.id} x={x} y={2} width={Math.max(2, w)} height={8} fill={blockColor(a)} opacity={0.3} rx={2} />
           );
         })}
-        <text x={0} y={22} fill="#475569" fontSize={8}>Disk Usage</text>
+        <text x={0} y={22} fill="#9ca3af" fontSize={8}>Disk Usage</text>
         {/* FSC limit line */}
         <line x1={plotW * 0.7} y1={-4} x2={plotW * 0.7} y2={14} stroke="#ef4444" strokeWidth={1} strokeDasharray="3 2" />
         <text x={plotW * 0.7 + 4} y={6} fill="#ef4444" fontSize={7}>FSC Limit</text>
@@ -294,25 +299,25 @@ export default function Module7({ onBack }: { onBack: () => void }) {
   const totalRecords = archives.reduce((s, a) => s + a.recordCount, 0);
 
   const statsBar = (
-    <div className="flex items-center gap-4 px-3 py-2 bg-slate-900/80 rounded-lg border border-slate-800">
+    <div className="flex items-center gap-4 px-3 py-2 rounded-lg" style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-card-border)', backdropFilter: 'blur(12px)' }}>
       <div className="text-center">
-        <div className="text-sm font-bold font-mono text-blue-400">{primary?.usedPct.toFixed(0) ?? 0}%</div>
-        <div className="text-[10px] text-slate-500">Primary Used</div>
+        <div className="text-sm font-bold font-mono" style={{ color: '#2563eb' }}>{primary?.usedPct.toFixed(0) ?? 0}%</div>
+        <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Primary Used</div>
       </div>
-      <div className="w-px h-6 bg-slate-700" />
+      <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />
       <div className="text-center">
-        <div className="text-sm font-bold font-mono text-slate-300">{archives.length}</div>
-        <div className="text-[10px] text-slate-500">Archives</div>
+        <div className="text-sm font-bold font-mono" style={{ color: 'var(--color-heading)' }}>{archives.length}</div>
+        <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Archives</div>
       </div>
-      <div className="w-px h-6 bg-slate-700" />
+      <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />
       <div className="text-center">
-        <div className="text-sm font-bold font-mono text-green-400">{totalRecords.toLocaleString()}</div>
-        <div className="text-[10px] text-slate-500">Total Rec</div>
+        <div className="text-sm font-bold font-mono" style={{ color: '#16a34a' }}>{totalRecords.toLocaleString()}</div>
+        <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Total Rec</div>
       </div>
-      <div className="w-px h-6 bg-slate-700" />
+      <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />
       <div className="text-center">
-        <div className="text-sm font-bold font-mono text-yellow-400">{shiftCount}</div>
-        <div className="text-[10px] text-slate-500">Shifts</div>
+        <div className="text-sm font-bold font-mono" style={{ color: '#ca8a04' }}>{shiftCount}</div>
+        <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Shifts</div>
       </div>
     </div>
   );
@@ -325,49 +330,52 @@ export default function Module7({ onBack }: { onBack: () => void }) {
     <div className="p-3 flex flex-col gap-4 flex-1">
       <WalkthroughBase steps={WALKTHROUGH_STEPS} currentStep={currentStep} onStepChange={setCurrentStep} />
 
-      <div className="border-t border-slate-800 pt-3 space-y-3">
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Simulation</h3>
+      <div className="pt-3 space-y-3" style={{ borderTop: '1px solid var(--color-card-border)' }}>
+        <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--color-label)' }}>Simulation</h3>
 
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsPlaying(p => !p)}
-            className="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-300"
+            className="px-3 py-1 rounded-lg text-xs font-medium transition-colors hover:opacity-80"
+            style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-heading)' }}
           >
             {isPlaying ? '⏸ Pause' : '▶ Play'}
           </button>
           <button
             onClick={doShift}
-            className="px-3 py-1 rounded bg-orange-800 hover:bg-orange-700 text-xs text-orange-200"
+            className="px-3 py-1 rounded-lg text-xs font-medium transition-colors hover:opacity-80"
+            style={{ backgroundColor: 'rgba(249, 115, 22, 0.1)', color: '#ea580c' }}
           >
             Force Shift
           </button>
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          <span className="w-24 text-slate-400 shrink-0">Data Rate</span>
+          <span className="w-24 shrink-0" style={{ color: 'var(--color-label)' }}>Data Rate</span>
           <input type="range" min={100} max={2000} step={100} value={dataRate}
             onChange={e => setDataRate(Number(e.target.value))}
-            className="flex-1 h-1 accent-blue-500" />
-          <span className="w-16 text-right text-slate-300 font-mono text-[11px]">{dataRate} ev/s</span>
+            className="flex-1 h-1" style={{ accentColor: 'var(--color-accent)' }} />
+          <span className="w-16 text-right font-mono text-[11px]" style={{ color: 'var(--color-heading)' }}>{dataRate} ev/s</span>
         </div>
 
         <div className="flex items-center gap-3 text-xs">
-          <span className="text-slate-400">Archive Type:</span>
+          <span style={{ color: 'var(--color-label)' }}>Archive Type:</span>
           {(['fixed', 'dynamic'] as const).map(t => (
-            <label key={t} className="flex items-center gap-1 text-slate-400">
+            <label key={t} className="flex items-center gap-1" style={{ color: 'var(--color-body)' }}>
               <input type="radio" name="archType" checked={archiveType === t}
-                onChange={() => setArchiveType(t)} className="accent-blue-500" />
+                onChange={() => setArchiveType(t)} style={{ accentColor: 'var(--color-accent)' }} />
               {t.charAt(0).toUpperCase() + t.slice(1)}
             </label>
           ))}
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          <span className="text-slate-400 shrink-0">Shift Schedule:</span>
+          <span className="shrink-0" style={{ color: 'var(--color-label)' }}>Shift Schedule:</span>
           <select
             value={shiftSchedule}
             onChange={e => setShiftSchedule(e.target.value as ShiftSchedule)}
-            className="bg-slate-800 text-slate-300 rounded px-2 py-1 text-xs border border-slate-700"
+            className="rounded-lg px-2 py-1 text-xs"
+            style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-heading)', border: '1px solid var(--color-card-border)' }}
           >
             <option value="natural">Natural (auto)</option>
             <option value="daily">Daily</option>
