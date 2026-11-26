@@ -12,8 +12,8 @@ const Module8 = lazy(() => import('./components/module8/Module8'));
 
 function Loading() {
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-      <div className="text-slate-500 text-sm">Loading module...</div>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#e2e6e9' }}>
+      <div className="text-sm" style={{ color: '#7d8590' }}>Loading module...</div>
     </div>
   );
 }
