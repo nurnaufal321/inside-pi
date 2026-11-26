@@ -11,10 +11,11 @@ interface Props {
   replayKey: number;
   onReplay: () => void;
   onTogglePause: () => void;
+  resetLabel?: string;
   children: ReactNode;
 }
 
-export default function Stage({ viewBox, camera = [0, 0, 1], metrics, legend, paused, replayKey, onReplay, onTogglePause, children }: Props) {
+export default function Stage({ viewBox, camera = [0, 0, 1], metrics, legend, paused, replayKey, onReplay, onTogglePause, resetLabel = 'Replay', children }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const boxRef = useRef<HTMLElement>(null);
   const [narrow, setNarrow] = useState(false);
@@ -57,7 +58,7 @@ export default function Stage({ viewBox, camera = [0, 0, 1], metrics, legend, pa
       )}
       <div className="stage__tools">
         <button className="tool" onClick={onReplay}>
-          <RotateCcw className="i" strokeWidth={2.2} /> Replay
+          <RotateCcw className="i" strokeWidth={2.2} /> {resetLabel}
         </button>
         <button className="tool" onClick={onTogglePause}>
           {paused ? <Play className="i" strokeWidth={2.2} /> : <Pause className="i" strokeWidth={2.2} />} {paused ? 'Play' : 'Pause'}

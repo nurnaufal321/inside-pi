@@ -55,11 +55,9 @@ export default function LessonView({ lesson, step, view, paused, replayKey, onRe
       )}
 
       {view === 'try' && TryIt ? (
-        <div className="tryit">
-          <Suspense fallback={<div style={{ padding: 24, color: 'var(--muted)' }}>Loading simulation…</div>}>
-            <TryIt onBack={() => go(stepHref(lesson.id, 0))} />
-          </Suspense>
-        </div>
+        <Suspense fallback={<div className="stage" style={{ display: 'grid', placeItems: 'center', color: 'var(--muted)' }}>Loading simulation…</div>}>
+          <TryIt onBack={() => go(stepHref(lesson.id, 0))} />
+        </Suspense>
       ) : (
         <>
           <Stage

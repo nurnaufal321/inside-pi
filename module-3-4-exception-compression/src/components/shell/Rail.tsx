@@ -32,9 +32,10 @@ interface Props {
   step: number;
   view: View;
   visited: number;
+  onSlot?: (el: HTMLDivElement | null) => void;
 }
 
-export default function Rail({ lesson, step, view, visited }: Props) {
+export default function Rail({ lesson, step, view, visited, onSlot }: Props) {
   const n = lesson.steps.length;
   const s = lesson.steps[step];
   const tag = TAG[s.tag];
@@ -51,20 +52,14 @@ export default function Rail({ lesson, step, view, visited }: Props) {
   return (
     <aside className="rail">
       {view === 'try' ? (
-        <section className="card guide">
+        <section className="card guide guide--try">
           <div className="guide__top">
-            <span className="eyebrow">Try it</span>
-            <span className="badge badge--green">Sandbox</span>
+            <span className="eyebrow">Try it · {lesson.title}</span>
+            <span className="badge badge--green" style={{ textTransform: 'uppercase', letterSpacing: '.06em', fontWeight: 700, fontSize: 10.5 }}>Live</span>
           </div>
-          <div className="guide__content">
-            <h2 className="guide__title">Play with the real algorithm</h2>
-            <div className="guide__body">
-              <p>This is a live simulation of <b>{lesson.title.toLowerCase()}</b>. Change the inputs on the right of the panel and watch how the PI server reacts.</p>
-              <p>Each scenario button picks one moment from the walkthrough, so you can come back to any step and test it yourself.</p>
-            </div>
-          </div>
+          <div ref={onSlot} className="tryit-controls" />
           <div className="guide__nav">
-            <button className="btn-pop btn-next is-green" style={{ justifyContent: 'flex-start' }} onClick={() => go(stepHref(lesson.id, 0))}>
+            <button className="btn-pop btn-next" style={{ justifyContent: 'flex-start' }} onClick={() => go(stepHref(lesson.id, 0))}>
               <ArrowLeft className="i" />
               <span>Back to walkthrough</span>
             </button>

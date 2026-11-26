@@ -7,6 +7,7 @@ import Rail from './components/shell/Rail';
 import ReferenceView from './components/shell/ReferenceView';
 import { go, readStore, stepHref, useRoute, writeStore } from './components/shell/route';
 import { LESSONS } from './lessons';
+import { RailSlot } from './components/tryit/kit';
 
 export default function App() {
   const route = useRoute();
@@ -18,6 +19,7 @@ export default function App() {
   const [paused, setPaused] = useState(false);
   const [replayKey, setReplayKey] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [railSlot, setRailSlot] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     if (route.view === 'ref') return;
@@ -77,6 +79,7 @@ export default function App() {
           onTheme={() => setTheme(t => (t === 'dark' ? 'light' : 'dark'))}
           onMenu={() => setMenuOpen(o => !o)}
         />
+        <RailSlot.Provider value={railSlot}>
         <div className="body">
           <CourseTree currentId={lesson?.id ?? null} progress={progress} open={menuOpen} onNavigate={() => setMenuOpen(false)} />
           {route.view === 'ref' ? (
@@ -92,10 +95,11 @@ export default function App() {
                 onReplay={replay}
                 onTogglePause={() => setPaused(p => !p)}
               />
-              <Rail lesson={lesson} step={step} view={route.view} visited={progress[lesson.id] ?? step} />
+              <Rail lesson={lesson} step={step} view={route.view} visited={progress[lesson.id] ?? step} onSlot={setRailSlot} />
             </>
           ) : null}
         </div>
+        </RailSlot.Provider>
       </div>
     </>
   );

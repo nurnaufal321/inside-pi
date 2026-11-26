@@ -283,6 +283,15 @@ export function Flow({ pts, n = 3, dur = 2.6, kind = 'req', show = true, fade, d
   );
 }
 
+/** A packet drawn at a screen position (used by live simulations). */
+export function Token({ x, y, kind = 'req', opacity = 1 }: { x: number; y: number; kind?: PacketKind; opacity?: number }) {
+  return (
+    <g className="pkt" transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`} opacity={opacity}>
+      <PacketShape kind={kind} />
+    </g>
+  );
+}
+
 /** A packet parked at a grid point (for still frames: queued events, a dropped value…). */
 export function Packet({ x, y, z = 0, kind = 'req' }: { x: number; y: number; z?: number; kind?: PacketKind }) {
   const [sx, sy] = iso(x, y, z);

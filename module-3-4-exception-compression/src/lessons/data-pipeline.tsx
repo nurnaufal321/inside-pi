@@ -26,6 +26,9 @@ const compDrop: GridPt[] = [[P[0] + 2.3, P[1] + 0.4, Z + 24], [P[0] + 3.4, P[1] 
 const TOP = { x: -46, y: -100 };
 const BOTTOM = { x: 14, y: 50 };
 
+/** Layout shared with the Try it simulation. */
+export const PIPE = { S, I, B, P, Q, A, F, Z, TOP, BOTTOM, paths: { sToI, iToB, bToP, pToQ, qToA, aToF, ooo, excDrop, compDrop } };
+
 function Scene({ step }: SceneProps) {
   const queueFull = step === 6;
   return (
@@ -293,7 +296,7 @@ const lesson: Lesson = {
     { title: 'Event queue', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1018858.html', desc: 'The buffer between snapshot and archive, and archive queuing.' },
     { title: 'Prevent archive data loss', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1021011.html', desc: 'Why the queue keeps collecting when the archive is unavailable.' },
   ],
-  TryIt: lazy(() => import('../components/module2/Module2')),
+  TryIt: lazy(() => import('../components/tryit/pipeline')),
 };
 
 export default lesson;

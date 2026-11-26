@@ -50,3 +50,27 @@ export function isoPath(pts: GridPt[], r = 8): string {
 
 /** Rough text width for JetBrains Mono (advance ≈ 0.6em). */
 export const textWidth = (s: string, fs: number) => s.length * fs * 0.6;
+
+/** Screen-space polyline for a grid path. */
+export const screenPath = (pts: GridPt[]): P[] => pts.map(p => iso(p[0], p[1], p[2] ?? 0));
+
+export function polyLength(pts: P[]): number {
+  let len = 0;
+  for (let i = 1; i < pts.length; i++) len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+  return len;
+}
+
+/** Point at fraction t (0–1) along a screen polyline. */
+export function pointAt(pts: P[], t: number): P {
+  const total = polyLength(pts);
+  let d = Math.max(0, Math.min(1, t)) * total;
+  for (let i = 1; i < pts.length; i++) {
+    const seg = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+    if (d <= seg || i === pts.length - 1) {
+      const k = seg === 0 ? 0 : Math.min(1, d / seg);
+      return [pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * k, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * k];
+    }
+    d -= seg;
+  }
+  return pts[pts.length - 1];
+}
