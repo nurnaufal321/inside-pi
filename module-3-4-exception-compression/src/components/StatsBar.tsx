@@ -11,14 +11,18 @@ interface Props {
 
 export default function StatsBar({ stats }: Props) {
   return (
-    <div className="flex items-center gap-4 px-3 py-2 bg-slate-900/80 rounded-lg border border-slate-800">
-      <Stat label="Raw Scans" value={stats.rawCount} color="text-slate-300" />
+    <div className="flex items-center gap-4 px-3 py-2 rounded-lg" style={{
+      backgroundColor: 'var(--color-card)',
+      border: '1px solid var(--color-card-border)',
+      backdropFilter: 'blur(12px)',
+    }}>
+      <Stat label="Raw Scans" value={stats.rawCount} color="var(--color-heading)" />
       <Divider />
-      <Stat label="After Exc" value={stats.afterException} color="text-blue-400" sub={`-${stats.excDiscarded}`} subColor="text-red-400" />
+      <Stat label="After Exc" value={stats.afterException} color="#2563eb" sub={`-${stats.excDiscarded}`} subColor="#ef4444" />
       <Divider />
-      <Stat label="Archived" value={stats.afterCompression} color="text-green-400" sub={`-${stats.compDiscarded}`} subColor="text-red-400" />
+      <Stat label="Archived" value={stats.afterCompression} color="#16a34a" sub={`-${stats.compDiscarded}`} subColor="#ef4444" />
       <Divider />
-      <Stat label="Compression" value={`${stats.compressionRatio.toFixed(1)}%`} color="text-yellow-400" />
+      <Stat label="Compression" value={`${stats.compressionRatio.toFixed(1)}%`} color="#ca8a04" />
     </div>
   );
 }
@@ -32,15 +36,15 @@ function Stat({ label, value, color, sub, subColor }: {
 }) {
   return (
     <div className="text-center">
-      <div className={`text-sm font-bold font-mono ${color}`}>
+      <div className="text-sm font-bold font-mono" style={{ color }}>
         {value}
-        {sub && <span className={`text-[10px] ml-1 ${subColor}`}>({sub})</span>}
+        {sub && <span className="text-[10px] ml-1" style={{ color: subColor }}>{`(${sub})`}</span>}
       </div>
-      <div className="text-[10px] text-slate-500">{label}</div>
+      <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>{label}</div>
     </div>
   );
 }
 
 function Divider() {
-  return <div className="w-px h-6 bg-slate-700" />;
+  return <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />;
 }

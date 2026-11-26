@@ -42,7 +42,6 @@ export default function ModuleCanvas({ onBack }: { onBack?: () => void }) {
     regenerate(config, preset);
   }, [config, preset, regenerate]);
 
-  // Track compression state at current playback index
   useEffect(() => {
     if (!pipeline) return;
     let cs = createCompressionState();
@@ -61,7 +60,6 @@ export default function ModuleCanvas({ onBack }: { onBack?: () => void }) {
     setCompState(cs);
   }, [pipeline, playbackIndex, config]);
 
-  // Playback timer
   useEffect(() => {
     if (isPlaying && pipeline) {
       const ms = Math.max(30, 100 / playbackSpeed);
@@ -83,24 +81,31 @@ export default function ModuleCanvas({ onBack }: { onBack?: () => void }) {
   if (!pipeline) return null;
 
   return (
-    <div className="flex flex-col h-screen bg-slate-950">
-      {/* Header */}
-      <header className="flex items-center justify-between px-4 py-2 border-b border-slate-800 bg-slate-950/90 backdrop-blur-sm shrink-0">
+    <div className="flex flex-col h-screen" style={{ backgroundColor: 'var(--color-surface)' }}>
+      <header className="flex items-center justify-between px-4 py-2 shrink-0" style={{
+        backgroundColor: 'var(--color-card)',
+        borderBottom: '1px solid var(--color-card-border)',
+        backdropFilter: 'blur(12px)',
+      }}>
         <div className="flex items-center gap-3">
           {onBack && (
-            <button onClick={onBack} className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs transition-colors">Back</button>
+            <button
+              onClick={onBack}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors hover:opacity-80"
+              style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-body)' }}
+            >
+              &larr; Back
+            </button>
           )}
           <div>
-            <h1 className="text-base font-bold text-slate-100">PI Exception & Compression Explorer</h1>
-            <p className="text-[11px] text-slate-500">Module 3 & 4 — Interactive Visual Learning</p>
+            <h1 className="text-base font-bold" style={{ color: 'var(--color-heading)' }}>PI Exception & Compression Explorer</h1>
+            <p className="text-[11px]" style={{ color: 'var(--color-label)' }}>Module 3 & 4 — Interactive Visual Learning</p>
           </div>
         </div>
         <StatsBar stats={pipeline.stats} />
       </header>
 
-      {/* Main content: 65/35 split */}
       <div className="flex flex-1 min-h-0">
-        {/* Left: SVG Canvas (65%) */}
         <div className="w-[65%] flex flex-col p-3 gap-2 min-h-0">
           <div className="flex-1 min-h-0">
             <SVGCanvas
@@ -117,17 +122,19 @@ export default function ModuleCanvas({ onBack }: { onBack?: () => void }) {
             />
           </div>
 
-          {/* Event detail below canvas */}
           {hoveredEvent && (
-            <div className="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs font-mono shrink-0">
+            <div className="rounded-lg p-2 text-xs font-mono shrink-0" style={{
+              backgroundColor: 'var(--color-card)',
+              border: '1px solid var(--color-card-border)',
+            }}>
               <div className="flex gap-4">
-                <span className="text-slate-400">t=<span className="text-slate-200">{hoveredEvent.time.toFixed(1)}s</span></span>
-                <span className="text-slate-400">val=<span className="text-slate-200">{hoveredEvent.value.toFixed(4)}</span></span>
-                <span className="text-slate-400">status=<span className="text-blue-400 font-semibold">{hoveredEvent.status}</span></span>
+                <span style={{ color: 'var(--color-label)' }}>t=<span style={{ color: 'var(--color-heading)' }}>{hoveredEvent.time.toFixed(1)}s</span></span>
+                <span style={{ color: 'var(--color-label)' }}>val=<span style={{ color: 'var(--color-heading)' }}>{hoveredEvent.value.toFixed(4)}</span></span>
+                <span style={{ color: 'var(--color-label)' }}>status=<span className="font-semibold" style={{ color: '#2563eb' }}>{hoveredEvent.status}</span></span>
               </div>
-              <div className="text-slate-500 mt-0.5">{hoveredEvent.reason}</div>
+              <div className="mt-0.5" style={{ color: 'var(--color-label)' }}>{hoveredEvent.reason}</div>
               {hoveredEvent.slopeMin !== undefined && hoveredEvent.slopeMax !== undefined && (
-                <div className="text-slate-600 mt-0.5">
+                <div className="mt-0.5" style={{ color: 'var(--color-label)' }}>
                   slopes: [{hoveredEvent.slopeMin.toFixed(4)}, {hoveredEvent.slopeMax.toFixed(4)}]
                   {hoveredEvent.slopeRef !== undefined && <span className="ml-2">ref: {hoveredEvent.slopeRef.toFixed(4)}</span>}
                 </div>
@@ -136,11 +143,10 @@ export default function ModuleCanvas({ onBack }: { onBack?: () => void }) {
           )}
         </div>
 
-        {/* Right: Controls + Walkthrough (35%) */}
-        <div className="w-[35%] border-l border-slate-800 flex flex-col min-h-0 overflow-y-auto">
+        <div className="w-[35%] flex flex-col min-h-0 overflow-y-auto" style={{ borderLeft: '1px solid var(--color-card-border)' }}>
           <div className="p-3 flex flex-col gap-4">
             <Walkthrough currentStep={currentStep} onStepChange={setCurrentStep} />
-            <div className="border-t border-slate-800 pt-3">
+            <div className="pt-3" style={{ borderTop: '1px solid var(--color-card-border)' }}>
               <ControlPanel
                 config={config}
                 onConfigChange={setConfig}

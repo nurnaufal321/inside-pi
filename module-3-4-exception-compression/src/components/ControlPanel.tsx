@@ -41,7 +41,7 @@ function SliderParam({
 }) {
   return (
     <div className="flex items-center gap-2 text-xs">
-      <span className="w-24 text-slate-400 shrink-0">{label}</span>
+      <span className="w-24 shrink-0" style={{ color: 'var(--color-label)' }}>{label}</span>
       <input
         type="range"
         min={min}
@@ -49,9 +49,10 @@ function SliderParam({
         step={step}
         value={value}
         onChange={e => onChange(Number(e.target.value))}
-        className="flex-1 h-1 accent-blue-500"
+        className="flex-1 h-1"
+        style={{ accentColor: 'var(--color-accent)' }}
       />
-      <span className="w-16 text-right text-slate-300 font-mono text-[11px]">{value}{unit}</span>
+      <span className="w-16 text-right font-mono text-[11px]" style={{ color: 'var(--color-heading)' }}>{value}{unit}</span>
     </div>
   );
 }
@@ -73,19 +74,18 @@ export default function ControlPanel({
 
   return (
     <div className="flex flex-col gap-3 text-sm">
-      {/* Signal Preset */}
       <div>
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Signal Preset</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: 'var(--color-label)' }}>Signal Preset</h3>
         <div className="flex flex-wrap gap-1">
           {PRESETS.map(p => (
             <button
               key={p.value}
               onClick={() => onPresetChange(p.value)}
-              className={`px-2 py-1 rounded text-xs transition-colors ${
-                preset === p.value
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
-              }`}
+              className="px-2 py-1 rounded-lg text-xs font-medium transition-colors"
+              style={{
+                backgroundColor: preset === p.value ? 'var(--color-accent)' : 'var(--color-surface)',
+                color: preset === p.value ? 'white' : 'var(--color-body)',
+              }}
               title={p.desc}
             >
               {p.label}
@@ -94,31 +94,34 @@ export default function ControlPanel({
         </div>
       </div>
 
-      {/* Playback Controls */}
       <div>
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Playback</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: 'var(--color-label)' }}>Playback</h3>
         <div className="flex items-center gap-2">
           <button
             onClick={onTogglePlay}
-            className="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition-colors"
+            className="px-3 py-1 rounded-lg text-xs font-medium transition-colors hover:opacity-80"
+            style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-heading)' }}
           >
             {isPlaying ? '⏸ Pause' : '▶ Play'}
           </button>
           <button
             onClick={() => onPlaybackChange(0)}
-            className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-400"
+            className="px-2 py-1 rounded-lg text-xs transition-colors hover:opacity-80"
+            style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-label)' }}
           >
             ⏮
           </button>
           <button
             onClick={() => onPlaybackChange(Math.min(maxIndex, playbackIndex + 1))}
-            className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-400"
+            className="px-2 py-1 rounded-lg text-xs transition-colors hover:opacity-80"
+            style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-label)' }}
           >
             ⏭+1
           </button>
           <button
             onClick={() => onPlaybackChange(maxIndex)}
-            className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-400"
+            className="px-2 py-1 rounded-lg text-xs transition-colors hover:opacity-80"
+            style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-label)' }}
           >
             ⏭ End
           </button>
@@ -129,16 +132,21 @@ export default function ControlPanel({
           max={maxIndex}
           value={playbackIndex}
           onChange={e => onPlaybackChange(Number(e.target.value))}
-          className="w-full mt-1 h-1 accent-blue-500"
+          className="w-full mt-1 h-1"
+          style={{ accentColor: 'var(--color-accent)' }}
         />
-        <div className="flex justify-between text-[10px] text-slate-500 mt-0.5">
+        <div className="flex justify-between text-[10px] mt-0.5" style={{ color: 'var(--color-label)' }}>
           <span>Event {playbackIndex + 1} / {maxIndex + 1}</span>
           <div className="flex gap-1">
             {[0.5, 1, 2, 4].map(s => (
               <button
                 key={s}
                 onClick={() => onSpeedChange(s)}
-                className={`px-1.5 rounded ${playbackSpeed === s ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-500'}`}
+                className="px-1.5 rounded-lg text-xs font-medium"
+                style={{
+                  backgroundColor: playbackSpeed === s ? 'var(--color-accent)' : 'var(--color-surface)',
+                  color: playbackSpeed === s ? 'white' : 'var(--color-label)',
+                }}
               >
                 {s}x
               </button>
@@ -147,18 +155,16 @@ export default function ControlPanel({
         </div>
       </div>
 
-      {/* Point Configuration */}
       <div>
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Point Configuration</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: 'var(--color-label)' }}>Point Configuration</h3>
         <div className="space-y-1.5">
           <SliderParam label="Span" value={config.span} min={10} max={1000} step={10} unit="" onChange={v => updateCfg({ span: v })} />
           <SliderParam label="Zero" value={config.zero} min={-500} max={500} step={10} unit="" onChange={v => updateCfg({ zero: v })} />
         </div>
       </div>
 
-      {/* Exception Parameters */}
       <div>
-        <h3 className="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-1.5">Exception Reporting</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#2563eb' }}>Exception Reporting</h3>
         <div className="space-y-1.5">
           <SliderParam label="ExcDev%" value={config.excDevPercent} min={0} max={10} step={0.1} unit="%" onChange={v => {
             const excDev = (config.span * v) / 100;
@@ -173,9 +179,8 @@ export default function ControlPanel({
         </div>
       </div>
 
-      {/* Compression Parameters */}
       <div>
-        <h3 className="text-xs font-semibold text-green-400 uppercase tracking-wider mb-1.5">Compression</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#16a34a' }}>Compression</h3>
         <div className="space-y-1.5">
           <SliderParam label="CompDev%" value={config.compDevPercent} min={0} max={10} step={0.1} unit="%" onChange={v => {
             const compDev = (config.span * v) / 100;
@@ -188,21 +193,21 @@ export default function ControlPanel({
           <SliderParam label="CompMax (s)" value={config.compMax} min={0} max={86400} step={100} unit="s" onChange={v => updateCfg({ compMax: v })} />
           <SliderParam label="CompMin (s)" value={config.compMin} min={0} max={60} step={1} unit="s" onChange={v => updateCfg({ compMin: v })} />
           <div className="flex items-center gap-3 text-xs mt-1">
-            <label className="flex items-center gap-1.5 text-slate-400">
+            <label className="flex items-center gap-1.5" style={{ color: 'var(--color-body)' }}>
               <input
                 type="checkbox"
                 checked={config.step === 1}
                 onChange={e => updateCfg({ step: e.target.checked ? 1 : 0 })}
-                className="accent-green-500"
+                style={{ accentColor: '#16a34a' }}
               />
               Step=1
             </label>
-            <label className="flex items-center gap-1.5 text-slate-400">
+            <label className="flex items-center gap-1.5" style={{ color: 'var(--color-body)' }}>
               <input
                 type="checkbox"
                 checked={config.compressing === 1}
                 onChange={e => updateCfg({ compressing: e.target.checked ? 1 : 0 })}
-                className="accent-green-500"
+                style={{ accentColor: '#16a34a' }}
               />
               Compressing
             </label>

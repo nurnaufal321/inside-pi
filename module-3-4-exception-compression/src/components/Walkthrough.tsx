@@ -35,21 +35,19 @@ export default function Walkthrough({ currentStep, onStepChange }: Props) {
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Step indicator */}
       <div className="flex items-center gap-2">
-        <span className="text-xs font-semibold text-blue-400">Step {currentStep + 1} of {STEPS.length}</span>
+        <span className="text-xs font-semibold" style={{ color: 'var(--color-accent)' }}>Step {currentStep + 1} of {STEPS.length}</span>
         <div className="flex gap-1 ml-auto">
           {STEPS.map((_, i) => (
             <button
               key={i}
               onClick={() => onStepChange(i)}
-              className={`w-6 h-6 rounded-full text-xs font-bold transition-all ${
-                i === currentStep
-                  ? 'bg-blue-600 text-white scale-110'
-                  : i < currentStep
-                  ? 'bg-blue-900 text-blue-400'
-                  : 'bg-slate-800 text-slate-500'
-              }`}
+              className="w-6 h-6 rounded-full text-xs font-bold transition-all"
+              style={{
+                backgroundColor: i === currentStep ? 'var(--color-accent)' : i < currentStep ? '#f0ebe6' : 'var(--color-surface)',
+                color: i === currentStep ? 'white' : i < currentStep ? 'var(--color-accent)' : 'var(--color-label)',
+                transform: i === currentStep ? 'scale(1.1)' : 'scale(1)',
+              }}
             >
               {i + 1}
             </button>
@@ -57,39 +55,37 @@ export default function Walkthrough({ currentStep, onStepChange }: Props) {
         </div>
       </div>
 
-      {/* Step content */}
       <div>
-        <h3 className="text-base font-semibold text-slate-100 mb-1">{step.title}</h3>
-        <p className="text-xs text-slate-400 leading-relaxed">{step.description}</p>
+        <h3 className="text-base font-semibold mb-1" style={{ color: 'var(--color-heading)' }}>{step.title}</h3>
+        <p className="text-xs leading-relaxed" style={{ color: 'var(--color-body)' }}>{step.description}</p>
       </div>
 
-      {/* Highlight box */}
-      <div className="bg-blue-950/50 border border-blue-800/50 rounded-lg px-3 py-2">
-        <p className="text-xs text-blue-300 leading-relaxed">
+      <div className="rounded-lg px-3 py-2" style={{ backgroundColor: 'rgba(59, 130, 246, 0.06)', border: '1px solid rgba(59, 130, 246, 0.15)' }}>
+        <p className="text-xs leading-relaxed" style={{ color: '#2563eb' }}>
           <span className="font-semibold">Look for: </span>{step.highlight}
         </p>
       </div>
 
-      {/* PI concept callout */}
-      <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg px-3 py-2">
-        <p className="text-[11px] text-slate-400 leading-relaxed">
-          <span className="font-semibold text-slate-300">PI Concept: </span>{step.piConcept}
+      <div className="rounded-lg px-3 py-2" style={{ backgroundColor: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+        <p className="text-[11px] leading-relaxed" style={{ color: 'var(--color-body)' }}>
+          <span className="font-semibold" style={{ color: 'var(--color-heading)' }}>PI Concept: </span>{step.piConcept}
         </p>
       </div>
 
-      {/* Nav buttons */}
       <div className="flex gap-2 mt-1">
         <button
           onClick={() => onStepChange(Math.max(0, currentStep - 1))}
           disabled={currentStep === 0}
-          className="flex-1 px-3 py-1.5 rounded bg-slate-800 text-slate-300 text-xs hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-body)' }}
         >
           Previous
         </button>
         <button
           onClick={() => onStepChange(Math.min(STEPS.length - 1, currentStep + 1))}
           disabled={currentStep === STEPS.length - 1}
-          className="flex-1 px-3 py-1.5 rounded bg-blue-600 text-white text-xs hover:bg-blue-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          style={{ backgroundColor: 'var(--color-accent)' }}
         >
           Next Step
         </button>

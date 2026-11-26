@@ -15,7 +15,7 @@ interface Props {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  'raw': '#64748b',
+  'raw': '#94a3b8',
   'exc-pass': '#3b82f6',
   'exc-discard': '#ef4444',
   'exc-previous': '#a855f7',
@@ -92,10 +92,8 @@ export default function SVGCanvas({
     ? activeArchived.map((e, i) => `${i === 0 ? 'M' : 'L'}${sx(e.time).toFixed(1)},${sy(e.value).toFixed(1)}`).join(' ')
     : '';
 
-  // Deadband overlay around last reported value (exception stage)
   const lastExcReported = [...activeExc].reverse().find(e => e.status === 'exc-pass' || e.status === 'exc-max-force');
 
-  // Swinging-door corridor overlay
   const showCorridor = currentStep >= 2 && compressionState?.lastArchived && compressionState.currentSnapshot &&
     compressionState.slopeMin > -Infinity && compressionState.slopeMax < Infinity;
 
@@ -132,28 +130,31 @@ export default function SVGCanvas({
       className="w-full h-full"
       style={{ maxHeight: '380px' }}
     >
-      {/* Background */}
-      <rect width={width} height={height} fill="#0f172a" rx={8} />
+      <defs>
+        <filter id="chartShadow" x="-2%" y="-2%" width="104%" height="104%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000" floodOpacity="0.06" />
+        </filter>
+      </defs>
 
-      {/* Grid */}
+      <rect width={width} height={height} fill="#ffffff" rx={8} filter="url(#chartShadow)" />
+      <rect x={PADDING.left} y={PADDING.top} width={plotW} height={plotH} fill="#f8fafc" rx={4} />
+
       {yAxisTicks.map(v => (
         <g key={`y-${v}`}>
-          <line x1={PADDING.left} y1={sy(v)} x2={width - PADDING.right} y2={sy(v)} stroke="#1e293b" strokeWidth={1} />
-          <text x={PADDING.left - 8} y={sy(v) + 4} textAnchor="end" fill="#475569" fontSize={10}>{v.toFixed(1)}</text>
+          <line x1={PADDING.left} y1={sy(v)} x2={width - PADDING.right} y2={sy(v)} stroke="#e2e6e9" strokeWidth={1} />
+          <text x={PADDING.left - 8} y={sy(v) + 4} textAnchor="end" fill="#7d8590" fontSize={10}>{v.toFixed(1)}</text>
         </g>
       ))}
       {xAxisTicks.map(t => (
         <g key={`x-${t}`}>
-          <line x1={sx(t)} y1={PADDING.top} x2={sx(t)} y2={height - PADDING.bottom} stroke="#1e293b" strokeWidth={1} />
-          <text x={sx(t)} y={height - PADDING.bottom + 16} textAnchor="middle" fill="#475569" fontSize={10}>{t.toFixed(0)}s</text>
+          <line x1={sx(t)} y1={PADDING.top} x2={sx(t)} y2={height - PADDING.bottom} stroke="#e2e6e9" strokeWidth={1} />
+          <text x={sx(t)} y={height - PADDING.bottom + 16} textAnchor="middle" fill="#7d8590" fontSize={10}>{t.toFixed(0)}s</text>
         </g>
       ))}
 
-      {/* Axis labels */}
-      <text x={width / 2} y={height - 4} textAnchor="middle" fill="#64748b" fontSize={11}>Time (seconds)</text>
-      <text x={14} y={height / 2} textAnchor="middle" fill="#64748b" fontSize={11} transform={`rotate(-90 14 ${height / 2})`}>Value (EU)</text>
+      <text x={width / 2} y={height - 4} textAnchor="middle" fill="#596168" fontSize={11}>Time (seconds)</text>
+      <text x={14} y={height / 2} textAnchor="middle" fill="#596168" fontSize={11} transform={`rotate(-90 14 ${height / 2})`}>Value (EU)</text>
 
-      {/* Exception deadband overlay */}
       {currentStep <= 1 && lastExcReported && (
         <rect
           x={PADDING.left}
@@ -161,17 +162,16 @@ export default function SVGCanvas({
           width={plotW}
           height={sy(lastExcReported.value - config.excDev) - sy(lastExcReported.value + config.excDev)}
           fill="#3b82f6"
-          fillOpacity={0.08}
+          fillOpacity={0.06}
           stroke="#3b82f6"
-          strokeOpacity={0.3}
+          strokeOpacity={0.2}
           strokeWidth={1}
           strokeDasharray="4 2"
         />
       )}
 
-      {/* Swinging-door corridor */}
       {showCorridor && compressionState?.lastArchived && (
-        <g opacity={0.15}>
+        <g opacity={0.2}>
           <line
             x1={sx(compressionState.lastArchived.time)}
             y1={sy(compressionState.lastArchived.value)}
@@ -193,19 +193,16 @@ export default function SVGCanvas({
         </g>
       )}
 
-      {/* Raw signal path */}
       {rawPath && (
-        <path d={rawPath} fill="none" stroke="#334155" strokeWidth={1.5} />
+        <path d={rawPath} fill="none" stroke="#c0c8d0" strokeWidth={1.5} />
       )}
 
-      {/* Archived path */}
       {archivedPath && currentStep >= 2 && (
-        <path d={archivedPath} fill="none" stroke="#22c55e" strokeWidth={2} strokeOpacity={0.6} />
+        <path d={archivedPath} fill="none" stroke="#22c55e" strokeWidth={2} strokeOpacity={0.7} />
       )}
 
-      {/* Event dots */}
       {renderEvents.map((e, i) => {
-        const color = STATUS_COLORS[e.status] || '#64748b';
+        const color = STATUS_COLORS[e.status] || '#94a3b8';
         const isHovered = hoveredEvent === e;
         const isArchive = e.status.includes('archive') || e.status.includes('pass') || e.status.includes('force') || e.status.includes('previous') || e.status === 'comp-bypass-off';
         const r = isArchive ? 4 : 2.5;
@@ -217,8 +214,8 @@ export default function SVGCanvas({
               cy={sy(e.value)}
               r={isHovered ? r + 2 : r}
               fill={color}
-              fillOpacity={isArchive ? 1 : 0.5}
-              stroke={isHovered ? '#fff' : 'none'}
+              fillOpacity={isArchive ? 1 : 0.6}
+              stroke={isHovered ? '#13171b' : 'none'}
               strokeWidth={1.5}
               className="cursor-pointer"
               onMouseEnter={() => onHoverEvent(e)}
@@ -231,18 +228,19 @@ export default function SVGCanvas({
                   y={sy(e.value) - 50}
                   width={220}
                   height={56}
-                  rx={4}
-                  fill="#1e293b"
-                  stroke="#334155"
+                  rx={6}
+                  fill="#ffffff"
+                  stroke="#e2e6e9"
                   strokeWidth={1}
+                  filter="url(#chartShadow)"
                 />
-                <text x={sx(e.time) + 18} y={sy(e.value) - 34} fill="#e2e8f0" fontSize={10} fontFamily="monospace">
+                <text x={sx(e.time) + 18} y={sy(e.value) - 34} fill="#13171b" fontSize={10} fontFamily="monospace">
                   t={e.time.toFixed(1)}s  val={e.value.toFixed(3)}
                 </text>
                 <text x={sx(e.time) + 18} y={sy(e.value) - 20} fill={color} fontSize={10} fontWeight="bold">
                   {e.status}
                 </text>
-                <text x={sx(e.time) + 18} y={sy(e.value) - 6} fill="#94a3b8" fontSize={9}>
+                <text x={sx(e.time) + 18} y={sy(e.value) - 6} fill="#7d8590" fontSize={9}>
                   {e.reason.length > 38 ? e.reason.slice(0, 38) + '…' : e.reason}
                 </text>
               </g>
@@ -251,7 +249,6 @@ export default function SVGCanvas({
         );
       })}
 
-      {/* Legend */}
       <g transform={`translate(${PADDING.left + 4}, ${PADDING.top + 4})`}>
         {currentStep <= 1 ? (
           <>
@@ -277,7 +274,7 @@ function LegendItem({ y, color, label }: { y: number; color: string; label: stri
   return (
     <g transform={`translate(0, ${y})`}>
       <circle cx={4} cy={0} r={3} fill={color} />
-      <text x={12} y={3} fill="#94a3b8" fontSize={9}>{label}</text>
+      <text x={12} y={3} fill="#596168" fontSize={9}>{label}</text>
     </g>
   );
 }
