@@ -18,7 +18,7 @@ import DocsDrawer from './DocsDrawer';
 const NUM_POINTS = 120;
 const SCAN_INTERVAL = 2;
 
-export default function ModuleCanvas() {
+export default function ModuleCanvas({ onBack }: { onBack?: () => void }) {
   const [config, setConfig] = useState<PIPointConfig>(defaultConfig());
   const [preset, setPreset] = useState<SignalPreset>('noisy-flow');
   const [currentStep, setCurrentStep] = useState(0);
@@ -86,9 +86,14 @@ export default function ModuleCanvas() {
     <div className="flex flex-col h-screen bg-slate-950">
       {/* Header */}
       <header className="flex items-center justify-between px-4 py-2 border-b border-slate-800 bg-slate-950/90 backdrop-blur-sm shrink-0">
-        <div>
-          <h1 className="text-base font-bold text-slate-100">PI Exception & Compression Explorer</h1>
-          <p className="text-[11px] text-slate-500">Module 3 & 4 — Interactive Visual Learning</p>
+        <div className="flex items-center gap-3">
+          {onBack && (
+            <button onClick={onBack} className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs transition-colors">Back</button>
+          )}
+          <div>
+            <h1 className="text-base font-bold text-slate-100">PI Exception & Compression Explorer</h1>
+            <p className="text-[11px] text-slate-500">Module 3 & 4 — Interactive Visual Learning</p>
+          </div>
         </div>
         <StatsBar stats={pipeline.stats} />
       </header>
