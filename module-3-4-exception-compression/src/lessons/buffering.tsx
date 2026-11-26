@@ -31,6 +31,9 @@ const QUEUES = [
   { m: 2, x: 4.4, y: 10.0 },
 ];
 
+/** Layout shared with the Try it simulation. */
+export const BUF = { I, B, Z, MX, BUS, MEMBERS, QUEUES, MEMBER_PILL: { x: -60, y: -92 }, paths: { iToB, trunk, leg, full } };
+
 type MemberState = 'ok' | 'down' | 'catchup' | 'stopped' | 'dismounted' | 'hidden';
 
 function memberState(step: number, m: number): MemberState {
@@ -325,7 +328,7 @@ const lesson: Lesson = {
     { title: 'PI Buffer Subsystem health alerts', url: 'https://docs.aveva.com/bundle/pi-server-s-buf-ha/page/1022106.html', desc: '-bc stop, -bc dismount and how to resume.' },
     { title: 'Send data to select collective members', url: 'https://docs.aveva.com/bundle/pi-server-s-buf-ha/page/1019025.html', desc: 'Mark a member Disallowed.' },
   ],
-  TryIt: lazy(() => import('../components/module6/Module6')),
+  TryIt: lazy(() => import('../components/tryit/buffering')),
 };
 
 export default lesson;

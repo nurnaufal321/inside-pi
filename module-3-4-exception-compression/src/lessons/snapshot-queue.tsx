@@ -34,7 +34,7 @@ function pageLevels(step: number): { levels: number[]; write: number; read: numb
   return { levels: ring.map((_, k) => (k === 2 ? 0.4 : 0)), write: 2, read: 2 };
 }
 
-function QueueRing({ levels, write, read, dim }: { levels: number[]; write: number; read: number; dim?: boolean }) {
+export function QueueRing({ levels, write, read, dim }: { levels: number[]; write: number; read: number; dim?: boolean }) {
   return (
     <g>
       <Slab ax={3.7} ay={3.7} h={TZ} r={14} />
@@ -60,6 +60,9 @@ const TAGS = [
   { id: 'FT-101', x: 0, v: '42.7' },
   { id: 'LIC-310', x: 3, v: '12.0' },
 ];
+
+/** Layout shared with the Try it simulation. */
+export const SNAP = { SRC, TABLE, C, Q, A, OVF, TZ, PAGES, TAGS, paths: { srcToTile, tileToC, cToQ, qToA, ooo, compDrop, toOverflow } };
 
 function Scene({ step }: SceneProps) {
   const { levels, write, read } = pageLevels(step);
@@ -325,7 +328,7 @@ const lesson: Lesson = {
     { title: 'Prevent archive data loss', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1021011.html', desc: 'Keep the event queue off the archive disk.' },
     { title: 'Recover from future times in the snapshot', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1020605.html', desc: 'pisnapss -f and NULL snapshots.' },
   ],
-  TryIt: lazy(() => import('../components/module5/Module5')),
+  TryIt: lazy(() => import('../components/tryit/snapshot-queue')),
 };
 
 export default lesson;
