@@ -325,7 +325,7 @@ export default function Module8({ onBack }: { onBack: () => void }) {
 
         <div>
           <span className="text-xs block mb-1" style={{ color: 'var(--color-label)' }}>Connect As...</span>
-          <div className="flex gap-1">
+          <div className="flex flex-wrap gap-1">
             {(['piadmin', 'PIOperators', 'PIWorld'] as IdentityName[]).map(id => (
               <button key={id} onClick={() => setIdentity(id)}
                 className="px-2 py-1 rounded-lg text-xs transition-colors hover:opacity-80"

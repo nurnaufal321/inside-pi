@@ -32,9 +32,9 @@ const WALKTHROUGH_STEPS = [
   {
     title: 'The Shift',
     description:
-      'When the primary archive fills, an archive shift occurs. A new primary is created. The old primary becomes read-only. Archives cannot have overlapping time ranges.',
+      'When the primary archive fills, an archive shift occurs. A new archive file is created and becomes the primary. The shift time becomes the old primary’s end time; it is now a historical archive.',
     highlight:
-      'When Used% nears 95%, a SHIFT event fires — the blue block turns green and a new blue block appears.',
+      'When the primary fills, a SHIFT event fires — the blue block turns green and a new blue block appears.',
     piConcept:
       'Shifts can be natural (auto when full), scheduled (daily/weekly/monthly at midnight), or forced (piartool -fs).',
   },
@@ -188,7 +188,7 @@ function ArchiveCanvas({
             </text>
             {/* State label */}
             <text x={x + blockW / 2} y={blockY + blockH + 14} textAnchor="middle" fill={fill} fontSize={9} fontWeight="bold">
-              {a.state === 'primary' ? 'PRIMARY' : a.state === 'historical' ? 'READ-ONLY' : 'EMPTY'}
+              {a.state === 'primary' ? 'PRIMARY' : a.state === 'historical' ? 'HISTORICAL' : 'EMPTY'}
             </text>
             {/* Write flag */}
             {a.writeFlag && (
@@ -351,14 +351,14 @@ export default function Module7({ onBack }: { onBack: () => void }) {
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          <span className="w-24 shrink-0" style={{ color: 'var(--color-label)' }}>Data Rate</span>
+          <span className="w-16 shrink-0" style={{ color: 'var(--color-label)' }}>Data Rate</span>
           <input type="range" min={100} max={2000} step={100} value={dataRate}
             onChange={e => setDataRate(Number(e.target.value))}
-            className="flex-1 h-1" style={{ accentColor: 'var(--color-accent)' }} />
+            className="flex-1 min-w-0 h-1" style={{ accentColor: 'var(--color-accent)' }} />
           <span className="w-16 text-right font-mono text-[11px]" style={{ color: 'var(--color-heading)' }}>{dataRate} ev/s</span>
         </div>
 
-        <div className="flex items-center gap-3 text-xs">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
           <span style={{ color: 'var(--color-label)' }}>Archive Type:</span>
           {(['fixed', 'dynamic'] as const).map(t => (
             <label key={t} className="flex items-center gap-1" style={{ color: 'var(--color-body)' }}>
@@ -369,7 +369,7 @@ export default function Module7({ onBack }: { onBack: () => void }) {
           ))}
         </div>
 
-        <div className="flex items-center gap-2 text-xs">
+        <div className="flex flex-wrap items-center gap-2 text-xs">
           <span className="shrink-0" style={{ color: 'var(--color-label)' }}>Shift Schedule:</span>
           <select
             value={shiftSchedule}
