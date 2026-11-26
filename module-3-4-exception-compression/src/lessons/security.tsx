@@ -25,6 +25,9 @@ const idToP: GridPt[][] = [
 ];
 const toWorld: GridPt[] = [[-PAD, GATE_Y, 0], [WORLD[0], GATE_Y, 0], [WORLD[0], WORLD[1] + PAD, 0]];
 
+/** Layout shared with the Try it simulation. */
+export const SEC = { LANE, CLIENT_Y, GATE_Y, ID_Y, P, D, WORLD, Z, SZ, H, PAD, clientToGate, gateToId, idToP, toWorld };
+
 const left = (text: string, icon = false) => ({ x: -(textWidth(text, 10.5) + 20 + (icon ? 15.5 : 0)) / 2 - 48, y: -16 });
 
 function Scene({ step }: SceneProps) {
@@ -339,7 +342,7 @@ const lesson: Lesson = {
     { title: 'Access control for basic Data Archive admin tasks', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1022296.html', desc: 'Which database security table controls which task.' },
     { title: 'Manage service principal names', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1524226.html', desc: 'SPNs for Kerberos authentication.' },
   ],
-  TryIt: lazy(() => import('../components/module8/Module8')),
+  TryIt: lazy(() => import('../components/tryit/security')),
 };
 
 export default lesson;

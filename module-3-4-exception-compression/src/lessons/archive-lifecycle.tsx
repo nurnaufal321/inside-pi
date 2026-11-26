@@ -13,6 +13,9 @@ const RX = 30;
 
 const toArchive = (y: number): GridPt[] => [[AX - 2.2, y, 0], [6.9, y, 0], [6.6, y, Z], [X + 1.8, y, Z]];
 const toPiarch = (y: number): GridPt[] => [[QX - 1.9, y, 0], [AX + 2.2, y, 0]];
+/** Layout shared with the Try it simulation. */
+export const ARCH = { X, SLOT, AX, QX, Z, RX, toArchive, toPiarch };
+
 const backfill: GridPt[] = [[AX, -2.2, 0], [AX, SLOT[2], 0], [6.9, SLOT[2], 0], [6.6, SLOT[2], Z], [X + 1.8, SLOT[2], Z]];
 
 type Arc = { label: string; top?: { text: string; tone?: 'good' | 'bad' | 'warn' | 'violet' | 'dark' }; level: number; h?: number; tint?: 'purple' | 'blue' | 'grey'; glow?: string; show?: boolean };
@@ -300,7 +303,7 @@ const lesson: Lesson = {
     { title: 'Automatic archive creation', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1018982.html', desc: 'What happens when the disk fills.' },
     { title: 'Force an archive shift', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1018919.html', desc: 'Forcing a shift from PI SMT.' },
   ],
-  TryIt: lazy(() => import('../components/module7/Module7')),
+  TryIt: lazy(() => import('../components/tryit/archive-lifecycle')),
 };
 
 export default lesson;
