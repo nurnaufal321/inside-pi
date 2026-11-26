@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+:root {
+  --color-pi-blue: #3b82f6;
+  --color-pi-green: #22c55e;
+  --color-pi-orange: #f97316;
+  --color-pi-red: #ef4444;
+  --color-pi-yellow: #eab308;
+  --color-pi-purple: #a855f7;
+  --color-pi-cyan: #06b6d4;
+  --color-pi-muted: #64748b;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
