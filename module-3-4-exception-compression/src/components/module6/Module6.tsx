@@ -138,14 +138,12 @@ export default function Module6({ onBack }: { onBack: () => void }) {
         };
       }));
 
-      // Add flowing dots for connected servers
       connectedServers.forEach(s => {
         if (Math.random() < 0.5) {
           setDotPositions(prev => [...prev.slice(-30), { id: dotIdRef.current++, serverId: s.id, progress: 0 }]);
         }
       });
 
-      // Advance dots
       setDotPositions(prev => prev
         .map(d => ({ ...d, progress: d.progress + 0.08 }))
         .filter(d => d.progress < 1)
@@ -165,34 +163,40 @@ export default function Module6({ onBack }: { onBack: () => void }) {
   ];
 
   const statsBar = (
-    <div className="flex items-center gap-4 px-3 py-2 bg-slate-900/80 rounded-lg border border-slate-800">
-      <StatCell label="Recv/s" value={bufferStats.eventsReceivedPerSec} color="text-slate-300" />
+    <div className="flex items-center gap-4 px-3 py-2 rounded-lg" style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-card-border)', backdropFilter: 'blur(12px)' }}>
+      <StatCell label="Recv/s" value={bufferStats.eventsReceivedPerSec} color="var(--color-heading)" />
       <Div />
-      <StatCell label="Sent/s" value={bufferStats.eventsSentPerSec} color="text-blue-400" />
+      <StatCell label="Sent/s" value={bufferStats.eventsSentPerSec} color="#2563eb" />
       <Div />
-      <StatCell label="Queued" value={bufferStats.queuedEvents} color={bufferStats.queuedEvents > 100 ? 'text-red-400' : 'text-slate-300'} />
+      <StatCell label="Queued" value={bufferStats.queuedEvents} color={bufferStats.queuedEvents > 100 ? '#ef4444' : 'var(--color-heading)'} />
       <Div />
-      <StatCell label="Files" value={bufferStats.queueFileCount} color="text-orange-400" />
+      <StatCell label="Files" value={bufferStats.queueFileCount} color="#ea580c" />
       <Div />
       <div className="text-center">
         <div className="text-sm font-bold font-mono" style={{ color: healthColor }}>{healthLabel}</div>
-        <div className="text-[10px] text-slate-500">Health</div>
+        <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Health</div>
       </div>
     </div>
   );
 
   const canvas = (
     <svg viewBox="0 0 700 380" className="w-full h-full" style={{ maxHeight: '380px' }}>
-      <rect width={700} height={380} fill="#0f172a" rx={8} />
+      <defs>
+        <filter id="canvasShadow" x="-2%" y="-2%" width="104%" height="104%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000" floodOpacity="0.06" />
+        </filter>
+      </defs>
+
+      <rect width={700} height={380} fill="#ffffff" rx={8} filter="url(#canvasShadow)" />
 
       {/* Interface Node */}
       <g>
-        <rect x={20} y={130} width={130} height={120} rx={8} fill="#1e293b" stroke="#334155" strokeWidth={1.5} />
-        <text x={85} y={155} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">PI Interface</text>
-        <text x={85} y={170} textAnchor="middle" fill="#64748b" fontSize={9}>Scan Rate: {dataRate}/s</text>
+        <rect x={20} y={130} width={130} height={120} rx={8} fill="#f0f2f5" stroke="#d1d5db" strokeWidth={1.5} />
+        <text x={85} y={155} textAnchor="middle" fill="#13171b" fontSize={11} fontWeight="bold">PI Interface</text>
+        <text x={85} y={170} textAnchor="middle" fill="#7d8590" fontSize={9}>Scan Rate: {dataRate}/s</text>
 
         {/* Disk Queue Stack */}
-        <text x={85} y={192} textAnchor="middle" fill="#94a3b8" fontSize={9} fontWeight="bold">pibufss queue</text>
+        <text x={85} y={192} textAnchor="middle" fill="#596168" fontSize={9} fontWeight="bold">pibufss queue</text>
         {Array.from({ length: Math.min(5, Math.ceil(bufferStats.queueFileCount)) }).map((_, i) => (
           <rect
             key={i}
@@ -202,48 +206,47 @@ export default function Module6({ onBack }: { onBack: () => void }) {
             height={7}
             rx={1}
             fill={bufferStats.queuedEvents > MAX_QUEUE * 0.5 ? '#f97316' : '#3b82f6'}
-            fillOpacity={0.5 + i * 0.1}
-            stroke={bufferStats.queuedEvents > MAX_QUEUE * 0.5 ? '#92400e' : '#1d4ed8'}
+            fillOpacity={0.3 + i * 0.1}
+            stroke={bufferStats.queuedEvents > MAX_QUEUE * 0.5 ? '#fb923c' : '#60a5fa'}
             strokeWidth={0.5}
           />
         ))}
-        <text x={85} y={244} textAnchor="middle" fill="#94a3b8" fontSize={8} fontFamily="monospace">
+        <text x={85} y={244} textAnchor="middle" fill="#596168" fontSize={8} fontFamily="monospace">
           {bufferStats.queuedEvents} events
         </text>
       </g>
 
       {/* Health Traffic Light */}
       <g>
-        <rect x={30} y={22} width={40} height={90} rx={6} fill="#020617" stroke="#334155" strokeWidth={1} />
-        <circle cx={50} cy={40} r={10} fill={bufferStats.health >= 2 ? '#ef4444' : '#1e293b'} stroke="#334155" strokeWidth={1} />
-        <circle cx={50} cy={65} r={10} fill={bufferStats.health === 1 ? '#eab308' : '#1e293b'} stroke="#334155" strokeWidth={1} />
-        <circle cx={50} cy={90} r={10} fill={bufferStats.health === 0 ? '#22c55e' : '#1e293b'} stroke="#334155" strokeWidth={1} />
-        <text x={50} y={120} textAnchor="middle" fill="#64748b" fontSize={8}>Health</text>
+        <rect x={30} y={22} width={40} height={90} rx={6} fill="#f8f9fa" stroke="#d1d5db" strokeWidth={1} />
+        <circle cx={50} cy={40} r={10} fill={bufferStats.health >= 2 ? '#ef4444' : '#f0f2f5'} stroke="#d1d5db" strokeWidth={1} />
+        <circle cx={50} cy={65} r={10} fill={bufferStats.health === 1 ? '#eab308' : '#f0f2f5'} stroke="#d1d5db" strokeWidth={1} />
+        <circle cx={50} cy={90} r={10} fill={bufferStats.health === 0 ? '#22c55e' : '#f0f2f5'} stroke="#d1d5db" strokeWidth={1} />
+        <text x={50} y={120} textAnchor="middle" fill="#7d8590" fontSize={8}>Health</text>
       </g>
 
       {/* Capacity Meter */}
       <g>
-        <text x={115} y={35} fill="#64748b" fontSize={8}>Buffer Capacity</text>
-        <rect x={115} y={40} width={35} height={70} rx={3} fill="#020617" stroke="#334155" strokeWidth={1} />
+        <text x={115} y={35} fill="#7d8590" fontSize={8}>Buffer Capacity</text>
+        <rect x={115} y={40} width={35} height={70} rx={3} fill="#f8f9fa" stroke="#d1d5db" strokeWidth={1} />
         {(() => {
           const pct = Math.min(1, bufferStats.capacitySeconds / 3600);
           const h = pct * 65;
           return <rect x={117} y={42 + 65 - h} width={31} height={h} rx={2} fill={pct < 0.2 ? '#ef4444' : pct < 0.5 ? '#eab308' : '#22c55e'} opacity={0.7} />;
         })()}
-        <text x={132} y={120} textAnchor="middle" fill="#94a3b8" fontSize={8} fontFamily="monospace">{Math.floor(bufferStats.capacitySeconds / 60)}m</text>
+        <text x={132} y={120} textAnchor="middle" fill="#596168" fontSize={8} fontFamily="monospace">{Math.floor(bufferStats.capacitySeconds / 60)}m</text>
       </g>
 
       {/* Network Cloud */}
-      <ellipse cx={330} cy={190} rx={70} ry={40} fill="none" stroke="#334155" strokeWidth={1.5} strokeDasharray="4 2" />
-      <text x={330} y={195} textAnchor="middle" fill="#475569" fontSize={10}>Network</text>
+      <ellipse cx={330} cy={190} rx={70} ry={40} fill="none" stroke="#d1d5db" strokeWidth={1.5} strokeDasharray="4 2" />
+      <text x={330} y={195} textAnchor="middle" fill="#9ca3af" fontSize={10}>Network</text>
 
       {/* Connection Lines + Servers */}
       {servers.map((server, i) => {
         const sp = serverPositions[i];
         const lineColor = server.connected ? '#22c55e' : '#ef4444';
-        const serverFill = server.oooProcessing ? '#f97316' : '#1e293b';
+        const serverFill = server.oooProcessing ? 'rgba(249, 115, 22, 0.1)' : '#f0f2f5';
 
-        // Bezier from interface to server
         const startX = 150;
         const startY = 190;
         const endX = sp.x;
@@ -277,12 +280,12 @@ export default function Module6({ onBack }: { onBack: () => void }) {
               })}
 
             {/* Server box */}
-            <rect x={sp.x} y={sp.y} width={140} height={60} rx={6} fill={serverFill} stroke={server.connected ? '#334155' : '#7f1d1d'} strokeWidth={1.5} />
-            <text x={sp.x + 10} y={sp.y + 18} fill="#e2e8f0" fontSize={9} fontWeight="bold">{server.name}</text>
-            <text x={sp.x + 10} y={sp.y + 32} fill="#64748b" fontSize={8} fontFamily="monospace">Events: {server.eventsReceived}</text>
+            <rect x={sp.x} y={sp.y} width={140} height={60} rx={6} fill={serverFill} stroke={server.connected ? '#d1d5db' : '#fca5a5'} strokeWidth={1.5} />
+            <text x={sp.x + 10} y={sp.y + 18} fill="#13171b" fontSize={9} fontWeight="bold">{server.name}</text>
+            <text x={sp.x + 10} y={sp.y + 32} fill="#7d8590" fontSize={8} fontFamily="monospace">Events: {server.eventsReceived}</text>
 
             {/* Archive fill bar */}
-            <rect x={sp.x + 10} y={sp.y + 38} width={120} height={5} rx={2} fill="#0f172a" />
+            <rect x={sp.x + 10} y={sp.y + 38} width={120} height={5} rx={2} fill="#e8ebee" />
             <rect x={sp.x + 10} y={sp.y + 38} width={server.archiveLevel * 1.2} height={5} rx={2} fill="#3b82f6" opacity={0.6} />
 
             {server.oooProcessing && (
@@ -302,19 +305,19 @@ export default function Module6({ onBack }: { onBack: () => void }) {
     <div className="p-3 flex flex-col gap-4 flex-1">
       <WalkthroughBase steps={STEPS} currentStep={step} onStepChange={setStep} />
 
-      <div className="border-t border-slate-800 pt-3">
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Connection Controls</h3>
+      <div className="pt-3" style={{ borderTop: '1px solid var(--color-card-border)' }}>
+        <h3 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: 'var(--color-label)' }}>Connection Controls</h3>
         <div className="space-y-1.5 mb-3">
           {servers.map(s => (
             <div key={s.id} className="flex items-center justify-between">
-              <span className="text-xs text-slate-400">{s.name}</span>
+              <span className="text-xs" style={{ color: 'var(--color-label)' }}>{s.name}</span>
               <button
                 onClick={() => toggleServer(s.id)}
-                className={`px-2 py-0.5 rounded text-[10px] font-semibold transition-colors ${
-                  s.connected
-                    ? 'bg-green-900/50 text-green-400 hover:bg-red-900/50 hover:text-red-400'
-                    : 'bg-red-900/50 text-red-400 hover:bg-green-900/50 hover:text-green-400'
-                }`}
+                className="px-2 py-0.5 rounded text-[10px] font-semibold transition-colors hover:opacity-80"
+                style={s.connected
+                  ? { backgroundColor: 'rgba(34, 197, 94, 0.08)', color: '#16a34a' }
+                  : { backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#dc2626' }
+                }
               >
                 {s.connected ? 'Drop' : 'Restore'}
               </button>
@@ -323,21 +326,21 @@ export default function Module6({ onBack }: { onBack: () => void }) {
         </div>
 
         <div className="flex flex-wrap gap-1.5 mb-3">
-          <button onClick={dropAll} className="px-2.5 py-1.5 rounded bg-red-900/50 hover:bg-red-800/50 text-red-300 text-xs border border-red-800/50 transition-colors">
+          <button onClick={dropAll} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#dc2626', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
             Drop ALL
           </button>
-          <button onClick={restoreAll} className="px-2.5 py-1.5 rounded bg-green-900/50 hover:bg-green-800/50 text-green-300 text-xs border border-green-800/50 transition-colors">
+          <button onClick={restoreAll} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'rgba(34, 197, 94, 0.08)', color: '#16a34a', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
             Restore ALL
           </button>
-          <button onClick={() => setIsRunning(r => !r)} className="px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition-colors">
+          <button onClick={() => setIsRunning(r => !r)} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-heading)' }}>
             {isRunning ? 'Pause' : 'Resume'}
           </button>
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          <span className="w-24 text-slate-400 shrink-0">Data Rate</span>
-          <input type="range" min={1} max={50} step={1} value={dataRate} onChange={e => setDataRate(Number(e.target.value))} className="flex-1 h-1 accent-blue-500" />
-          <span className="w-14 text-right text-slate-300 font-mono text-[11px]">{dataRate}/s</span>
+          <span className="w-24 shrink-0" style={{ color: 'var(--color-label)' }}>Data Rate</span>
+          <input type="range" min={1} max={50} step={1} value={dataRate} onChange={e => setDataRate(Number(e.target.value))} className="flex-1 h-1" style={{ accentColor: 'var(--color-accent)' }} />
+          <span className="w-14 text-right font-mono text-[11px]" style={{ color: 'var(--color-heading)' }}>{dataRate}/s</span>
         </div>
       </div>
 
@@ -362,12 +365,12 @@ export default function Module6({ onBack }: { onBack: () => void }) {
 function StatCell({ label, value, color }: { label: string; value: number | string; color: string }) {
   return (
     <div className="text-center">
-      <div className={`text-sm font-bold font-mono ${color}`}>{value}</div>
-      <div className="text-[10px] text-slate-500">{label}</div>
+      <div className="text-sm font-bold font-mono" style={{ color }}>{value}</div>
+      <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>{label}</div>
     </div>
   );
 }
 
 function Div() {
-  return <div className="w-px h-6 bg-slate-700" />;
+  return <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />;
 }
