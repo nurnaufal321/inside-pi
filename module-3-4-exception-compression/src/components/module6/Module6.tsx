@@ -42,9 +42,9 @@ const STEPS: WalkthroughStep[] = [
   },
   {
     title: 'Recovery Burst',
-    description: 'A long-disconnected server reconnects. All queued events flood to it at once. That server shows OOO processing because the events have older timestamps than its current snapshot.',
-    highlight: 'Reconnected server flashes orange during burst. Its "OOO" badge appears. Watch the queued events counter drop rapidly.',
-    piConcept: 'When a server reconnects, all queued events are forwarded. These events may arrive with timestamps older than that server\'s current snapshots, causing out-of-order processing — no compression, straight to archive.',
+    description: 'A long-disconnected server reconnects. The buffer sends that member everything it queued while it was away, so it receives a burst of events while it catches up.',
+    highlight: 'The reconnected server flashes orange while it catches up. Watch the queued events counter drop rapidly.',
+    piConcept: 'When a server reconnects, the buffer forwards every event it held for that member, so no data is lost — it just arrives late.',
   },
 ];
 
@@ -289,7 +289,7 @@ export default function Module6({ onBack }: { onBack: () => void }) {
             <rect x={sp.x + 10} y={sp.y + 38} width={server.archiveLevel * 1.2} height={5} rx={2} fill="#2f86ce" opacity={0.6} />
 
             {server.oooProcessing && (
-              <text x={sp.x + 100} y={sp.y + 55} fill="#e8834d" fontSize={8} fontWeight="bold">OOO</text>
+              <text x={sp.x + 100} y={sp.y + 55} fill="#e8834d" fontSize={8} fontWeight="bold">CATCH-UP</text>
             )}
 
             {!server.connected && (
