@@ -17,6 +17,9 @@ const iToT2 = viaX(I, T2, 0, 2.4, 1.9);
 const iToT3: GridPt[] = [[I[0] + 2.4, I[1] + 0.5, 0], [T3[0], I[1] + 0.5, 0], [T3[0], T3[1] + 1.9, 0]];
 const setToT = viaY(Z, T, 0, 2.2, 2.4);
 
+/** Layout shared with the Try it simulation. */
+export const TAG_LAYOUT = { T, I, Z, iToT };
+
 const TYPES: { name: string; tint: Tint }[] = [
   { name: 'float16', tint: 'blue' }, { name: 'float32', tint: 'blue' }, { name: 'float64', tint: 'blue' },
   { name: 'int16', tint: 'green' }, { name: 'int32', tint: 'green' }, { name: 'digital', tint: 'purple' },
@@ -356,7 +359,7 @@ const lesson: Lesson = {
     { title: 'Create digital points', url: 'https://docs.aveva.com/bundle/pi-server-f-da-smt/page/1019072.html', desc: 'DigitalSet and creating the state set first.' },
     { title: 'PointSource', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1021244.html', desc: 'How an interface finds its points.' },
   ],
-  TryIt: lazy(() => import('../components/module1/Module1')),
+  TryIt: lazy(() => import('../components/tryit/tag-anatomy')),
 };
 
 export default lesson;

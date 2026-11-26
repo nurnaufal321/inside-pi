@@ -100,6 +100,9 @@ const iToDeck: GridPt[] = [[0, I[1] - 2.4, 0], [0, Y0 + 1.6, 0]];
 const deckToP: GridPt[] = [[0, colY(9) - 1.6, 0], [0, P[1] + 2.4, 0]];
 const bypass: GridPt[] = [[2.4, I[1], 0], [4.6, I[1], 0], [4.6, P[1], 0], [2.4, P[1], 0]];
 
+/** Layout shared with the Try it simulation. */
+export const EXC_LAYOUT = { H, GAP, Y0, I, P, iToDeck, deckToP };
+
 function Scene({ step }: SceneProps) {
   const exc = step <= 3;
   const series = exc ? RAW : COMP;
@@ -373,7 +376,7 @@ const lesson: Lesson = {
     { title: 'Compression testing', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1021696.html', desc: 'Swinging door, narrowing slopes, bypasses and Step.' },
     { title: 'CompDev, CompDevPercent, CompMax, and CompMin', url: 'https://docs.aveva.com/bundle/pi-server-s-da-admin/page/1022865.html', desc: 'Compression attributes, and what CompMax does not do.' },
   ],
-  TryIt: lazy(() => import('../components/ModuleCanvas')),
+  TryIt: lazy(() => import('../components/tryit/exception-compression')),
 };
 
 export default lesson;
