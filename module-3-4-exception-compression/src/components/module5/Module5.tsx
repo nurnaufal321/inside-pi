@@ -182,16 +182,16 @@ export default function Module5({ onBack }: { onBack: () => void }) {
     <div className="flex items-center gap-4 px-3 py-2 rounded-lg" style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-card-border)', backdropFilter: 'blur(12px)' }}>
       <StatCell label="Received" value={stats.totalReceived} color="var(--color-heading)" />
       <Div />
-      <StatCell label="OOO Events" value={stats.oooCount} color="#ef4444" />
+      <StatCell label="OOO Events" value={stats.oooCount} color="var(--red)" />
       <Div />
-      <StatCell label="Queue" value={stats.queueEvents} color={stats.queueEvents > QUEUE_CAPACITY ? '#ef4444' : '#2563eb'} />
+      <StatCell label="Queue" value={stats.queueEvents} color={stats.queueEvents > QUEUE_CAPACITY ? 'var(--red)' : '#1f63a0'} />
       <Div />
-      <StatCell label="Overflow" value={overflowQueues} color={overflowQueues > 0 ? '#ea580c' : 'var(--color-label)'} />
+      <StatCell label="Overflow" value={overflowQueues} color={overflowQueues > 0 ? '#b8602f' : 'var(--color-label)'} />
       <Div />
       <StatCell
         label="Comp. Ratio"
         value={stats.totalReceived > 0 ? `${((stats.compressed / stats.totalReceived) * 100).toFixed(0)}%` : '0%'}
-        color={futureSnapshot ? '#ef4444' : '#16a34a'}
+        color={futureSnapshot ? 'var(--red)' : 'var(--green-ink)'}
       />
     </div>
   );
@@ -203,57 +203,57 @@ export default function Module5({ onBack }: { onBack: () => void }) {
           <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000" floodOpacity="0.06" />
         </filter>
         <marker id="arrowRed" markerWidth={6} markerHeight={6} refX={5} refY={3} orient="auto">
-          <path d="M0,0 L6,3 L0,6" fill="#ef4444" />
+          <path d="M0,0 L6,3 L0,6" fill="var(--red)" />
         </marker>
         <marker id="arrowBlue" markerWidth={6} markerHeight={6} refX={5} refY={3} orient="auto">
-          <path d="M0,0 L6,3 L0,6" fill="#3b82f6" />
+          <path d="M0,0 L6,3 L0,6" fill="#2f86ce" />
         </marker>
         <marker id="arrowGreen" markerWidth={6} markerHeight={6} refX={5} refY={3} orient="auto">
-          <path d="M0,0 L6,3 L0,6" fill="#22c55e" />
+          <path d="M0,0 L6,3 L0,6" fill="#5fae57" />
         </marker>
       </defs>
 
-      <rect width={700} height={380} fill="#ffffff" rx={8} filter="url(#canvasShadow)" />
+      <rect width={700} height={380} fill="var(--field)" rx={8} filter="url(#canvasShadow)" />
 
       {/* Top: Snapshot Table */}
-      <text x={20} y={22} fill="#596168" fontSize={11} fontWeight="bold">SNAPSHOT TABLE (pisnapss)</text>
+      <text x={20} y={22} fill="var(--ink-2)" fontSize={11} fontWeight="bold">SNAPSHOT TABLE (pisnapss)</text>
       {snapshots.map((snap, i) => {
         const x = 20 + i * 165;
-        const fillColor = snap.flash === 'green' ? '#22c55e' : snap.flash === 'red' ? '#ef4444' : '#f0f2f5';
+        const fillColor = snap.flash === 'green' ? '#5fae57' : snap.flash === 'red' ? 'var(--red)' : 'var(--card-2)';
         return (
           <g key={snap.tag}>
-            <rect x={x} y={32} width={155} height={50} rx={4} fill={fillColor} fillOpacity={snap.flash !== 'none' ? 0.15 : 1} stroke={snap.flash !== 'none' ? fillColor : '#d1d5db'} strokeWidth={snap.flash !== 'none' ? 2 : 1} />
-            <text x={x + 8} y={48} fill="#13171b" fontSize={10} fontWeight="bold">{snap.tag}</text>
-            <text x={x + 8} y={62} fill="#596168" fontSize={9} fontFamily="monospace">val={snap.value.toFixed(1)}</text>
-            <text x={x + 85} y={62} fill="#7d8590" fontSize={9} fontFamily="monospace">t={snap.timestamp.toFixed(0)}s</text>
+            <rect x={x} y={32} width={155} height={50} rx={4} fill={fillColor} fillOpacity={snap.flash !== 'none' ? 0.15 : 1} stroke={snap.flash !== 'none' ? fillColor : 'var(--line-strong)'} strokeWidth={snap.flash !== 'none' ? 2 : 1} />
+            <text x={x + 8} y={48} fill="var(--ink)" fontSize={10} fontWeight="bold">{snap.tag}</text>
+            <text x={x + 8} y={62} fill="var(--ink-2)" fontSize={9} fontFamily="monospace">val={snap.value.toFixed(1)}</text>
+            <text x={x + 85} y={62} fill="var(--muted)" fontSize={9} fontFamily="monospace">t={snap.timestamp.toFixed(0)}s</text>
             {futureSnapshot && (
-              <text x={x + 8} y={76} fill="#eab308" fontSize={8}>FUTURE</text>
+              <text x={x + 8} y={76} fill="#e3ae3c" fontSize={8}>FUTURE</text>
             )}
           </g>
         );
       })}
 
       {/* Incoming event arrow */}
-      <line x1={0} y1={57} x2={18} y2={57} stroke="#3b82f6" strokeWidth={2} markerEnd="url(#arrowBlue)" />
+      <line x1={0} y1={57} x2={18} y2={57} stroke="#2f86ce" strokeWidth={2} markerEnd="url(#arrowBlue)" />
 
       {/* OOO path label */}
-      <text x={350} y={105} fill="#ef4444" fontSize={9} textAnchor="middle" fontWeight="bold">OOO BYPASS</text>
-      <path d="M350,110 L350,145" stroke="#ef4444" strokeWidth={1.5} strokeDasharray="4 2" markerEnd="url(#arrowRed)" />
+      <text x={350} y={105} fill="var(--red)" fontSize={9} textAnchor="middle" fontWeight="bold">OOO BYPASS</text>
+      <path d="M350,110 L350,145" stroke="var(--red)" strokeWidth={1.5} strokeDasharray="4 2" markerEnd="url(#arrowRed)" />
 
       {/* Normal path: Snapshot → Compression → Event Queue */}
-      <text x={350} y={125} fill="#22c55e" fontSize={8} textAnchor="middle">compression</text>
-      <path d="M350,128 Q350,140 350,145" stroke="#22c55e" strokeWidth={1} strokeDasharray="3 2" />
+      <text x={350} y={125} fill="#5fae57" fontSize={8} textAnchor="middle">compression</text>
+      <path d="M350,128 Q350,140 350,145" stroke="#5fae57" strokeWidth={1} strokeDasharray="3 2" />
 
       {/* Animated OOO dots */}
       {recentOOO.map(dot => (
-        <circle key={dot.id} cx={dot.x} cy={dot.y + ((Date.now() - dot.id * 10) % 2000) * 0.04} r={3} fill="#ef4444" opacity={0.8}>
+        <circle key={dot.id} cx={dot.x} cy={dot.y + ((Date.now() - dot.id * 10) % 2000) * 0.04} r={3} fill="var(--red)" opacity={0.8}>
           <animate attributeName="cy" from={dot.y} to={160} dur="0.6s" fill="freeze" />
           <animate attributeName="opacity" from={1} to={0} dur="0.8s" fill="freeze" />
         </circle>
       ))}
 
       {/* Bottom: Event Queue Circular Buffer */}
-      <text x={20} y={165} fill="#596168" fontSize={11} fontWeight="bold">EVENT QUEUE (pimapevq.dat)</text>
+      <text x={20} y={165} fill="var(--ink-2)" fontSize={11} fontWeight="bold">EVENT QUEUE (pimapevq.dat)</text>
 
       {/* Main ring */}
       {(() => {
@@ -265,7 +265,7 @@ export default function Module5({ onBack }: { onBack: () => void }) {
           const y = cy + Math.sin(angle) * r;
           const isFilled = (i < (stats.queueEvents % QUEUE_CAPACITY)) || stats.queueEvents >= QUEUE_CAPACITY;
           segments.push(
-            <circle key={i} cx={x} cy={y} r={5} fill={isFilled ? '#3b82f6' : '#f0f2f5'} stroke="#d1d5db" strokeWidth={1} opacity={isFilled ? 0.8 : 0.5} />
+            <circle key={i} cx={x} cy={y} r={5} fill={isFilled ? '#2f86ce' : 'var(--card-2)'} stroke="var(--line-strong)" strokeWidth={1} opacity={isFilled ? 0.8 : 0.5} />
           );
         }
 
@@ -280,14 +280,14 @@ export default function Module5({ onBack }: { onBack: () => void }) {
           <g>
             {segments}
             {/* Write cursor */}
-            <circle cx={wx} cy={wy} r={7} fill="none" stroke="#3b82f6" strokeWidth={2} />
-            <text x={wx} y={wy + 3} textAnchor="middle" fill="#3b82f6" fontSize={7} fontWeight="bold">W</text>
+            <circle cx={wx} cy={wy} r={7} fill="none" stroke="#2f86ce" strokeWidth={2} />
+            <text x={wx} y={wy + 3} textAnchor="middle" fill="#2f86ce" fontSize={7} fontWeight="bold">W</text>
             {/* Read cursor */}
-            <circle cx={rx} cy={ry} r={7} fill="none" stroke="#22c55e" strokeWidth={2} />
-            <text x={rx} y={ry + 3} textAnchor="middle" fill="#22c55e" fontSize={7} fontWeight="bold">R</text>
+            <circle cx={rx} cy={ry} r={7} fill="none" stroke="#5fae57" strokeWidth={2} />
+            <text x={rx} y={ry + 3} textAnchor="middle" fill="#5fae57" fontSize={7} fontWeight="bold">R</text>
             {/* Center label */}
-            <text x={cx} y={cy - 5} textAnchor="middle" fill="#7d8590" fontSize={10}>Primary Queue</text>
-            <text x={cx} y={cy + 10} textAnchor="middle" fill={queueFill > 0.8 ? '#ef4444' : '#596168'} fontSize={12} fontWeight="bold">{(queueFill * 100).toFixed(0)}%</text>
+            <text x={cx} y={cy - 5} textAnchor="middle" fill="var(--muted)" fontSize={10}>Primary Queue</text>
+            <text x={cx} y={cy + 10} textAnchor="middle" fill={queueFill > 0.8 ? 'var(--red)' : 'var(--ink-2)'} fontSize={12} fontWeight="bold">{(queueFill * 100).toFixed(0)}%</text>
           </g>
         );
       })()}
@@ -300,34 +300,34 @@ export default function Module5({ onBack }: { onBack: () => void }) {
           const angle = (i / 12) * Math.PI * 2 - Math.PI / 2;
           const x = cx + Math.cos(angle) * r;
           const y = cy + Math.sin(angle) * r;
-          segs.push(<circle key={i} cx={x} cy={y} r={3} fill="#f97316" stroke="#fb923c" strokeWidth={0.5} opacity={0.7} />);
+          segs.push(<circle key={i} cx={x} cy={y} r={3} fill="#e8834d" stroke="#e8834d" strokeWidth={0.5} opacity={0.7} />);
         }
         return (
           <g key={qi}>
             {segs}
-            <text x={cx} y={cy + 3} textAnchor="middle" fill="#f97316" fontSize={8} fontWeight="bold">OVF {qi + 1}</text>
+            <text x={cx} y={cy + 3} textAnchor="middle" fill="#e8834d" fontSize={8} fontWeight="bold">OVF {qi + 1}</text>
           </g>
         );
       })}
 
       {/* piartool output */}
       <g>
-        <rect x={420} y={165} width={260} height={80} rx={4} fill="#f8f9fa" stroke="#d1d5db" strokeWidth={1} />
-        <text x={430} y={180} fill="#7d8590" fontSize={9} fontFamily="monospace">$ piartool -qs</text>
-        <text x={430} y={195} fill="#596168" fontSize={9} fontFamily="monospace">Write Page Idx: {writeIdx % QUEUE_CAPACITY}</text>
-        <text x={430} y={208} fill="#596168" fontSize={9} fontFamily="monospace">Read Page Idx:  {readIdx % QUEUE_CAPACITY}</text>
-        <text x={430} y={221} fill={stats.queueEvents > QUEUE_CAPACITY ? '#ef4444' : '#596168'} fontSize={9} fontFamily="monospace">Queue Events:   {stats.queueEvents}</text>
-        <text x={430} y={234} fill={overflowQueues > 0 ? '#f97316' : '#596168'} fontSize={9} fontFamily="monospace">Overflow Queues: {overflowQueues}</text>
+        <rect x={420} y={165} width={260} height={80} rx={4} fill="var(--field)" stroke="var(--line-strong)" strokeWidth={1} />
+        <text x={430} y={180} fill="var(--muted)" fontSize={9} fontFamily="monospace">$ piartool -qs</text>
+        <text x={430} y={195} fill="var(--ink-2)" fontSize={9} fontFamily="monospace">Write Page Idx: {writeIdx % QUEUE_CAPACITY}</text>
+        <text x={430} y={208} fill="var(--ink-2)" fontSize={9} fontFamily="monospace">Read Page Idx:  {readIdx % QUEUE_CAPACITY}</text>
+        <text x={430} y={221} fill={stats.queueEvents > QUEUE_CAPACITY ? 'var(--red)' : 'var(--ink-2)'} fontSize={9} fontFamily="monospace">Queue Events:   {stats.queueEvents}</text>
+        <text x={430} y={234} fill={overflowQueues > 0 ? '#e8834d' : 'var(--ink-2)'} fontSize={9} fontFamily="monospace">Overflow Queues: {overflowQueues}</text>
       </g>
 
       {/* Archive subsystem */}
       <g>
-        <rect x={500} y={280} width={180} height={70} rx={6} fill="#f0f2f5" stroke="#d1d5db" strokeWidth={1} />
-        <text x={510} y={298} fill="#596168" fontSize={10} fontWeight="bold">piarchss</text>
-        <text x={510} y={314} fill="#7d8590" fontSize={9}>Archived: {stats.archived}</text>
-        <rect x={510} y={322} width={160} height={8} rx={2} fill="#e8ebee" />
-        <rect x={510} y={322} width={Math.min(160, (stats.archived / Math.max(1, stats.totalReceived)) * 160)} height={8} rx={2} fill="#22c55e" opacity={0.6} />
-        <text x={510} y={342} fill="#9ca3af" fontSize={8}>Archive fill rate</text>
+        <rect x={500} y={280} width={180} height={70} rx={6} fill="var(--card-2)" stroke="var(--line-strong)" strokeWidth={1} />
+        <text x={510} y={298} fill="var(--ink-2)" fontSize={10} fontWeight="bold">piarchss</text>
+        <text x={510} y={314} fill="var(--muted)" fontSize={9}>Archived: {stats.archived}</text>
+        <rect x={510} y={322} width={160} height={8} rx={2} fill="var(--line-soft)" />
+        <rect x={510} y={322} width={Math.min(160, (stats.archived / Math.max(1, stats.totalReceived)) * 160)} height={8} rx={2} fill="#5fae57" opacity={0.6} />
+        <text x={510} y={342} fill="var(--muted-2)" fontSize={8}>Archive fill rate</text>
       </g>
     </svg>
   );
@@ -339,10 +339,10 @@ export default function Module5({ onBack }: { onBack: () => void }) {
       <div className="pt-3" style={{ borderTop: '1px solid var(--color-card-border)' }}>
         <h3 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: 'var(--color-label)' }}>Controls</h3>
         <div className="flex flex-wrap gap-1.5 mb-3">
-          <button onClick={handleSendOOO} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#dc2626', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+          <button onClick={handleSendOOO} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#c0392b', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
             Send OOO Event
           </button>
-          <button onClick={handleBackfillBurst} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'rgba(249, 115, 22, 0.08)', color: '#ea580c', border: '1px solid rgba(249, 115, 22, 0.2)' }}>
+          <button onClick={handleBackfillBurst} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'rgba(249, 115, 22, 0.08)', color: '#b8602f', border: '1px solid rgba(249, 115, 22, 0.2)' }}>
             Backfill Burst (50)
           </button>
           <button onClick={() => setIsRunning(r => !r)} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-heading)' }}>
@@ -356,13 +356,13 @@ export default function Module5({ onBack }: { onBack: () => void }) {
             if (e.target.checked) {
               setSnapshots(prev => prev.map(s => ({ ...s, timestamp: s.timestamp + 9999 })));
             }
-          }} style={{ accentColor: '#eab308' }} />
+          }} style={{ accentColor: '#e3ae3c' }} />
           Future Snapshot (simulate clock skew)
         </label>
 
         <div className="flex items-center gap-2 text-xs mb-1">
           <span className="w-24 shrink-0" style={{ color: 'var(--color-label)' }}>Archive Speed</span>
-          <input type="range" min={0.1} max={1} step={0.1} value={archiveSpeed} onChange={e => setArchiveSpeed(Number(e.target.value))} className="flex-1 h-1" style={{ accentColor: '#16a34a' }} />
+          <input type="range" min={0.1} max={1} step={0.1} value={archiveSpeed} onChange={e => setArchiveSpeed(Number(e.target.value))} className="flex-1 h-1" style={{ accentColor: 'var(--green-ink)' }} />
           <span className="w-10 text-right font-mono text-[11px]" style={{ color: 'var(--color-heading)' }}>{(archiveSpeed * 100).toFixed(0)}%</span>
         </div>
       </div>

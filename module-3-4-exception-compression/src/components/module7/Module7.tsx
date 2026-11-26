@@ -102,16 +102,16 @@ function ArchiveCanvas({
   const blockW = Math.min(120, (plotW - gap * (totalBlocks - 1)) / totalBlocks);
 
   function blockColor(a: ArchiveFile) {
-    if (a.state === 'primary') return '#3b82f6';
-    if (a.state === 'historical') return '#22c55e';
-    if (a.state === 'unused') return '#d1d5db';
-    return '#9ca3af';
+    if (a.state === 'primary') return '#2f86ce';
+    if (a.state === 'historical') return '#5fae57';
+    if (a.state === 'unused') return 'var(--line-strong)';
+    return 'var(--muted-2)';
   }
 
   function blockStroke(a: ArchiveFile) {
-    if (a.state === 'primary') return '#60a5fa';
-    if (a.state === 'historical') return '#4ade80';
-    return '#d1d5db';
+    if (a.state === 'primary') return '#2f86ce';
+    if (a.state === 'historical') return '#5fae57';
+    return 'var(--line-strong)';
   }
 
   return (
@@ -121,25 +121,25 @@ function ArchiveCanvas({
           <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000" floodOpacity="0.06" />
         </filter>
       </defs>
-      <rect width={W} height={H} fill="#ffffff" rx={8} filter="url(#canvasShadow)" />
+      <rect width={W} height={H} fill="var(--field)" rx={8} filter="url(#canvasShadow)" />
 
       {/* Title */}
-      <text x={W / 2} y={28} textAnchor="middle" fill="#596168" fontSize={12} fontWeight="bold">
+      <text x={W / 2} y={28} textAnchor="middle" fill="var(--ink-2)" fontSize={12} fontWeight="bold">
         Archive File Timeline
       </text>
 
       {/* Legend */}
       <g transform={`translate(${PAD.left}, 42)`}>
-        <circle cx={0} cy={0} r={4} fill="#3b82f6" />
-        <text x={8} y={3} fill="#596168" fontSize={9}>Primary</text>
-        <circle cx={70} cy={0} r={4} fill="#22c55e" />
-        <text x={78} y={3} fill="#596168" fontSize={9}>Historical</text>
-        <circle cx={150} cy={0} r={4} fill="#d1d5db" />
-        <text x={158} y={3} fill="#596168" fontSize={9}>Unused</text>
+        <circle cx={0} cy={0} r={4} fill="#2f86ce" />
+        <text x={8} y={3} fill="var(--ink-2)" fontSize={9}>Primary</text>
+        <circle cx={70} cy={0} r={4} fill="#5fae57" />
+        <text x={78} y={3} fill="var(--ink-2)" fontSize={9}>Historical</text>
+        <circle cx={150} cy={0} r={4} fill="var(--line-strong)" />
+        <text x={158} y={3} fill="var(--ink-2)" fontSize={9}>Unused</text>
         {archiveType === 'dynamic' && (
           <>
-            <circle cx={220} cy={0} r={4} fill="#f97316" />
-            <text x={228} y={3} fill="#596168" fontSize={9}>Dynamic</text>
+            <circle cx={220} cy={0} r={4} fill="#e8834d" />
+            <text x={228} y={3} fill="var(--ink-2)" fontSize={9}>Dynamic</text>
           </>
         )}
       </g>
@@ -147,8 +147,8 @@ function ArchiveCanvas({
       {/* Archive blocks */}
       {archives.map((a, i) => {
         const x = PAD.left + i * (blockW + gap);
-        const fill = a.type === 'dynamic' && a.state === 'primary' ? '#f97316' : blockColor(a);
-        const stroke = a.type === 'dynamic' && a.state === 'primary' ? '#fb923c' : blockStroke(a);
+        const fill = a.type === 'dynamic' && a.state === 'primary' ? '#e8834d' : blockColor(a);
+        const stroke = a.type === 'dynamic' && a.state === 'primary' ? '#e8834d' : blockStroke(a);
         const fillH = (a.usedPct / 100) * blockH;
         const isPrimary = a.state === 'primary';
 
@@ -157,7 +157,7 @@ function ArchiveCanvas({
             {/* Block outline */}
             <rect
               x={x} y={blockY} width={blockW} height={blockH}
-              fill="#f8fafc" stroke={stroke} strokeWidth={isPrimary ? 2 : 1} rx={4}
+              fill="var(--stage)" stroke={stroke} strokeWidth={isPrimary ? 2 : 1} rx={4}
             />
             {/* Fill level */}
             <rect
@@ -168,22 +168,22 @@ function ArchiveCanvas({
             {isPrimary && currentStep <= 1 && (
               <rect
                 x={x - 2} y={blockY - 2} width={blockW + 4} height={blockH + 4}
-                fill="none" stroke="#60a5fa" strokeWidth={1.5} rx={6}
+                fill="none" stroke="#2f86ce" strokeWidth={1.5} rx={6}
                 opacity={0.5}
               >
                 <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" />
               </rect>
             )}
             {/* Used% */}
-            <text x={x + blockW / 2} y={blockY + 20} textAnchor="middle" fill="#13171b" fontSize={11} fontWeight="bold">
+            <text x={x + blockW / 2} y={blockY + 20} textAnchor="middle" fill="var(--ink)" fontSize={11} fontWeight="bold">
               {a.usedPct.toFixed(0)}%
             </text>
             {/* Type label */}
-            <text x={x + blockW / 2} y={blockY + 36} textAnchor="middle" fill="#7d8590" fontSize={8}>
+            <text x={x + blockW / 2} y={blockY + 36} textAnchor="middle" fill="var(--muted)" fontSize={8}>
               {a.type === 'fixed' ? 'Fixed' : 'Dynamic'}
             </text>
             {/* Records */}
-            <text x={x + blockW / 2} y={blockY + 50} textAnchor="middle" fill="#9ca3af" fontSize={8}>
+            <text x={x + blockW / 2} y={blockY + 50} textAnchor="middle" fill="var(--muted-2)" fontSize={8}>
               {a.recordCount.toLocaleString()} rec
             </text>
             {/* State label */}
@@ -192,12 +192,12 @@ function ArchiveCanvas({
             </text>
             {/* Write flag */}
             {a.writeFlag && (
-              <text x={x + blockW / 2} y={blockY + blockH + 26} textAnchor="middle" fill="#ca8a04" fontSize={8}>
+              <text x={x + blockW / 2} y={blockY + blockH + 26} textAnchor="middle" fill="var(--amber-ink)" fontSize={8}>
                 Write=1
               </text>
             )}
             {/* Time range */}
-            <text x={x + blockW / 2} y={blockY + blockH + 38} textAnchor="middle" fill="#9ca3af" fontSize={7}>
+            <text x={x + blockW / 2} y={blockY + blockH + 38} textAnchor="middle" fill="var(--muted-2)" fontSize={7}>
               {a.state === 'unused' ? 'No data' : `${formatTime(a.startTime)}–${formatTime(a.endTime)}`}
             </text>
           </g>
@@ -206,7 +206,7 @@ function ArchiveCanvas({
 
       {/* Disk usage ruler */}
       <g transform={`translate(${PAD.left}, ${blockY + blockH + 55})`}>
-        <line x1={0} y1={0} x2={plotW} y2={0} stroke="#e2e6e9" strokeWidth={1} />
+        <line x1={0} y1={0} x2={plotW} y2={0} stroke="var(--line)" strokeWidth={1} />
         {archives.map((a, i) => {
           const x = i * (blockW + gap);
           const w = a.type === 'dynamic' ? blockW * (a.usedPct / 100) : blockW;
@@ -214,10 +214,10 @@ function ArchiveCanvas({
             <rect key={a.id} x={x} y={2} width={Math.max(2, w)} height={8} fill={blockColor(a)} opacity={0.3} rx={2} />
           );
         })}
-        <text x={0} y={22} fill="#9ca3af" fontSize={8}>Disk Usage</text>
+        <text x={0} y={22} fill="var(--muted-2)" fontSize={8}>Disk Usage</text>
         {/* FSC limit line */}
-        <line x1={plotW * 0.7} y1={-4} x2={plotW * 0.7} y2={14} stroke="#ef4444" strokeWidth={1} strokeDasharray="3 2" />
-        <text x={plotW * 0.7 + 4} y={6} fill="#ef4444" fontSize={7}>FSC Limit</text>
+        <line x1={plotW * 0.7} y1={-4} x2={plotW * 0.7} y2={14} stroke="var(--red)" strokeWidth={1} strokeDasharray="3 2" />
+        <text x={plotW * 0.7 + 4} y={6} fill="var(--red)" fontSize={7}>FSC Limit</text>
       </g>
     </svg>
   );
@@ -301,7 +301,7 @@ export default function Module7({ onBack }: { onBack: () => void }) {
   const statsBar = (
     <div className="flex items-center gap-4 px-3 py-2 rounded-lg" style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-card-border)', backdropFilter: 'blur(12px)' }}>
       <div className="text-center">
-        <div className="text-sm font-bold font-mono" style={{ color: '#2563eb' }}>{primary?.usedPct.toFixed(0) ?? 0}%</div>
+        <div className="text-sm font-bold font-mono" style={{ color: '#1f63a0' }}>{primary?.usedPct.toFixed(0) ?? 0}%</div>
         <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Primary Used</div>
       </div>
       <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />
@@ -311,12 +311,12 @@ export default function Module7({ onBack }: { onBack: () => void }) {
       </div>
       <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />
       <div className="text-center">
-        <div className="text-sm font-bold font-mono" style={{ color: '#16a34a' }}>{totalRecords.toLocaleString()}</div>
+        <div className="text-sm font-bold font-mono" style={{ color: 'var(--green-ink)' }}>{totalRecords.toLocaleString()}</div>
         <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Total Rec</div>
       </div>
       <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />
       <div className="text-center">
-        <div className="text-sm font-bold font-mono" style={{ color: '#ca8a04' }}>{shiftCount}</div>
+        <div className="text-sm font-bold font-mono" style={{ color: 'var(--amber-ink)' }}>{shiftCount}</div>
         <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Shifts</div>
       </div>
     </div>
@@ -344,7 +344,7 @@ export default function Module7({ onBack }: { onBack: () => void }) {
           <button
             onClick={doShift}
             className="px-3 py-1 rounded-lg text-xs font-medium transition-colors hover:opacity-80"
-            style={{ backgroundColor: 'rgba(249, 115, 22, 0.1)', color: '#ea580c' }}
+            style={{ backgroundColor: 'rgba(249, 115, 22, 0.1)', color: '#b8602f' }}
           >
             Force Shift
           </button>

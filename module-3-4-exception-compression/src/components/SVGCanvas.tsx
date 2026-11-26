@@ -15,19 +15,19 @@ interface Props {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  'raw': '#94a3b8',
-  'exc-pass': '#3b82f6',
-  'exc-discard': '#ef4444',
-  'exc-previous': '#a855f7',
-  'exc-max-force': '#f97316',
-  'exc-min-block': '#eab308',
-  'comp-archive': '#22c55e',
-  'comp-discard': '#ef4444',
-  'comp-max-force': '#f97316',
-  'comp-bypass-off': '#06b6d4',
-  'comp-bypass-ooo': '#eab308',
-  'comp-step-archive': '#22c55e',
-  'comp-step-discard': '#ef4444',
+  'raw': 'var(--muted-2)',
+  'exc-pass': '#2f86ce',
+  'exc-discard': 'var(--red)',
+  'exc-previous': '#7c63d0',
+  'exc-max-force': '#e8834d',
+  'exc-min-block': '#e3ae3c',
+  'comp-archive': '#5fae57',
+  'comp-discard': 'var(--red)',
+  'comp-max-force': '#e8834d',
+  'comp-bypass-off': '#2a9d8f',
+  'comp-bypass-ooo': '#e3ae3c',
+  'comp-step-archive': '#5fae57',
+  'comp-step-discard': 'var(--red)',
 };
 
 const PADDING = { top: 30, right: 20, bottom: 40, left: 55 };
@@ -136,24 +136,24 @@ export default function SVGCanvas({
         </filter>
       </defs>
 
-      <rect width={width} height={height} fill="#ffffff" rx={8} filter="url(#chartShadow)" />
-      <rect x={PADDING.left} y={PADDING.top} width={plotW} height={plotH} fill="#f8fafc" rx={4} />
+      <rect width={width} height={height} fill="var(--field)" rx={8} filter="url(#chartShadow)" />
+      <rect x={PADDING.left} y={PADDING.top} width={plotW} height={plotH} fill="var(--stage)" rx={4} />
 
       {yAxisTicks.map(v => (
         <g key={`y-${v}`}>
-          <line x1={PADDING.left} y1={sy(v)} x2={width - PADDING.right} y2={sy(v)} stroke="#e2e6e9" strokeWidth={1} />
-          <text x={PADDING.left - 8} y={sy(v) + 4} textAnchor="end" fill="#7d8590" fontSize={10}>{v.toFixed(1)}</text>
+          <line x1={PADDING.left} y1={sy(v)} x2={width - PADDING.right} y2={sy(v)} stroke="var(--line)" strokeWidth={1} />
+          <text x={PADDING.left - 8} y={sy(v) + 4} textAnchor="end" fill="var(--muted)" fontSize={10}>{v.toFixed(1)}</text>
         </g>
       ))}
       {xAxisTicks.map(t => (
         <g key={`x-${t}`}>
-          <line x1={sx(t)} y1={PADDING.top} x2={sx(t)} y2={height - PADDING.bottom} stroke="#e2e6e9" strokeWidth={1} />
-          <text x={sx(t)} y={height - PADDING.bottom + 16} textAnchor="middle" fill="#7d8590" fontSize={10}>{t.toFixed(0)}s</text>
+          <line x1={sx(t)} y1={PADDING.top} x2={sx(t)} y2={height - PADDING.bottom} stroke="var(--line)" strokeWidth={1} />
+          <text x={sx(t)} y={height - PADDING.bottom + 16} textAnchor="middle" fill="var(--muted)" fontSize={10}>{t.toFixed(0)}s</text>
         </g>
       ))}
 
-      <text x={width / 2} y={height - 4} textAnchor="middle" fill="#596168" fontSize={11}>Time (seconds)</text>
-      <text x={14} y={height / 2} textAnchor="middle" fill="#596168" fontSize={11} transform={`rotate(-90 14 ${height / 2})`}>Value (EU)</text>
+      <text x={width / 2} y={height - 4} textAnchor="middle" fill="var(--ink-2)" fontSize={11}>Time (seconds)</text>
+      <text x={14} y={height / 2} textAnchor="middle" fill="var(--ink-2)" fontSize={11} transform={`rotate(-90 14 ${height / 2})`}>Value (EU)</text>
 
       {currentStep <= 1 && lastExcReported && (
         <rect
@@ -161,9 +161,9 @@ export default function SVGCanvas({
           y={sy(lastExcReported.value + config.excDev)}
           width={plotW}
           height={sy(lastExcReported.value - config.excDev) - sy(lastExcReported.value + config.excDev)}
-          fill="#3b82f6"
+          fill="#2f86ce"
           fillOpacity={0.06}
-          stroke="#3b82f6"
+          stroke="#2f86ce"
           strokeOpacity={0.2}
           strokeWidth={1}
           strokeDasharray="4 2"
@@ -177,7 +177,7 @@ export default function SVGCanvas({
             y1={sy(compressionState.lastArchived.value)}
             x2={sx(timeMax)}
             y2={sy(compressionState.lastArchived.value + compressionState.slopeMax * (timeMax - compressionState.lastArchived.time))}
-            stroke="#22c55e"
+            stroke="#5fae57"
             strokeWidth={1.5}
             strokeDasharray="6 3"
           />
@@ -186,7 +186,7 @@ export default function SVGCanvas({
             y1={sy(compressionState.lastArchived.value)}
             x2={sx(timeMax)}
             y2={sy(compressionState.lastArchived.value + compressionState.slopeMin * (timeMax - compressionState.lastArchived.time))}
-            stroke="#22c55e"
+            stroke="#5fae57"
             strokeWidth={1.5}
             strokeDasharray="6 3"
           />
@@ -194,15 +194,15 @@ export default function SVGCanvas({
       )}
 
       {rawPath && (
-        <path d={rawPath} fill="none" stroke="#c0c8d0" strokeWidth={1.5} />
+        <path d={rawPath} fill="none" stroke="var(--line-strong)" strokeWidth={1.5} />
       )}
 
       {archivedPath && currentStep >= 2 && (
-        <path d={archivedPath} fill="none" stroke="#22c55e" strokeWidth={2} strokeOpacity={0.7} />
+        <path d={archivedPath} fill="none" stroke="#5fae57" strokeWidth={2} strokeOpacity={0.7} />
       )}
 
       {renderEvents.map((e, i) => {
-        const color = STATUS_COLORS[e.status] || '#94a3b8';
+        const color = STATUS_COLORS[e.status] || 'var(--muted-2)';
         const isHovered = hoveredEvent === e;
         const isArchive = e.status.includes('archive') || e.status.includes('pass') || e.status.includes('force') || e.status.includes('previous') || e.status === 'comp-bypass-off';
         const r = isArchive ? 4 : 2.5;
@@ -215,7 +215,7 @@ export default function SVGCanvas({
               r={isHovered ? r + 2 : r}
               fill={color}
               fillOpacity={isArchive ? 1 : 0.6}
-              stroke={isHovered ? '#13171b' : 'none'}
+              stroke={isHovered ? 'var(--ink)' : 'none'}
               strokeWidth={1.5}
               className="cursor-pointer"
               onMouseEnter={() => onHoverEvent(e)}
@@ -229,18 +229,18 @@ export default function SVGCanvas({
                   width={220}
                   height={56}
                   rx={6}
-                  fill="#ffffff"
-                  stroke="#e2e6e9"
+                  fill="var(--field)"
+                  stroke="var(--line)"
                   strokeWidth={1}
                   filter="url(#chartShadow)"
                 />
-                <text x={sx(e.time) + 18} y={sy(e.value) - 34} fill="#13171b" fontSize={10} fontFamily="monospace">
+                <text x={sx(e.time) + 18} y={sy(e.value) - 34} fill="var(--ink)" fontSize={10} fontFamily="monospace">
                   t={e.time.toFixed(1)}s  val={e.value.toFixed(3)}
                 </text>
                 <text x={sx(e.time) + 18} y={sy(e.value) - 20} fill={color} fontSize={10} fontWeight="bold">
                   {e.status}
                 </text>
-                <text x={sx(e.time) + 18} y={sy(e.value) - 6} fill="#7d8590" fontSize={9}>
+                <text x={sx(e.time) + 18} y={sy(e.value) - 6} fill="var(--muted)" fontSize={9}>
                   {e.reason.length > 38 ? e.reason.slice(0, 38) + '…' : e.reason}
                 </text>
               </g>
@@ -252,17 +252,17 @@ export default function SVGCanvas({
       <g transform={`translate(${PADDING.left + 4}, ${PADDING.top + 4})`}>
         {currentStep <= 1 ? (
           <>
-            <LegendItem y={0} color="#3b82f6" label="Exc Pass" />
-            <LegendItem y={14} color="#ef4444" label="Exc Discard" />
-            <LegendItem y={28} color="#a855f7" label="Previous Value" />
-            <LegendItem y={42} color="#f97316" label="ExcMax Force" />
+            <LegendItem y={0} color="#2f86ce" label="Exc Pass" />
+            <LegendItem y={14} color="var(--red)" label="Exc Discard" />
+            <LegendItem y={28} color="#7c63d0" label="Previous Value" />
+            <LegendItem y={42} color="#e8834d" label="ExcMax Force" />
           </>
         ) : (
           <>
-            <LegendItem y={0} color="#22c55e" label="Archived" />
-            <LegendItem y={14} color="#ef4444" label="Discarded" />
-            <LegendItem y={28} color="#f97316" label="CompMax Force" />
-            <LegendItem y={42} color="#06b6d4" label="Bypass" />
+            <LegendItem y={0} color="#5fae57" label="Archived" />
+            <LegendItem y={14} color="var(--red)" label="Discarded" />
+            <LegendItem y={28} color="#e8834d" label="CompMax Force" />
+            <LegendItem y={42} color="#2a9d8f" label="Bypass" />
           </>
         )}
       </g>
@@ -274,7 +274,7 @@ function LegendItem({ y, color, label }: { y: number; color: string; label: stri
   return (
     <g transform={`translate(0, ${y})`}>
       <circle cx={4} cy={0} r={3} fill={color} />
-      <text x={12} y={3} fill="#596168" fontSize={9}>{label}</text>
+      <text x={12} y={3} fill="var(--ink-2)" fontSize={9}>{label}</text>
     </g>
   );
 }

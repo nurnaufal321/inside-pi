@@ -222,16 +222,16 @@ export default function Module2({ onBack }: Props) {
 
   const dotColor = (status: DataDot['status']) => {
     switch (status) {
-      case 'raw': return '#7d8590';
-      case 'exc-pass': return '#3b82f6';
-      case 'exc-discard': return '#ef4444';
-      case 'buffered': return '#f97316';
-      case 'comp-pass': return '#22c55e';
-      case 'comp-discard': return '#ef4444';
-      case 'queued': return '#22c55e';
-      case 'archived': return '#22c55e';
-      case 'ooo': return '#ef4444';
-      default: return '#7d8590';
+      case 'raw': return 'var(--muted)';
+      case 'exc-pass': return '#2f86ce';
+      case 'exc-discard': return 'var(--red)';
+      case 'buffered': return '#e8834d';
+      case 'comp-pass': return '#5fae57';
+      case 'comp-discard': return 'var(--red)';
+      case 'queued': return '#5fae57';
+      case 'archived': return '#5fae57';
+      case 'ooo': return 'var(--red)';
+      default: return 'var(--muted)';
     }
   };
 
@@ -243,19 +243,19 @@ export default function Module2({ onBack }: Props) {
         </filter>
       </defs>
 
-      <rect width={W} height={H} fill="#ffffff" rx={8} filter="url(#canvasShadow)" />
+      <rect width={W} height={H} fill="var(--field)" rx={8} filter="url(#canvasShadow)" />
 
       {/* Stage boxes */}
       {STAGES.map((s, i) => (
         <g key={s.label}>
           <rect x={s.x - 30} y={240} width={60} height={40} rx={4}
-            fill={i === 0 ? '#e8f0fe' : '#f0f2f5'}
-            stroke={networkDown && i === 2 ? '#ef4444' : '#d1d5db'} strokeWidth={networkDown && i === 2 ? 2 : 1} />
-          <text x={s.x} y={264} textAnchor="middle" fill={networkDown && i === 2 ? '#ef4444' : '#596168'} fontSize={8} fontWeight="bold">{s.label}</text>
+            fill={i === 0 ? 'var(--blue-top-a)' : 'var(--card-2)'}
+            stroke={networkDown && i === 2 ? 'var(--red)' : 'var(--line-strong)'} strokeWidth={networkDown && i === 2 ? 2 : 1} />
+          <text x={s.x} y={264} textAnchor="middle" fill={networkDown && i === 2 ? 'var(--red)' : 'var(--ink-2)'} fontSize={8} fontWeight="bold">{s.label}</text>
           {/* Connection lines */}
           {i < STAGES.length - 1 && (
             <line x1={s.x + 30} y1={260} x2={STAGES[i + 1].x - 30} y2={260}
-              stroke={networkDown && i === 1 ? 'rgba(239, 68, 68, 0.4)' : '#d1d5db'} strokeWidth={1}
+              stroke={networkDown && i === 1 ? 'rgba(239, 68, 68, 0.4)' : 'var(--line-strong)'} strokeWidth={1}
               strokeDasharray={networkDown && i === 1 ? '4 4' : 'none'} />
           )}
         </g>
@@ -264,23 +264,23 @@ export default function Module2({ onBack }: Props) {
       {/* Network down indicator */}
       {networkDown && (
         <g>
-          <text x={210} y={250} textAnchor="middle" fill="#ef4444" fontSize={16} fontWeight="bold">X</text>
-          <text x={210} y={295} textAnchor="middle" fill="#ef4444" fontSize={8}>NETWORK DOWN</text>
+          <text x={210} y={250} textAnchor="middle" fill="var(--red)" fontSize={16} fontWeight="bold">X</text>
+          <text x={210} y={295} textAnchor="middle" fill="var(--red)" fontSize={8}>NETWORK DOWN</text>
         </g>
       )}
 
       {/* Stage labels */}
-      <text x={STAGES[0].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>Scan Source</text>
-      <text x={STAGES[1].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>Exception Filter</text>
-      <text x={STAGES[2].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>Store & Forward</text>
-      <text x={STAGES[3].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>Compression</text>
-      <text x={STAGES[4].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>pimapevq.dat</text>
-      <text x={STAGES[5].x} y={300} textAnchor="middle" fill="#9ca3af" fontSize={7}>Archive Files</text>
+      <text x={STAGES[0].x} y={300} textAnchor="middle" fill="var(--muted-2)" fontSize={7}>Scan Source</text>
+      <text x={STAGES[1].x} y={300} textAnchor="middle" fill="var(--muted-2)" fontSize={7}>Exception Filter</text>
+      <text x={STAGES[2].x} y={300} textAnchor="middle" fill="var(--muted-2)" fontSize={7}>Store & Forward</text>
+      <text x={STAGES[3].x} y={300} textAnchor="middle" fill="var(--muted-2)" fontSize={7}>Compression</text>
+      <text x={STAGES[4].x} y={300} textAnchor="middle" fill="var(--muted-2)" fontSize={7}>pimapevq.dat</text>
+      <text x={STAGES[5].x} y={300} textAnchor="middle" fill="var(--muted-2)" fontSize={7}>Archive Files</text>
 
       {/* Snapshot value display */}
-      <rect x={370} y={310} width={60} height={22} rx={3} fill="#f0f2f5" stroke="#d1d5db" />
-      <text x={400} y={325} textAnchor="middle" fill="#3b82f6" fontSize={9} fontFamily="monospace">{snapshotValue.toFixed(1)}</text>
-      <text x={400} y={340} textAnchor="middle" fill="#9ca3af" fontSize={7}>Snapshot</text>
+      <rect x={370} y={310} width={60} height={22} rx={3} fill="var(--card-2)" stroke="var(--line-strong)" />
+      <text x={400} y={325} textAnchor="middle" fill="#2f86ce" fontSize={9} fontFamily="monospace">{snapshotValue.toFixed(1)}</text>
+      <text x={400} y={340} textAnchor="middle" fill="var(--muted-2)" fontSize={7}>Snapshot</text>
 
       {/* Event queue ring */}
       <g transform={`translate(${STAGES[4].x}, 345)`}>
@@ -290,7 +290,7 @@ export default function Module2({ onBack }: Props) {
           const filled = i < Math.min(stats.queueDepth, 12);
           return (
             <circle key={i} cx={Math.cos(angle) * r} cy={Math.sin(angle) * r} r={3}
-              fill={filled ? '#22c55e' : '#f0f2f5'} stroke="#d1d5db" strokeWidth={0.5} />
+              fill={filled ? '#5fae57' : 'var(--card-2)'} stroke="var(--line-strong)" strokeWidth={0.5} />
           );
         })}
       </g>
@@ -299,9 +299,9 @@ export default function Module2({ onBack }: Props) {
       {networkDown && stats.buffered > 0 && (
         <g transform={`translate(${STAGES[2].x}, 310)`}>
           {Array.from({ length: Math.min(stats.buffered, 8) }, (_, i) => (
-            <rect key={i} x={-15} y={-i * 6} width={30} height={5} rx={1} fill="rgba(249, 115, 22, 0.1)" stroke="#f97316" strokeWidth={0.5} />
+            <rect key={i} x={-15} y={-i * 6} width={30} height={5} rx={1} fill="rgba(249, 115, 22, 0.1)" stroke="#e8834d" strokeWidth={0.5} />
           ))}
-          <text x={0} y={18} textAnchor="middle" fill="#f97316" fontSize={8}>{stats.buffered} queued</text>
+          <text x={0} y={18} textAnchor="middle" fill="#e8834d" fontSize={8}>{stats.buffered} queued</text>
         </g>
       )}
 
@@ -317,18 +317,18 @@ export default function Module2({ onBack }: Props) {
       ))}
 
       {/* Sensor pulse */}
-      <circle cx={STAGES[0].x} cy={190} r={8} fill="none" stroke="#3b82f6" strokeWidth={1} opacity={0.5}>
+      <circle cx={STAGES[0].x} cy={190} r={8} fill="none" stroke="#2f86ce" strokeWidth={1} opacity={0.5}>
         <animate attributeName="r" values="6;12;6" dur="2s" repeatCount="indefinite" />
         <animate attributeName="opacity" values="0.5;0.1;0.5" dur="2s" repeatCount="indefinite" />
       </circle>
 
       {/* Legend */}
       <g transform="translate(20, 20)">
-        <LegendDot y={0} color="#7d8590" label="Raw scan" />
-        <LegendDot y={14} color="#3b82f6" label="Exc pass" />
-        <LegendDot y={28} color="#ef4444" label="Discarded / OOO" />
-        <LegendDot y={42} color="#f97316" label="Buffered" />
-        <LegendDot y={56} color="#22c55e" label="Archived" />
+        <LegendDot y={0} color="var(--muted)" label="Raw scan" />
+        <LegendDot y={14} color="#2f86ce" label="Exc pass" />
+        <LegendDot y={28} color="var(--red)" label="Discarded / OOO" />
+        <LegendDot y={42} color="#e8834d" label="Buffered" />
+        <LegendDot y={56} color="#5fae57" label="Archived" />
       </g>
     </svg>
   );
@@ -337,11 +337,11 @@ export default function Module2({ onBack }: Props) {
     <div className="flex items-center gap-4 px-3 py-2 rounded-lg text-center" style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-card-border)', backdropFilter: 'blur(12px)' }}>
       <StatCell label="Received" value={stats.received} color="var(--color-heading)" />
       <Div />
-      <StatCell label="Exc Filtered" value={stats.excDiscarded} color="#ef4444" />
+      <StatCell label="Exc Filtered" value={stats.excDiscarded} color="var(--red)" />
       <Div />
-      <StatCell label="Comp Filtered" value={stats.compDiscarded} color="#ef4444" />
+      <StatCell label="Comp Filtered" value={stats.compDiscarded} color="var(--red)" />
       <Div />
-      <StatCell label="Archived" value={stats.archived} color="#16a34a" />
+      <StatCell label="Archived" value={stats.archived} color="var(--green-ink)" />
     </div>
   );
 
@@ -372,18 +372,18 @@ export default function Module2({ onBack }: Props) {
         </div>
 
         <label className="flex items-center gap-2 text-xs cursor-pointer" style={{ color: 'var(--color-body)' }}>
-          <input type="checkbox" checked={networkDown} onChange={e => setNetworkDown(e.target.checked)} style={{ accentColor: '#ef4444' }} />
+          <input type="checkbox" checked={networkDown} onChange={e => setNetworkDown(e.target.checked)} style={{ accentColor: 'var(--red)' }} />
           Network Drop (buffer queues)
         </label>
 
         <label className="flex items-center gap-2 text-xs cursor-pointer" style={{ color: 'var(--color-body)' }}>
-          <input type="checkbox" checked={compressionOn} onChange={e => setCompressionOn(e.target.checked)} style={{ accentColor: '#16a34a' }} />
+          <input type="checkbox" checked={compressionOn} onChange={e => setCompressionOn(e.target.checked)} style={{ accentColor: 'var(--green-ink)' }} />
           Compression ON
         </label>
 
         <button onClick={sendOOO}
           className="w-full px-3 py-1.5 rounded-lg text-xs transition-colors hover:opacity-80"
-          style={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+          style={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', color: 'var(--red)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
           Send OOO Event
         </button>
       </div>
@@ -410,7 +410,7 @@ function LegendDot({ y, color, label }: { y: number; color: string; label: strin
   return (
     <g transform={`translate(0, ${y})`}>
       <circle cx={4} cy={0} r={3} fill={color} />
-      <text x={12} y={3} fill="#596168" fontSize={9}>{label}</text>
+      <text x={12} y={3} fill="var(--ink-2)" fontSize={9}>{label}</text>
     </g>
   );
 }

@@ -153,7 +153,7 @@ export default function Module6({ onBack }: { onBack: () => void }) {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [isRunning, dataRate, servers]);
 
-  const healthColor = bufferStats.health === 0 ? '#22c55e' : bufferStats.health === 1 ? '#eab308' : '#ef4444';
+  const healthColor = bufferStats.health === 0 ? '#5fae57' : bufferStats.health === 1 ? '#e3ae3c' : 'var(--red)';
   const healthLabel = ['OK', 'Warning', 'Error', 'Critical'][bufferStats.health];
 
   const serverPositions = [
@@ -166,11 +166,11 @@ export default function Module6({ onBack }: { onBack: () => void }) {
     <div className="flex items-center gap-4 px-3 py-2 rounded-lg" style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-card-border)', backdropFilter: 'blur(12px)' }}>
       <StatCell label="Recv/s" value={bufferStats.eventsReceivedPerSec} color="var(--color-heading)" />
       <Div />
-      <StatCell label="Sent/s" value={bufferStats.eventsSentPerSec} color="#2563eb" />
+      <StatCell label="Sent/s" value={bufferStats.eventsSentPerSec} color="#1f63a0" />
       <Div />
-      <StatCell label="Queued" value={bufferStats.queuedEvents} color={bufferStats.queuedEvents > 100 ? '#ef4444' : 'var(--color-heading)'} />
+      <StatCell label="Queued" value={bufferStats.queuedEvents} color={bufferStats.queuedEvents > 100 ? 'var(--red)' : 'var(--color-heading)'} />
       <Div />
-      <StatCell label="Files" value={bufferStats.queueFileCount} color="#ea580c" />
+      <StatCell label="Files" value={bufferStats.queueFileCount} color="#b8602f" />
       <Div />
       <div className="text-center">
         <div className="text-sm font-bold font-mono" style={{ color: healthColor }}>{healthLabel}</div>
@@ -187,16 +187,16 @@ export default function Module6({ onBack }: { onBack: () => void }) {
         </filter>
       </defs>
 
-      <rect width={700} height={380} fill="#ffffff" rx={8} filter="url(#canvasShadow)" />
+      <rect width={700} height={380} fill="var(--field)" rx={8} filter="url(#canvasShadow)" />
 
       {/* Interface Node */}
       <g>
-        <rect x={20} y={130} width={130} height={120} rx={8} fill="#f0f2f5" stroke="#d1d5db" strokeWidth={1.5} />
-        <text x={85} y={155} textAnchor="middle" fill="#13171b" fontSize={11} fontWeight="bold">PI Interface</text>
-        <text x={85} y={170} textAnchor="middle" fill="#7d8590" fontSize={9}>Scan Rate: {dataRate}/s</text>
+        <rect x={20} y={130} width={130} height={120} rx={8} fill="var(--card-2)" stroke="var(--line-strong)" strokeWidth={1.5} />
+        <text x={85} y={155} textAnchor="middle" fill="var(--ink)" fontSize={11} fontWeight="bold">PI Interface</text>
+        <text x={85} y={170} textAnchor="middle" fill="var(--muted)" fontSize={9}>Scan Rate: {dataRate}/s</text>
 
         {/* Disk Queue Stack */}
-        <text x={85} y={192} textAnchor="middle" fill="#596168" fontSize={9} fontWeight="bold">pibufss queue</text>
+        <text x={85} y={192} textAnchor="middle" fill="var(--ink-2)" fontSize={9} fontWeight="bold">pibufss queue</text>
         {Array.from({ length: Math.min(5, Math.ceil(bufferStats.queueFileCount)) }).map((_, i) => (
           <rect
             key={i}
@@ -205,47 +205,47 @@ export default function Module6({ onBack }: { onBack: () => void }) {
             width={90}
             height={7}
             rx={1}
-            fill={bufferStats.queuedEvents > MAX_QUEUE * 0.5 ? '#f97316' : '#3b82f6'}
+            fill={bufferStats.queuedEvents > MAX_QUEUE * 0.5 ? '#e8834d' : '#2f86ce'}
             fillOpacity={0.3 + i * 0.1}
-            stroke={bufferStats.queuedEvents > MAX_QUEUE * 0.5 ? '#fb923c' : '#60a5fa'}
+            stroke={bufferStats.queuedEvents > MAX_QUEUE * 0.5 ? '#e8834d' : '#2f86ce'}
             strokeWidth={0.5}
           />
         ))}
-        <text x={85} y={244} textAnchor="middle" fill="#596168" fontSize={8} fontFamily="monospace">
+        <text x={85} y={244} textAnchor="middle" fill="var(--ink-2)" fontSize={8} fontFamily="monospace">
           {bufferStats.queuedEvents} events
         </text>
       </g>
 
       {/* Health Traffic Light */}
       <g>
-        <rect x={30} y={22} width={40} height={90} rx={6} fill="#f8f9fa" stroke="#d1d5db" strokeWidth={1} />
-        <circle cx={50} cy={40} r={10} fill={bufferStats.health >= 2 ? '#ef4444' : '#f0f2f5'} stroke="#d1d5db" strokeWidth={1} />
-        <circle cx={50} cy={65} r={10} fill={bufferStats.health === 1 ? '#eab308' : '#f0f2f5'} stroke="#d1d5db" strokeWidth={1} />
-        <circle cx={50} cy={90} r={10} fill={bufferStats.health === 0 ? '#22c55e' : '#f0f2f5'} stroke="#d1d5db" strokeWidth={1} />
-        <text x={50} y={120} textAnchor="middle" fill="#7d8590" fontSize={8}>Health</text>
+        <rect x={30} y={22} width={40} height={90} rx={6} fill="var(--field)" stroke="var(--line-strong)" strokeWidth={1} />
+        <circle cx={50} cy={40} r={10} fill={bufferStats.health >= 2 ? 'var(--red)' : 'var(--card-2)'} stroke="var(--line-strong)" strokeWidth={1} />
+        <circle cx={50} cy={65} r={10} fill={bufferStats.health === 1 ? '#e3ae3c' : 'var(--card-2)'} stroke="var(--line-strong)" strokeWidth={1} />
+        <circle cx={50} cy={90} r={10} fill={bufferStats.health === 0 ? '#5fae57' : 'var(--card-2)'} stroke="var(--line-strong)" strokeWidth={1} />
+        <text x={50} y={120} textAnchor="middle" fill="var(--muted)" fontSize={8}>Health</text>
       </g>
 
       {/* Capacity Meter */}
       <g>
-        <text x={115} y={35} fill="#7d8590" fontSize={8}>Buffer Capacity</text>
-        <rect x={115} y={40} width={35} height={70} rx={3} fill="#f8f9fa" stroke="#d1d5db" strokeWidth={1} />
+        <text x={115} y={35} fill="var(--muted)" fontSize={8}>Buffer Capacity</text>
+        <rect x={115} y={40} width={35} height={70} rx={3} fill="var(--field)" stroke="var(--line-strong)" strokeWidth={1} />
         {(() => {
           const pct = Math.min(1, bufferStats.capacitySeconds / 3600);
           const h = pct * 65;
-          return <rect x={117} y={42 + 65 - h} width={31} height={h} rx={2} fill={pct < 0.2 ? '#ef4444' : pct < 0.5 ? '#eab308' : '#22c55e'} opacity={0.7} />;
+          return <rect x={117} y={42 + 65 - h} width={31} height={h} rx={2} fill={pct < 0.2 ? 'var(--red)' : pct < 0.5 ? '#e3ae3c' : '#5fae57'} opacity={0.7} />;
         })()}
-        <text x={132} y={120} textAnchor="middle" fill="#596168" fontSize={8} fontFamily="monospace">{Math.floor(bufferStats.capacitySeconds / 60)}m</text>
+        <text x={132} y={120} textAnchor="middle" fill="var(--ink-2)" fontSize={8} fontFamily="monospace">{Math.floor(bufferStats.capacitySeconds / 60)}m</text>
       </g>
 
       {/* Network Cloud */}
-      <ellipse cx={330} cy={190} rx={70} ry={40} fill="none" stroke="#d1d5db" strokeWidth={1.5} strokeDasharray="4 2" />
-      <text x={330} y={195} textAnchor="middle" fill="#9ca3af" fontSize={10}>Network</text>
+      <ellipse cx={330} cy={190} rx={70} ry={40} fill="none" stroke="var(--line-strong)" strokeWidth={1.5} strokeDasharray="4 2" />
+      <text x={330} y={195} textAnchor="middle" fill="var(--muted-2)" fontSize={10}>Network</text>
 
       {/* Connection Lines + Servers */}
       {servers.map((server, i) => {
         const sp = serverPositions[i];
-        const lineColor = server.connected ? '#22c55e' : '#ef4444';
-        const serverFill = server.oooProcessing ? 'rgba(249, 115, 22, 0.1)' : '#f0f2f5';
+        const lineColor = server.connected ? '#5fae57' : 'var(--red)';
+        const serverFill = server.oooProcessing ? 'rgba(249, 115, 22, 0.1)' : 'var(--card-2)';
 
         const startX = 150;
         const startY = 190;
@@ -266,7 +266,7 @@ export default function Module6({ onBack }: { onBack: () => void }) {
             />
 
             {!server.connected && (
-              <text x={cpX} y={(startY + endY) / 2} textAnchor="middle" fill="#ef4444" fontSize={16} fontWeight="bold">X</text>
+              <text x={cpX} y={(startY + endY) / 2} textAnchor="middle" fill="var(--red)" fontSize={16} fontWeight="bold">X</text>
             )}
 
             {/* Flowing dots for connected servers */}
@@ -276,24 +276,24 @@ export default function Module6({ onBack }: { onBack: () => void }) {
                 const t = dot.progress;
                 const dx = startX + (endX - startX) * t;
                 const dy = startY + (endY - startY) * t + Math.sin(t * Math.PI) * -20;
-                return <circle key={dot.id} cx={dx} cy={dy} r={2.5} fill="#22c55e" opacity={1 - t * 0.5} />;
+                return <circle key={dot.id} cx={dx} cy={dy} r={2.5} fill="#5fae57" opacity={1 - t * 0.5} />;
               })}
 
             {/* Server box */}
-            <rect x={sp.x} y={sp.y} width={140} height={60} rx={6} fill={serverFill} stroke={server.connected ? '#d1d5db' : '#fca5a5'} strokeWidth={1.5} />
-            <text x={sp.x + 10} y={sp.y + 18} fill="#13171b" fontSize={9} fontWeight="bold">{server.name}</text>
-            <text x={sp.x + 10} y={sp.y + 32} fill="#7d8590" fontSize={8} fontFamily="monospace">Events: {server.eventsReceived}</text>
+            <rect x={sp.x} y={sp.y} width={140} height={60} rx={6} fill={serverFill} stroke={server.connected ? 'var(--line-strong)' : 'var(--rose-line)'} strokeWidth={1.5} />
+            <text x={sp.x + 10} y={sp.y + 18} fill="var(--ink)" fontSize={9} fontWeight="bold">{server.name}</text>
+            <text x={sp.x + 10} y={sp.y + 32} fill="var(--muted)" fontSize={8} fontFamily="monospace">Events: {server.eventsReceived}</text>
 
             {/* Archive fill bar */}
-            <rect x={sp.x + 10} y={sp.y + 38} width={120} height={5} rx={2} fill="#e8ebee" />
-            <rect x={sp.x + 10} y={sp.y + 38} width={server.archiveLevel * 1.2} height={5} rx={2} fill="#3b82f6" opacity={0.6} />
+            <rect x={sp.x + 10} y={sp.y + 38} width={120} height={5} rx={2} fill="var(--line-soft)" />
+            <rect x={sp.x + 10} y={sp.y + 38} width={server.archiveLevel * 1.2} height={5} rx={2} fill="#2f86ce" opacity={0.6} />
 
             {server.oooProcessing && (
-              <text x={sp.x + 100} y={sp.y + 55} fill="#f97316" fontSize={8} fontWeight="bold">OOO</text>
+              <text x={sp.x + 100} y={sp.y + 55} fill="#e8834d" fontSize={8} fontWeight="bold">OOO</text>
             )}
 
             {!server.connected && (
-              <text x={sp.x + 70} y={sp.y + 55} textAnchor="middle" fill="#ef4444" fontSize={9} fontWeight="bold">DISCONNECTED</text>
+              <text x={sp.x + 70} y={sp.y + 55} textAnchor="middle" fill="var(--red)" fontSize={9} fontWeight="bold">DISCONNECTED</text>
             )}
           </g>
         );
@@ -315,8 +315,8 @@ export default function Module6({ onBack }: { onBack: () => void }) {
                 onClick={() => toggleServer(s.id)}
                 className="px-2 py-0.5 rounded text-[10px] font-semibold transition-colors hover:opacity-80"
                 style={s.connected
-                  ? { backgroundColor: 'rgba(34, 197, 94, 0.08)', color: '#16a34a' }
-                  : { backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#dc2626' }
+                  ? { backgroundColor: 'rgba(34, 197, 94, 0.08)', color: 'var(--green-ink)' }
+                  : { backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#c0392b' }
                 }
               >
                 {s.connected ? 'Drop' : 'Restore'}
@@ -326,10 +326,10 @@ export default function Module6({ onBack }: { onBack: () => void }) {
         </div>
 
         <div className="flex flex-wrap gap-1.5 mb-3">
-          <button onClick={dropAll} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#dc2626', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+          <button onClick={dropAll} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#c0392b', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
             Drop ALL
           </button>
-          <button onClick={restoreAll} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'rgba(34, 197, 94, 0.08)', color: '#16a34a', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
+          <button onClick={restoreAll} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'rgba(34, 197, 94, 0.08)', color: 'var(--green-ink)', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
             Restore ALL
           </button>
           <button onClick={() => setIsRunning(r => !r)} className="px-2.5 py-1.5 rounded text-xs transition-colors hover:opacity-80" style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-heading)' }}>

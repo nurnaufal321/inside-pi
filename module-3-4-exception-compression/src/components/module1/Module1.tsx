@@ -88,42 +88,42 @@ export default function Module1({ onBack }: Props) {
         </filter>
       </defs>
 
-      <rect width={W} height={H} fill="#ffffff" rx={8} filter="url(#canvasShadow)" />
+      <rect width={W} height={H} fill="var(--field)" rx={8} filter="url(#canvasShadow)" />
 
       {/* Tag Card */}
-      <rect x={20} y={20} width={200} height={120} rx={6} fill="#f0f2f5" stroke="#d1d5db" />
-      <text x={30} y={42} fill="#596168" fontSize={10}>Tag Name</text>
-      <text x={30} y={58} fill="#13171b" fontSize={14} fontWeight="bold" fontFamily="monospace">FT-101</text>
-      <text x={30} y={78} fill="#596168" fontSize={10}>PointType</text>
-      <text x={30} y={94} fill={isNonNumeric ? '#f97316' : '#3b82f6'} fontSize={13} fontWeight="bold">{pointType}</text>
-      <text x={30} y={112} fill="#596168" fontSize={10}>Class: <tspan fill="#a855f7">{pointClass}</tspan></text>
-      <text x={30} y={128} fill="#596168" fontSize={10}>Step: <tspan fill={effectiveStep ? '#22c55e' : '#7d8590'}>{effectiveStep ? 'ON (1)' : 'OFF (0)'}</tspan></text>
+      <rect x={20} y={20} width={200} height={120} rx={6} fill="var(--card-2)" stroke="var(--line-strong)" />
+      <text x={30} y={42} fill="var(--ink-2)" fontSize={10}>Tag Name</text>
+      <text x={30} y={58} fill="var(--ink)" fontSize={14} fontWeight="bold" fontFamily="monospace">FT-101</text>
+      <text x={30} y={78} fill="var(--ink-2)" fontSize={10}>PointType</text>
+      <text x={30} y={94} fill={isNonNumeric ? '#e8834d' : '#2f86ce'} fontSize={13} fontWeight="bold">{pointType}</text>
+      <text x={30} y={112} fill="var(--ink-2)" fontSize={10}>Class: <tspan fill="#7c63d0">{pointClass}</tspan></text>
+      <text x={30} y={128} fill="var(--ink-2)" fontSize={10}>Step: <tspan fill={effectiveStep ? '#5fae57' : 'var(--muted)'}>{effectiveStep ? 'ON (1)' : 'OFF (0)'}</tspan></text>
 
       {/* Vertical Gauge */}
       {!isNonNumeric ? (
         <g transform="translate(260, 20)">
-          <text x={40} y={0} textAnchor="middle" fill="#7d8590" fontSize={10}>Engineering Units</text>
-          <rect x={25} y={10} width={30} height={300} rx={4} fill="#f0f2f5" stroke="#d1d5db" />
+          <text x={40} y={0} textAnchor="middle" fill="var(--muted)" fontSize={10}>Engineering Units</text>
+          <rect x={25} y={10} width={30} height={300} rx={4} fill="var(--card-2)" stroke="var(--line-strong)" />
           {/* Gauge fill */}
-          <rect x={27} y={12 + 296 * (1 - 0.5)} width={26} height={296 * 0.5} rx={2} fill="#3b82f6" fillOpacity={0.08} />
+          <rect x={27} y={12 + 296 * (1 - 0.5)} width={26} height={296 * 0.5} rx={2} fill="#2f86ce" fillOpacity={0.08} />
           {/* Zero line */}
-          <line x1={20} y1={310} x2={60} y2={310} stroke="#7d8590" strokeWidth={1} />
-          <text x={15} y={314} textAnchor="end" fill="#7d8590" fontSize={9}>{zero.toFixed(0)}</text>
+          <line x1={20} y1={310} x2={60} y2={310} stroke="var(--muted)" strokeWidth={1} />
+          <text x={15} y={314} textAnchor="end" fill="var(--muted)" fontSize={9}>{zero.toFixed(0)}</text>
           {/* Span top */}
-          <line x1={20} y1={10} x2={60} y2={10} stroke="#7d8590" strokeWidth={1} />
-          <text x={15} y={14} textAnchor="end" fill="#7d8590" fontSize={9}>{(zero + span).toFixed(0)}</text>
+          <line x1={20} y1={10} x2={60} y2={10} stroke="var(--muted)" strokeWidth={1} />
+          <text x={15} y={14} textAnchor="end" fill="var(--muted)" fontSize={9}>{(zero + span).toFixed(0)}</text>
           {/* ExcDev band */}
           {excDev > 0 && (
             <g>
-              <rect x={62} y={160 - (excDev / span) * 296} width={8} height={(excDev / span) * 296 * 2} fill="#3b82f6" fillOpacity={0.12} stroke="#3b82f6" strokeOpacity={0.4} strokeWidth={0.5} />
-              <text x={74} y={164} fill="#3b82f6" fontSize={8}>ExcDev={excDev.toFixed(2)}</text>
+              <rect x={62} y={160 - (excDev / span) * 296} width={8} height={(excDev / span) * 296 * 2} fill="#2f86ce" fillOpacity={0.12} stroke="#2f86ce" strokeOpacity={0.4} strokeWidth={0.5} />
+              <text x={74} y={164} fill="#2f86ce" fontSize={8}>ExcDev={excDev.toFixed(2)}</text>
             </g>
           )}
           {/* CompDev band */}
           {compDev > 0 && (
             <g>
-              <rect x={72} y={160 - (compDev / span) * 296} width={8} height={(compDev / span) * 296 * 2} fill="#22c55e" fillOpacity={0.12} stroke="#22c55e" strokeOpacity={0.4} strokeWidth={0.5} />
-              <text x={84} y={164} fill="#22c55e" fontSize={8}>CompDev={compDev.toFixed(2)}</text>
+              <rect x={72} y={160 - (compDev / span) * 296} width={8} height={(compDev / span) * 296 * 2} fill="#5fae57" fillOpacity={0.12} stroke="#5fae57" strokeOpacity={0.4} strokeWidth={0.5} />
+              <text x={84} y={164} fill="#5fae57" fontSize={8}>CompDev={compDev.toFixed(2)}</text>
             </g>
           )}
           {/* Tick marks */}
@@ -132,8 +132,8 @@ export default function Module1({ onBack }: Props) {
             const yPos = 310 - (i / 10) * 300;
             return (
               <g key={i}>
-                <line x1={22} y1={yPos} x2={28} y2={yPos} stroke="#9ca3af" strokeWidth={0.5} />
-                {i % 2 === 0 && <text x={18} y={yPos + 3} textAnchor="end" fill="#9ca3af" fontSize={7}>{val.toFixed(0)}</text>}
+                <line x1={22} y1={yPos} x2={28} y2={yPos} stroke="var(--muted-2)" strokeWidth={0.5} />
+                {i % 2 === 0 && <text x={18} y={yPos + 3} textAnchor="end" fill="var(--muted-2)" fontSize={7}>{val.toFixed(0)}</text>}
               </g>
             );
           })}
@@ -141,15 +141,15 @@ export default function Module1({ onBack }: Props) {
       ) : (
         /* Digital State Display */
         <g transform="translate(240, 20)">
-          <text x={80} y={0} textAnchor="middle" fill="#7d8590" fontSize={10}>Digital State Set: system</text>
+          <text x={80} y={0} textAnchor="middle" fill="var(--muted)" fontSize={10}>Digital State Set: system</text>
           {DIGITAL_STATES.map((s, i) => (
             <g key={i} transform={`translate(0, ${15 + i * 36})`}>
               <rect x={10} y={0} width={160} height={28} rx={4}
-                fill={i === digitalState ? 'rgba(34, 197, 94, 0.08)' : '#f0f2f5'}
-                stroke={i === digitalState ? '#22c55e' : '#d1d5db'} strokeWidth={i === digitalState ? 1.5 : 0.5} />
-              <text x={22} y={18} fill="#9ca3af" fontSize={10} fontFamily="monospace">{i}</text>
-              <text x={40} y={18} fill={i === digitalState ? '#22c55e' : '#596168'} fontSize={11}>{s}</text>
-              {i === digitalState && <circle cx={160} cy={14} r={4} fill="#22c55e" />}
+                fill={i === digitalState ? 'rgba(34, 197, 94, 0.08)' : 'var(--card-2)'}
+                stroke={i === digitalState ? '#5fae57' : 'var(--line-strong)'} strokeWidth={i === digitalState ? 1.5 : 0.5} />
+              <text x={22} y={18} fill="var(--muted-2)" fontSize={10} fontFamily="monospace">{i}</text>
+              <text x={40} y={18} fill={i === digitalState ? '#5fae57' : 'var(--ink-2)'} fontSize={11}>{s}</text>
+              {i === digitalState && <circle cx={160} cy={14} r={4} fill="#5fae57" />}
             </g>
           ))}
         </g>
@@ -157,10 +157,10 @@ export default function Module1({ onBack }: Props) {
 
       {/* Interpolation Mini-Plot */}
       <g transform="translate(440, 20)">
-        <text x={120} y={0} textAnchor="middle" fill="#7d8590" fontSize={10}>
+        <text x={120} y={0} textAnchor="middle" fill="var(--muted)" fontSize={10}>
           Interpolation: {effectiveStep ? 'Staircase (Step=1)' : 'Linear (Step=0)'}
         </text>
-        <rect x={0} y={10} width={240} height={140} rx={4} fill="#f0f2f5" stroke="#d1d5db" />
+        <rect x={0} y={10} width={240} height={140} rx={4} fill="var(--card-2)" stroke="var(--line-strong)" />
         {!isNonNumeric && (
           <path
             d={sampleData.map((p, i) => {
@@ -173,35 +173,35 @@ export default function Module1({ onBack }: Props) {
               return `L${px},${py}`;
             }).join(' ')}
             fill="none"
-            stroke={effectiveStep ? '#22c55e' : '#3b82f6'}
+            stroke={effectiveStep ? '#5fae57' : '#2f86ce'}
             strokeWidth={2}
           />
         )}
         {!isNonNumeric && sampleData.map((p, i) => (
           <circle key={i} cx={5 + p.x * 230} cy={145 - ((p.y - zero) / span) * 125} r={2.5}
-            fill={effectiveStep ? '#22c55e' : '#3b82f6'} />
+            fill={effectiveStep ? '#5fae57' : '#2f86ce'} />
         ))}
         {isNonNumeric && (
-          <text x={120} y={85} textAnchor="middle" fill="#9ca3af" fontSize={11}>N/A for {pointType} type</text>
+          <text x={120} y={85} textAnchor="middle" fill="var(--muted-2)" fontSize={11}>N/A for {pointType} type</text>
         )}
       </g>
 
       {/* Attribute Tree */}
       <g transform="translate(440, 185)">
-        <text x={0} y={0} fill="#a855f7" fontSize={10} fontWeight="bold">
+        <text x={0} y={0} fill="#7c63d0" fontSize={10} fontWeight="bold">
           {pointClass} Class Attributes ({attrs.length})
         </text>
-        <rect x={0} y={8} width={240} height={170} rx={4} fill="#f0f2f5" stroke="#d1d5db" />
+        <rect x={0} y={8} width={240} height={170} rx={4} fill="var(--card-2)" stroke="var(--line-strong)" />
         {attrs.slice(0, 14).map((a, i) => {
           const isDisabled = isNonNumeric && ['ExcDev', 'ExcMax', 'CompDev', 'CompMax'].includes(a);
           return (
-            <text key={a} x={8 + (i >= 7 ? 120 : 0)} y={24 + (i % 7) * 22} fill={isDisabled ? '#d1d5db' : '#596168'} fontSize={9} fontFamily="monospace">
+            <text key={a} x={8 + (i >= 7 ? 120 : 0)} y={24 + (i % 7) * 22} fill={isDisabled ? 'var(--line-strong)' : 'var(--ink-2)'} fontSize={9} fontFamily="monospace">
               {a}{isDisabled ? ' (n/a)' : ''}
             </text>
           );
         })}
         {attrs.length > 14 && (
-          <text x={8} y={24 + 7 * 22} fill="#9ca3af" fontSize={8}>+{attrs.length - 14} more...</text>
+          <text x={8} y={24 + 7 * 22} fill="var(--muted-2)" fontSize={8}>+{attrs.length - 14} more...</text>
         )}
       </g>
     </svg>
@@ -246,7 +246,7 @@ export default function Module1({ onBack }: Props) {
           <label className="flex items-center gap-1.5" style={{ color: 'var(--color-body)' }}>
             <input type="checkbox" checked={effectiveStep === 1}
               disabled={isNonNumeric}
-              onChange={e => setStep(e.target.checked ? 1 : 0)} style={{ accentColor: '#16a34a' }} />
+              onChange={e => setStep(e.target.checked ? 1 : 0)} style={{ accentColor: 'var(--green-ink)' }} />
             Step={effectiveStep}{isNonNumeric ? ' (forced)' : ''}
           </label>
         </div>
@@ -263,7 +263,7 @@ export default function Module1({ onBack }: Props) {
 
         {!isNonNumeric && (
           <>
-            <h3 className="text-xs font-semibold uppercase tracking-wider mt-2" style={{ color: '#2563eb' }}>Deviation Settings</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider mt-2" style={{ color: '#1f63a0' }}>Deviation Settings</h3>
             <div className="flex items-center gap-2 text-xs">
               <span className="w-20" style={{ color: 'var(--color-label)' }}>ExcDev%</span>
               <input type="range" min={0} max={10} step={0.1} value={excDevPct} onChange={e => setExcDevPct(Number(e.target.value))} className="flex-1 h-1" style={{ accentColor: 'var(--color-accent)' }} />
@@ -272,7 +272,7 @@ export default function Module1({ onBack }: Props) {
             <div className="text-[10px] ml-20" style={{ color: 'var(--color-label)' }}>ExcDev = {excDev.toFixed(2)} EU</div>
             <div className="flex items-center gap-2 text-xs">
               <span className="w-20" style={{ color: 'var(--color-label)' }}>CompDev%</span>
-              <input type="range" min={0} max={10} step={0.1} value={compDevPct} onChange={e => setCompDevPct(Number(e.target.value))} className="flex-1 h-1" style={{ accentColor: '#16a34a' }} />
+              <input type="range" min={0} max={10} step={0.1} value={compDevPct} onChange={e => setCompDevPct(Number(e.target.value))} className="flex-1 h-1" style={{ accentColor: 'var(--green-ink)' }} />
               <span className="w-12 text-right font-mono text-[11px]" style={{ color: 'var(--color-heading)' }}>{compDevPct}%</span>
             </div>
             <div className="text-[10px] ml-20" style={{ color: 'var(--color-label)' }}>CompDev = {compDev.toFixed(2)} EU</div>
@@ -289,7 +289,7 @@ export default function Module1({ onBack }: Props) {
   const statsBar = (
     <div className="flex items-center gap-4 px-3 py-2 rounded-lg text-center" style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-card-border)', backdropFilter: 'blur(12px)' }}>
       <div>
-        <div className="text-sm font-bold font-mono" style={{ color: '#2563eb' }}>{pointType}</div>
+        <div className="text-sm font-bold font-mono" style={{ color: '#1f63a0' }}>{pointType}</div>
         <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Type</div>
       </div>
       <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />
@@ -299,12 +299,12 @@ export default function Module1({ onBack }: Props) {
       </div>
       <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />
       <div>
-        <div className="text-sm font-bold font-mono" style={{ color: '#16a34a' }}>{effectiveStep ? 'Step' : 'Cont'}</div>
+        <div className="text-sm font-bold font-mono" style={{ color: 'var(--green-ink)' }}>{effectiveStep ? 'Step' : 'Cont'}</div>
         <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Interp</div>
       </div>
       <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />
       <div>
-        <div className="text-sm font-bold font-mono" style={{ color: '#a855f7' }}>{pointClass}</div>
+        <div className="text-sm font-bold font-mono" style={{ color: '#7c63d0' }}>{pointClass}</div>
         <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Class</div>
       </div>
     </div>

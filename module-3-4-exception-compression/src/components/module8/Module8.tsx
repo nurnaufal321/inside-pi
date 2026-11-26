@@ -19,9 +19,9 @@ const ACCESS_TABLE: Record<IdentityName, AccessResult> = {
 };
 
 const AUTH_INFO: Record<AuthMethod, { label: string; color: string; pathColor: string; desc: string }> = {
-  kerberos: { label: 'Windows / Kerberos', color: '#22c55e', pathColor: '#22c55e', desc: 'Recommended — AD credentials verified via Kerberos ticket' },
-  trust:    { label: 'PI Trust (Legacy)',   color: '#eab308', pathColor: '#eab308', desc: 'Legacy — matches IP, hostname, or app name' },
-  explicit: { label: 'Explicit Login',      color: '#ef4444', pathColor: '#ef4444', desc: 'Not recommended — PI user password, insecure' },
+  kerberos: { label: 'Windows / Kerberos', color: '#5fae57', pathColor: '#5fae57', desc: 'Recommended — AD credentials verified via Kerberos ticket' },
+  trust:    { label: 'PI Trust (Legacy)',   color: '#e3ae3c', pathColor: '#e3ae3c', desc: 'Legacy — matches IP, hostname, or app name' },
+  explicit: { label: 'Explicit Login',      color: 'var(--red)', pathColor: 'var(--red)', desc: 'Not recommended — PI user password, insecure' },
 };
 
 const WALKTHROUGH_STEPS = [
@@ -112,9 +112,9 @@ function SecurityCanvas({
   const dotY = animPhase < pathNodes.length ? pathNodes[animPhase].y : pathNodes[pathNodes.length - 1].y;
 
   function accessColor(level: string) {
-    if (level === 'rw') return '#22c55e';
-    if (level === 'r') return '#3b82f6';
-    return '#ef4444';
+    if (level === 'rw') return '#5fae57';
+    if (level === 'r') return '#2f86ce';
+    return 'var(--red)';
   }
 
   function accessLabel(level: string) {
@@ -130,83 +130,83 @@ function SecurityCanvas({
           <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000" floodOpacity="0.06" />
         </filter>
       </defs>
-      <rect width={W} height={H} fill="#ffffff" rx={8} filter="url(#canvasShadow)" />
+      <rect width={W} height={H} fill="var(--field)" rx={8} filter="url(#canvasShadow)" />
 
       {/* Column labels */}
-      <text x={60} y={25} textAnchor="middle" fill="#7d8590" fontSize={10} fontWeight="bold">CLIENTS</text>
-      <text x={190} y={25} textAnchor="middle" fill="#7d8590" fontSize={10} fontWeight="bold">AUTH CHECK</text>
-      <text x={350} y={25} textAnchor="middle" fill="#7d8590" fontSize={10} fontWeight="bold">pinetmgr</text>
-      <text x={500} y={25} textAnchor="middle" fill="#7d8590" fontSize={10} fontWeight="bold">IDENTITY</text>
-      <text x={620} y={25} textAnchor="middle" fill="#7d8590" fontSize={10} fontWeight="bold">ACCESS</text>
+      <text x={60} y={25} textAnchor="middle" fill="var(--muted)" fontSize={10} fontWeight="bold">CLIENTS</text>
+      <text x={190} y={25} textAnchor="middle" fill="var(--muted)" fontSize={10} fontWeight="bold">AUTH CHECK</text>
+      <text x={350} y={25} textAnchor="middle" fill="var(--muted)" fontSize={10} fontWeight="bold">pinetmgr</text>
+      <text x={500} y={25} textAnchor="middle" fill="var(--muted)" fontSize={10} fontWeight="bold">IDENTITY</text>
+      <text x={620} y={25} textAnchor="middle" fill="var(--muted)" fontSize={10} fontWeight="bold">ACCESS</text>
 
       {/* Client boxes */}
       {/* Kerberos client */}
-      <rect x={10} y={48} width={100} height={40} rx={4} fill="#f8fafc" stroke={authMethod === 'kerberos' ? '#22c55e' : '#d1d5db'} strokeWidth={authMethod === 'kerberos' ? 2 : 1} />
-      <text x={60} y={64} textAnchor="middle" fill="#13171b" fontSize={9}>Windows User</text>
-      <text x={60} y={78} textAnchor="middle" fill="#7d8590" fontSize={8}>PI Vision</text>
+      <rect x={10} y={48} width={100} height={40} rx={4} fill="var(--stage)" stroke={authMethod === 'kerberos' ? '#5fae57' : 'var(--line-strong)'} strokeWidth={authMethod === 'kerberos' ? 2 : 1} />
+      <text x={60} y={64} textAnchor="middle" fill="var(--ink)" fontSize={9}>Windows User</text>
+      <text x={60} y={78} textAnchor="middle" fill="var(--muted)" fontSize={8}>PI Vision</text>
 
       {/* Trust client */}
-      <rect x={10} y={148} width={100} height={40} rx={4} fill="#f8fafc" stroke={authMethod === 'trust' ? '#eab308' : '#d1d5db'} strokeWidth={authMethod === 'trust' ? 2 : 1} />
-      <text x={60} y={164} textAnchor="middle" fill="#13171b" fontSize={9}>PI Interface</text>
-      <text x={60} y={178} textAnchor="middle" fill="#7d8590" fontSize={8}>Node</text>
+      <rect x={10} y={148} width={100} height={40} rx={4} fill="var(--stage)" stroke={authMethod === 'trust' ? '#e3ae3c' : 'var(--line-strong)'} strokeWidth={authMethod === 'trust' ? 2 : 1} />
+      <text x={60} y={164} textAnchor="middle" fill="var(--ink)" fontSize={9}>PI Interface</text>
+      <text x={60} y={178} textAnchor="middle" fill="var(--muted)" fontSize={8}>Node</text>
 
       {/* Explicit client */}
-      <rect x={10} y={248} width={100} height={40} rx={4} fill="#f8fafc" stroke={authMethod === 'explicit' ? '#ef4444' : '#d1d5db'} strokeWidth={authMethod === 'explicit' ? 2 : 1} />
-      <text x={60} y={264} textAnchor="middle" fill="#13171b" fontSize={9}>Legacy App</text>
-      <text x={60} y={278} textAnchor="middle" fill="#7d8590" fontSize={8}>Explicit Login</text>
+      <rect x={10} y={248} width={100} height={40} rx={4} fill="var(--stage)" stroke={authMethod === 'explicit' ? 'var(--red)' : 'var(--line-strong)'} strokeWidth={authMethod === 'explicit' ? 2 : 1} />
+      <text x={60} y={264} textAnchor="middle" fill="var(--ink)" fontSize={9}>Legacy App</text>
+      <text x={60} y={278} textAnchor="middle" fill="var(--muted)" fontSize={8}>Explicit Login</text>
 
       {/* Auth check boxes */}
-      <rect x={140} y={48} width={100} height={40} rx={4} fill="#f8fafc" stroke={authMethod === 'kerberos' ? '#22c55e' : '#d1d5db'} strokeWidth={1} />
-      <text x={190} y={64} textAnchor="middle" fill="#22c55e" fontSize={8}>Kerberos</text>
-      <text x={190} y={78} textAnchor="middle" fill="#7d8590" fontSize={7}>AD Ticket</text>
+      <rect x={140} y={48} width={100} height={40} rx={4} fill="var(--stage)" stroke={authMethod === 'kerberos' ? '#5fae57' : 'var(--line-strong)'} strokeWidth={1} />
+      <text x={190} y={64} textAnchor="middle" fill="#5fae57" fontSize={8}>Kerberos</text>
+      <text x={190} y={78} textAnchor="middle" fill="var(--muted)" fontSize={7}>AD Ticket</text>
 
-      <rect x={140} y={148} width={100} height={40} rx={4} fill="#f8fafc" stroke={authMethod === 'trust' ? '#eab308' : '#d1d5db'} strokeWidth={1} />
-      <text x={190} y={164} textAnchor="middle" fill="#eab308" fontSize={8}>Trust Lookup</text>
-      <text x={190} y={178} textAnchor="middle" fill="#7d8590" fontSize={7}>IP / Hostname</text>
+      <rect x={140} y={148} width={100} height={40} rx={4} fill="var(--stage)" stroke={authMethod === 'trust' ? '#e3ae3c' : 'var(--line-strong)'} strokeWidth={1} />
+      <text x={190} y={164} textAnchor="middle" fill="#e3ae3c" fontSize={8}>Trust Lookup</text>
+      <text x={190} y={178} textAnchor="middle" fill="var(--muted)" fontSize={7}>IP / Hostname</text>
 
-      <rect x={140} y={248} width={100} height={40} rx={4} fill="#f8fafc" stroke={authMethod === 'explicit' ? '#ef4444' : '#d1d5db'} strokeWidth={1} />
-      <text x={190} y={264} textAnchor="middle" fill="#ef4444" fontSize={8}>Password</text>
-      <text x={190} y={278} textAnchor="middle" fill="#7d8590" fontSize={7}>PI User Login</text>
+      <rect x={140} y={248} width={100} height={40} rx={4} fill="var(--stage)" stroke={authMethod === 'explicit' ? 'var(--red)' : 'var(--line-strong)'} strokeWidth={1} />
+      <text x={190} y={264} textAnchor="middle" fill="var(--red)" fontSize={8}>Password</text>
+      <text x={190} y={278} textAnchor="middle" fill="var(--muted)" fontSize={7}>PI User Login</text>
 
       {/* Connection lines from active auth to pinetmgr */}
       <line x1={240} y1={activeY} x2={300} y2={170} stroke={info.pathColor} strokeWidth={1.5} opacity={0.4} strokeDasharray="4 2" />
 
       {/* pinetmgr gateway */}
-      <rect x={300} y={140} width={100} height={60} rx={6} fill="#f8fafc" stroke={info.pathColor} strokeWidth={2} />
-      <text x={350} y={162} textAnchor="middle" fill="#13171b" fontSize={9} fontWeight="bold">pinetmgr</text>
-      <text x={350} y={178} textAnchor="middle" fill="#7d8590" fontSize={7}>Network Manager</text>
+      <rect x={300} y={140} width={100} height={60} rx={6} fill="var(--stage)" stroke={info.pathColor} strokeWidth={2} />
+      <text x={350} y={162} textAnchor="middle" fill="var(--ink)" fontSize={9} fontWeight="bold">pinetmgr</text>
+      <text x={350} y={178} textAnchor="middle" fill="var(--muted)" fontSize={7}>Network Manager</text>
       <text x={350} y={190} textAnchor="middle" fill={info.pathColor} fontSize={7}>{info.label}</text>
 
       {/* Arrow to identity */}
       <line x1={400} y1={170} x2={450} y2={170} stroke={info.pathColor} strokeWidth={1.5} opacity={0.4} strokeDasharray="4 2" />
 
       {/* Identity box */}
-      <rect x={450} y={140} width={100} height={60} rx={6} fill="#f8fafc" stroke="#a855f7" strokeWidth={2} />
-      <text x={500} y={158} textAnchor="middle" fill="#a855f7" fontSize={8}>PI Identity</text>
-      <text x={500} y={175} textAnchor="middle" fill="#13171b" fontSize={11} fontWeight="bold">{identity}</text>
-      <text x={500} y={190} textAnchor="middle" fill="#7d8590" fontSize={7}>
+      <rect x={450} y={140} width={100} height={60} rx={6} fill="var(--stage)" stroke="#7c63d0" strokeWidth={2} />
+      <text x={500} y={158} textAnchor="middle" fill="#7c63d0" fontSize={8}>PI Identity</text>
+      <text x={500} y={175} textAnchor="middle" fill="var(--ink)" fontSize={11} fontWeight="bold">{identity}</text>
+      <text x={500} y={190} textAnchor="middle" fill="var(--muted)" fontSize={7}>
         {identity === 'piadmin' ? 'Full Admin' : identity === 'PIOperators' ? 'Operator' : 'Read Only'}
       </text>
 
       {/* Arrow to access */}
-      <line x1={550} y1={170} x2={580} y2={130} stroke="#a855f7" strokeWidth={1.5} opacity={0.4} strokeDasharray="4 2" />
-      <line x1={550} y1={170} x2={580} y2={210} stroke="#a855f7" strokeWidth={1.5} opacity={0.4} strokeDasharray="4 2" />
+      <line x1={550} y1={170} x2={580} y2={130} stroke="#7c63d0" strokeWidth={1.5} opacity={0.4} strokeDasharray="4 2" />
+      <line x1={550} y1={170} x2={580} y2={210} stroke="#7c63d0" strokeWidth={1.5} opacity={0.4} strokeDasharray="4 2" />
 
       {/* PtSecurity lock */}
-      <rect x={580} y={100} width={100} height={55} rx={4} fill="#f8fafc" stroke={accessColor(access.ptConfig)} strokeWidth={1.5} />
-      <text x={630} y={116} textAnchor="middle" fill="#7d8590" fontSize={8}>PtSecurity</text>
+      <rect x={580} y={100} width={100} height={55} rx={4} fill="var(--stage)" stroke={accessColor(access.ptConfig)} strokeWidth={1.5} />
+      <text x={630} y={116} textAnchor="middle" fill="var(--muted)" fontSize={8}>PtSecurity</text>
       <text x={630} y={132} textAnchor="middle" fill={accessColor(access.ptConfig)} fontSize={10} fontWeight="bold">
         {accessLabel(access.ptConfig)}
       </text>
-      <text x={630} y={146} textAnchor="middle" fill="#9ca3af" fontSize={7}>Point Config</text>
+      <text x={630} y={146} textAnchor="middle" fill="var(--muted-2)" fontSize={7}>Point Config</text>
 
       {/* DataSecurity lock */}
-      <rect x={580} y={180} width={100} height={55} rx={4} fill="#f8fafc" stroke={accessColor(access.data)} strokeWidth={1.5} />
-      <text x={630} y={196} textAnchor="middle" fill="#7d8590" fontSize={8}>DataSecurity</text>
+      <rect x={580} y={180} width={100} height={55} rx={4} fill="var(--stage)" stroke={accessColor(access.data)} strokeWidth={1.5} />
+      <text x={630} y={196} textAnchor="middle" fill="var(--muted)" fontSize={8}>DataSecurity</text>
       <text x={630} y={212} textAnchor="middle" fill={accessColor(access.data)} fontSize={10} fontWeight="bold">
         {accessLabel(access.data)}
       </text>
-      <text x={630} y={226} textAnchor="middle" fill="#9ca3af" fontSize={7}>Point Data</text>
+      <text x={630} y={226} textAnchor="middle" fill="var(--muted-2)" fontSize={7}>Point Data</text>
 
       {/* Animated dot */}
       <circle cx={dotX} cy={dotY} r={5} fill={info.pathColor}>
@@ -217,16 +217,16 @@ function SecurityCanvas({
       {/* Database security tables (Step 4) */}
       {currentStep >= 3 && (
         <g transform="translate(10, 310)">
-          <text x={0} y={0} fill="#7d8590" fontSize={8} fontWeight="bold">Database Security Tables:</text>
+          <text x={0} y={0} fill="var(--muted)" fontSize={8} fontWeight="bold">Database Security Tables:</text>
           {DB_TABLES.map((t, i) => {
             const x = i * 112;
             const canAccess = identity === 'piadmin' || (t.name !== 'PIDBSEC' && identity === 'PIOperators');
             return (
               <g key={t.name} transform={`translate(${x}, 8)`}>
-                <rect x={0} y={0} width={106} height={28} rx={3} fill="#f8fafc"
-                  stroke={canAccess ? '#22c55e' : '#ef4444'} strokeWidth={1} />
-                <text x={53} y={12} textAnchor="middle" fill="#13171b" fontSize={8} fontWeight="bold">{t.name}</text>
-                <text x={53} y={24} textAnchor="middle" fill="#7d8590" fontSize={6}>{t.desc}</text>
+                <rect x={0} y={0} width={106} height={28} rx={3} fill="var(--stage)"
+                  stroke={canAccess ? '#5fae57' : 'var(--red)'} strokeWidth={1} />
+                <text x={53} y={12} textAnchor="middle" fill="var(--ink)" fontSize={8} fontWeight="bold">{t.name}</text>
+                <text x={53} y={24} textAnchor="middle" fill="var(--muted)" fontSize={6}>{t.desc}</text>
               </g>
             );
           })}
@@ -264,11 +264,11 @@ export default function Module8({ onBack }: { onBack: () => void }) {
     <div className="rounded-lg p-2 text-xs font-mono shrink-0" style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-card-border)' }}>
       <div className="flex gap-4">
         <span style={{ color: 'var(--color-label)' }}>Auth: <span className="font-semibold" style={{ color: 'var(--color-heading)' }}>{AUTH_INFO[authMethod].label}</span></span>
-        <span style={{ color: 'var(--color-label)' }}>Identity: <span className="font-semibold" style={{ color: '#a855f7' }}>{identity}</span></span>
+        <span style={{ color: 'var(--color-label)' }}>Identity: <span className="font-semibold" style={{ color: '#7c63d0' }}>{identity}</span></span>
       </div>
       <div className="flex gap-4 mt-0.5">
-        <span style={{ color: 'var(--color-label)' }}>PtConfig: <span style={{ color: access.ptConfig === 'rw' ? '#22c55e' : access.ptConfig === 'r' ? '#3b82f6' : '#ef4444' }} className="font-semibold">{access.ptConfig.toUpperCase()}</span></span>
-        <span style={{ color: 'var(--color-label)' }}>Data: <span style={{ color: access.data === 'rw' ? '#22c55e' : access.data === 'r' ? '#3b82f6' : '#ef4444' }} className="font-semibold">{access.data.toUpperCase()}</span></span>
+        <span style={{ color: 'var(--color-label)' }}>PtConfig: <span style={{ color: access.ptConfig === 'rw' ? '#5fae57' : access.ptConfig === 'r' ? '#2f86ce' : 'var(--red)' }} className="font-semibold">{access.ptConfig.toUpperCase()}</span></span>
+        <span style={{ color: 'var(--color-label)' }}>Data: <span style={{ color: access.data === 'rw' ? '#5fae57' : access.data === 'r' ? '#2f86ce' : 'var(--red)' }} className="font-semibold">{access.data.toUpperCase()}</span></span>
       </div>
     </div>
   );
@@ -283,7 +283,7 @@ export default function Module8({ onBack }: { onBack: () => void }) {
       </div>
       <div className="w-px h-6" style={{ backgroundColor: 'var(--color-card-border)' }} />
       <div className="text-center">
-        <div className="text-sm font-bold font-mono" style={{ color: '#a855f7' }}>{identity}</div>
+        <div className="text-sm font-bold font-mono" style={{ color: '#7c63d0' }}>{identity}</div>
         <div className="text-[10px]" style={{ color: 'var(--color-label)' }}>Identity</div>
       </div>
     </div>
@@ -330,7 +330,7 @@ export default function Module8({ onBack }: { onBack: () => void }) {
               <button key={id} onClick={() => setIdentity(id)}
                 className="px-2 py-1 rounded-lg text-xs transition-colors hover:opacity-80"
                 style={identity === id
-                  ? { backgroundColor: '#a855f7', color: 'white' }
+                  ? { backgroundColor: '#7c63d0', color: 'white' }
                   : { backgroundColor: 'var(--color-surface)', color: 'var(--color-body)' }
                 }
               >

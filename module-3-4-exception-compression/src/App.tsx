@@ -1,41 +1,102 @@
-import { useState } from 'react';
-import ModuleSelector from './components/ModuleSelector';
-import ModuleCanvas from './components/ModuleCanvas';
-import { lazy, Suspense } from 'react';
-
-const Module1 = lazy(() => import('./components/module1/Module1'));
-const Module2 = lazy(() => import('./components/module2/Module2'));
-const Module5 = lazy(() => import('./components/module5/Module5'));
-const Module6 = lazy(() => import('./components/module6/Module6'));
-const Module7 = lazy(() => import('./components/module7/Module7'));
-const Module8 = lazy(() => import('./components/module8/Module8'));
-
-function Loading() {
-  return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#e2e6e9' }}>
-      <div className="text-sm" style={{ color: '#7d8590' }}>Loading module...</div>
-    </div>
-  );
-}
+import { useCallback, useEffect, useState } from 'react';
+import IsoDefs from './components/iso/Defs';
+import TopBar from './components/shell/TopBar';
+import CourseTree from './components/shell/CourseTree';
+import LessonView from './components/shell/LessonView';
+import Rail from './components/shell/Rail';
+import ReferenceView from './components/shell/ReferenceView';
+import { go, readStore, stepHref, useRoute, writeStore } from './components/shell/route';
+import { LESSONS } from './lessons';
 
 export default function App() {
-  const [activeModule, setActiveModule] = useState<string | null>(null);
+  const route = useRoute();
+  const lesson = LESSONS.find(l => l.id === route.lessonId) ?? null;
+  const step = lesson ? Math.min(route.step, lesson.steps.length - 1) : 0;
 
-  const goBack = () => setActiveModule(null);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => (document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'));
+  const [progress, setProgress] = useState<Record<string, number>>(() => readStore('ipi:progress', {}));
+  const [paused, setPaused] = useState(false);
+  const [replayKey, setReplayKey] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  if (!activeModule) {
-    return <ModuleSelector onSelect={setActiveModule} />;
-  }
+  useEffect(() => {
+    if (route.view === 'ref') return;
+    if (!lesson) go(stepHref(LESSONS[0].id, 0));
+  }, [lesson, route.view]);
+
+  useEffect(() => {
+    if (!lesson || route.view !== 'learn') return;
+    setProgress(p => {
+      if ((p[lesson.id] ?? -1) >= step) return p;
+      const nextP = { ...p, [lesson.id]: step };
+      writeStore('ipi:progress', nextP);
+      return nextP;
+    });
+  }, [lesson, step, route.view]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    writeStore('ipi:theme', theme);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#211e1a' : '#f4ebe0');
+  }, [theme]);
+
+  useEffect(() => {
+    if (lesson) document.title = `${lesson.title} — Inside PI`;
+  }, [lesson]);
+
+  const replay = useCallback(() => {
+    setReplayKey(k => k + 1);
+    setPaused(false);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement;
+      if (t.closest('input, textarea, select, [contenteditable]') || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (!lesson || route.view !== 'learn') return;
+      if (e.key === 'ArrowRight' && step < lesson.steps.length - 1) go(stepHref(lesson.id, step + 1));
+      else if (e.key === 'ArrowLeft' && step > 0) go(stepHref(lesson.id, step - 1));
+      else if (e.key.toLowerCase() === 'r') replay();
+      else if (e.key === ' ') {
+        e.preventDefault();
+        setPaused(p => !p);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lesson, step, route.view, replay]);
 
   return (
-    <Suspense fallback={<Loading />}>
-      {activeModule === 'module34' && <ModuleCanvas onBack={goBack} />}
-      {activeModule === 'module1' && <Module1 onBack={goBack} />}
-      {activeModule === 'module2' && <Module2 onBack={goBack} />}
-      {activeModule === 'module5' && <Module5 onBack={goBack} />}
-      {activeModule === 'module6' && <Module6 onBack={goBack} />}
-      {activeModule === 'module7' && <Module7 onBack={goBack} />}
-      {activeModule === 'module8' && <Module8 onBack={goBack} />}
-    </Suspense>
+    <>
+      <IsoDefs />
+      <div className="app">
+        <TopBar
+          view={route.view}
+          lessonId={lesson?.id ?? null}
+          theme={theme}
+          onTheme={() => setTheme(t => (t === 'dark' ? 'light' : 'dark'))}
+          onMenu={() => setMenuOpen(o => !o)}
+        />
+        <div className="body">
+          <CourseTree currentId={lesson?.id ?? null} progress={progress} open={menuOpen} onNavigate={() => setMenuOpen(false)} />
+          {route.view === 'ref' ? (
+            <ReferenceView />
+          ) : lesson ? (
+            <>
+              <LessonView
+                lesson={lesson}
+                step={step}
+                view={route.view}
+                paused={paused}
+                replayKey={replayKey}
+                onReplay={replay}
+                onTogglePause={() => setPaused(p => !p)}
+              />
+              <Rail lesson={lesson} step={step} view={route.view} visited={progress[lesson.id] ?? step} />
+            </>
+          ) : null}
+        </div>
+      </div>
+    </>
   );
 }
