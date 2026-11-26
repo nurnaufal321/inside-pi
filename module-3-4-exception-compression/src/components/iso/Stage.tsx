@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Pause, Play, RotateCcw } from 'lucide-react';
 import type { LegendItem, Metric } from '../../lessons/types';
 
@@ -16,6 +16,18 @@ interface Props {
 
 export default function Stage({ viewBox, camera = [0, 0, 1], metrics, legend, paused, replayKey, onReplay, onTogglePause, children }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const boxRef = useRef<HTMLElement>(null);
+  const [narrow, setNarrow] = useState(false);
+
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => setNarrow(e.contentRect.width < 640));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const zoom = camera[2] * (narrow ? 1.5 : 1);
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -29,7 +41,7 @@ export default function Stage({ viewBox, camera = [0, 0, 1], metrics, legend, pa
   }, [replayKey]);
 
   return (
-    <section className={`stage${paused ? ' is-paused' : ''}`}>
+    <section ref={boxRef} className={`stage${paused ? ' is-paused' : ''}`}>
       {metrics && metrics.length > 0 && (
         <div className="stage__hud">
           {metrics.map(m => {
@@ -52,7 +64,7 @@ export default function Stage({ viewBox, camera = [0, 0, 1], metrics, legend, pa
         </button>
       </div>
       <svg ref={svgRef} className="stage-svg" viewBox={viewBox} preserveAspectRatio="xMidYMid meet" role="img">
-        <g className="camera" style={{ transform: `scale(${camera[2]}) translate(${-camera[0]}px, ${-camera[1]}px)` }}>
+        <g className="camera" style={{ transform: `scale(${zoom}) translate(${-camera[0]}px, ${-camera[1]}px)` }}>
           <rect x={-3000} y={-3000} width={6000} height={6000} fill="url(#ipi-grid)" />
           <g key={replayKey}>{children}</g>
         </g>

@@ -3,7 +3,7 @@ import { stepHref } from './route';
 
 export default function ReferenceView() {
   return (
-    <main className="sheet" style={{ overflowY: 'auto' }}>
+    <main className="sheet sheet--wide" style={{ overflowY: 'auto' }}>
       <div className="lesson-head">
         <div className="lesson-head__text">
           <div className="crumbs"><span>Reference</span></div>
