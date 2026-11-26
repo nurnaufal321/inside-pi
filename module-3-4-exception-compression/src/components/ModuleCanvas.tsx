@@ -13,7 +13,7 @@ import SVGCanvas from './SVGCanvas';
 import ControlPanel from './ControlPanel';
 import Walkthrough from './Walkthrough';
 import StatsBar from './StatsBar';
-import DocsDrawer from './DocsDrawer';
+import ModuleLayout from './shared/ModuleLayout';
 
 const NUM_POINTS = 120;
 const SCAN_INTERVAL = 2;
@@ -81,92 +81,63 @@ export default function ModuleCanvas({ onBack }: { onBack?: () => void }) {
   if (!pipeline) return null;
 
   return (
-    <div className="flex flex-col h-screen" style={{ backgroundColor: 'var(--color-surface)' }}>
-      <header className="flex items-center justify-between px-4 py-2 shrink-0" style={{
-        backgroundColor: 'var(--color-card)',
-        borderBottom: '1px solid var(--color-card-border)',
-        backdropFilter: 'blur(12px)',
-      }}>
-        <div className="flex items-center gap-3">
-          {onBack && (
-            <button
-              onClick={onBack}
-              className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors hover:opacity-80"
-              style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-body)' }}
-            >
-              &larr; Back
-            </button>
-          )}
-          <div>
-            <h1 className="text-base font-bold" style={{ color: 'var(--color-heading)' }}>PI Exception & Compression Explorer</h1>
-            <p className="text-[11px]" style={{ color: 'var(--color-label)' }}>Module 3 & 4 — Interactive Visual Learning</p>
+    <ModuleLayout
+      title="PI Exception & Compression Explorer"
+      subtitle="Module 3 & 4"
+      onBack={onBack ?? (() => {})}
+      statsBar={<StatsBar stats={pipeline.stats} />}
+      canvas={
+        <SVGCanvas
+          rawEvents={pipeline.rawEvents}
+          exceptionResults={pipeline.exceptionResults}
+          compressionResults={pipeline.compressionResults}
+          archivedEvents={pipeline.archivedEvents}
+          config={config}
+          compressionState={compState}
+          currentStep={currentStep}
+          hoveredEvent={hoveredEvent}
+          onHoverEvent={setHoveredEvent}
+          playbackIndex={playbackIndex}
+        />
+      }
+      detailPanel={
+        hoveredEvent && (
+          <div className="rounded-lg p-2 text-xs shrink-0" style={{ backgroundColor: 'var(--field)', border: '1px solid var(--line)' }}>
+            <div className="flex gap-4">
+              <span style={{ color: 'var(--muted)' }}>t=<span style={{ color: 'var(--ink)' }}>{hoveredEvent.time.toFixed(1)}s</span></span>
+              <span style={{ color: 'var(--muted)' }}>val=<span style={{ color: 'var(--ink)' }}>{hoveredEvent.value.toFixed(4)}</span></span>
+              <span style={{ color: 'var(--muted)' }}>status=<span className="font-semibold" style={{ color: '#1f63a0' }}>{hoveredEvent.status}</span></span>
+            </div>
+            <div className="mt-0.5" style={{ color: 'var(--muted)' }}>{hoveredEvent.reason}</div>
+            {hoveredEvent.slopeMin !== undefined && hoveredEvent.slopeMax !== undefined && (
+              <div className="mt-0.5" style={{ color: 'var(--muted)' }}>
+                slopes: [{hoveredEvent.slopeMin.toFixed(4)}, {hoveredEvent.slopeMax.toFixed(4)}]
+                {hoveredEvent.slopeRef !== undefined && <span className="ml-2">ref: {hoveredEvent.slopeRef.toFixed(4)}</span>}
+              </div>
+            )}
           </div>
-        </div>
-        <StatsBar stats={pipeline.stats} />
-      </header>
-
-      <div className="flex flex-1 min-h-0">
-        <div className="w-[65%] flex flex-col p-3 gap-2 min-h-0">
-          <div className="flex-1 min-h-0">
-            <SVGCanvas
-              rawEvents={pipeline.rawEvents}
-              exceptionResults={pipeline.exceptionResults}
-              compressionResults={pipeline.compressionResults}
-              archivedEvents={pipeline.archivedEvents}
+        )
+      }
+      sidebar={
+        <div className="flex flex-col gap-4">
+          <Walkthrough currentStep={currentStep} onStepChange={setCurrentStep} />
+          <div className="pt-3" style={{ borderTop: '1px dashed var(--line-strong)' }}>
+            <ControlPanel
               config={config}
-              compressionState={compState}
-              currentStep={currentStep}
-              hoveredEvent={hoveredEvent}
-              onHoverEvent={setHoveredEvent}
+              onConfigChange={setConfig}
+              preset={preset}
+              onPresetChange={setPreset}
               playbackIndex={playbackIndex}
+              maxIndex={pipeline.rawEvents.length - 1}
+              onPlaybackChange={setPlaybackIndex}
+              isPlaying={isPlaying}
+              onTogglePlay={() => setIsPlaying(p => !p)}
+              playbackSpeed={playbackSpeed}
+              onSpeedChange={setPlaybackSpeed}
             />
           </div>
-
-          {hoveredEvent && (
-            <div className="rounded-lg p-2 text-xs font-mono shrink-0" style={{
-              backgroundColor: 'var(--color-card)',
-              border: '1px solid var(--color-card-border)',
-            }}>
-              <div className="flex gap-4">
-                <span style={{ color: 'var(--color-label)' }}>t=<span style={{ color: 'var(--color-heading)' }}>{hoveredEvent.time.toFixed(1)}s</span></span>
-                <span style={{ color: 'var(--color-label)' }}>val=<span style={{ color: 'var(--color-heading)' }}>{hoveredEvent.value.toFixed(4)}</span></span>
-                <span style={{ color: 'var(--color-label)' }}>status=<span className="font-semibold" style={{ color: '#2563eb' }}>{hoveredEvent.status}</span></span>
-              </div>
-              <div className="mt-0.5" style={{ color: 'var(--color-label)' }}>{hoveredEvent.reason}</div>
-              {hoveredEvent.slopeMin !== undefined && hoveredEvent.slopeMax !== undefined && (
-                <div className="mt-0.5" style={{ color: 'var(--color-label)' }}>
-                  slopes: [{hoveredEvent.slopeMin.toFixed(4)}, {hoveredEvent.slopeMax.toFixed(4)}]
-                  {hoveredEvent.slopeRef !== undefined && <span className="ml-2">ref: {hoveredEvent.slopeRef.toFixed(4)}</span>}
-                </div>
-              )}
-            </div>
-          )}
         </div>
-
-        <div className="w-[35%] flex flex-col min-h-0 overflow-y-auto" style={{ borderLeft: '1px solid var(--color-card-border)' }}>
-          <div className="p-3 flex flex-col gap-4">
-            <Walkthrough currentStep={currentStep} onStepChange={setCurrentStep} />
-            <div className="pt-3" style={{ borderTop: '1px solid var(--color-card-border)' }}>
-              <ControlPanel
-                config={config}
-                onConfigChange={setConfig}
-                preset={preset}
-                onPresetChange={setPreset}
-                playbackIndex={playbackIndex}
-                maxIndex={pipeline.rawEvents.length - 1}
-                onPlaybackChange={setPlaybackIndex}
-                isPlaying={isPlaying}
-                onTogglePlay={() => setIsPlaying(p => !p)}
-                playbackSpeed={playbackSpeed}
-                onSpeedChange={setPlaybackSpeed}
-              />
-            </div>
-          </div>
-          <div className="mt-auto">
-            <DocsDrawer />
-          </div>
-        </div>
-      </div>
-    </div>
+      }
+    />
   );
 }
