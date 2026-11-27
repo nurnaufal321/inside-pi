@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { BookMarked, BookOpen, FlaskConical, Menu, Moon, Search, Sun } from 'lucide-react';
+import { BookMarked, BookOpen, FlaskConical, Menu, Moon, PanelLeftClose, PanelLeftOpen, Search, Sun } from 'lucide-react';
 import { IsoBox } from '../iso/primitives';
 import { iso } from '../iso/iso';
 import { LESSONS } from '../../lessons';
@@ -8,7 +8,7 @@ import { go, stepHref, type View } from './route';
 function Logo() {
   const cubes: [number, number, 'orange' | 'blue' | 'purple'][] = [[0, -1.6, 'orange'], [-1.1, 0.6, 'blue'], [1.1, 0.6, 'purple']];
   return (
-    <svg width="30" height="30" viewBox="-34 -40 68 64" aria-hidden="true">
+    <svg width="40" height="28" viewBox="-52 -43 104 72" aria-hidden="true">
       {cubes.map(([x, y, t]) => {
         const [sx, sy] = iso(x, y);
         return (
@@ -27,9 +27,11 @@ interface Props {
   theme: 'light' | 'dark';
   onTheme: () => void;
   onMenu: () => void;
+  /** Desktop only: whether the course sidebar is collapsed. */
+  navCollapsed: boolean;
 }
 
-export default function TopBar({ view, lessonId, theme, onTheme, onMenu }: Props) {
+export default function TopBar({ view, lessonId, theme, onTheme, onMenu, navCollapsed }: Props) {
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
   const input = useRef<HTMLInputElement>(null);
@@ -70,6 +72,9 @@ export default function TopBar({ view, lessonId, theme, onTheme, onMenu }: Props
     <header className="topbar">
       <button className="icon-btn menu-btn" onClick={onMenu} aria-label="Open course menu">
         <Menu className="i" />
+      </button>
+      <button className="icon-btn collapse-btn" onClick={onMenu} aria-label={navCollapsed ? 'Show course sidebar' : 'Hide course sidebar'} title={navCollapsed ? 'Show course sidebar' : 'Hide course sidebar'}>
+        {navCollapsed ? <PanelLeftOpen className="i" /> : <PanelLeftClose className="i" />}
       </button>
       <a className="brand" href={stepHref(LESSONS[0].id, 0)}>
         <Logo />

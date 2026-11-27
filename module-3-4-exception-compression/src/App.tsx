@@ -19,6 +19,13 @@ export default function App() {
   const [paused, setPaused] = useState(false);
   const [replayKey, setReplayKey] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navCollapsed, setNavCollapsed] = useState<boolean>(() => readStore('ipi:nav-collapsed', false));
+  useEffect(() => writeStore('ipi:nav-collapsed', navCollapsed), [navCollapsed]);
+  /** Phones open the sidebar as an overlay; wider screens collapse it in place. */
+  const toggleNav = useCallback(() => {
+    if (window.matchMedia('(max-width: 820px)').matches) setMenuOpen(o => !o);
+    else setNavCollapsed(c => !c);
+  }, []);
   const [railSlot, setRailSlot] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -77,10 +84,11 @@ export default function App() {
           lessonId={lesson?.id ?? null}
           theme={theme}
           onTheme={() => setTheme(t => (t === 'dark' ? 'light' : 'dark'))}
-          onMenu={() => setMenuOpen(o => !o)}
+          onMenu={toggleNav}
+          navCollapsed={navCollapsed}
         />
         <RailSlot.Provider value={railSlot}>
-        <div className="body">
+        <div className={`body${navCollapsed ? ' is-nav-collapsed' : ''}`}>
           <CourseTree currentId={lesson?.id ?? null} progress={progress} open={menuOpen} onNavigate={() => setMenuOpen(false)} />
           {route.view === 'ref' ? (
             <ReferenceView />
