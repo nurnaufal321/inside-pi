@@ -18,6 +18,7 @@ import daCollectives from './da-collectives';
 import daBackups from './da-backups';
 import daTuning from './da-tuning';
 import ifUniint from './if-uniint';
+import ifFailover from './if-failover';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -50,4 +51,5 @@ export const LESSONS: Lesson[] = [
   daBackups,
   daTuning,
   ifUniint,
+  ifFailover,
 ];
