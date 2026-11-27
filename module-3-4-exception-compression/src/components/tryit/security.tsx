@@ -4,7 +4,7 @@ import { Block, Crowd, Ent, Link, Pill, Slab, Token, type PacketKind } from '../
 import { polyLength, pointAt, screenPath, textWidth, type GridPt, type P as Pt } from '../iso/iso';
 import { SEC } from '../../lessons/security';
 import type { Metric } from '../../lessons/types';
-import { Action, Choice, RailPortal, Scenarios, Section, Toggle, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
+import { Action, Choice, Checklist, RailPortal, Scenarios, Section, Toggle, TryFrame, useLoop, type LogLine, type Scenario, useTasks } from './kit';
 
 const { LANE, CLIENT_Y, GATE_Y, ID_Y, P, D, WORLD, Z, SZ, H, PAD, clientToGate, gateToId, idToP, toWorld } = SEC;
 
@@ -290,6 +290,15 @@ export default function SecuritySim() {
 
   const s = sim.current;
   const id = identityFor(cfg);
+  const tasks = useTasks([
+    { text: 'Send a read as Windows → PIOperators', watch: 'Viewing data needs read on PIPOINT, DataSecurity and PtSecurity. PIOperators has all three.', when: cfg.method === 'windows' && cfg.mapped === 'PIOperators' && cfg.request === 'read' && !!s.last?.ok },
+    { text: 'Change the request to edit attributes', watch: 'Editing needs read/write on the point’s PtSecurity. PIOperators only has read, so it is denied.', when: cfg.method === 'windows' && cfg.request === 'attrs' && s.last !== null && !s.last.ok },
+    { text: 'Switch to PI trust and write values', watch: 'The trust matches the interface’s app, IP and host. Writing needs read/write on DataSecurity.', when: cfg.method === 'trust' && cfg.request === 'write' && !!s.last?.ok },
+    { text: 'Turn off Trust matches', watch: 'No trust matches the connection any more, so it is refused.', when: cfg.method === 'trust' && !cfg.trustMatches && s.last !== null && !s.last.ok },
+    { text: 'Switch to explicit login, then Disable explicit logins', watch: 'The password route is refused at the gate. Windows users keep working.', when: cfg.method === 'explicit' && cfg.explicitOff && s.last !== null && !s.last.ok },
+    { text: 'Back to Windows read, then disable PIWorld', watch: 'PIOperators’ read on DataSecurity came from PIWorld, so disabling it denies the read.', when: cfg.method === 'windows' && cfg.request === 'read' && !cfg.piworld && s.last !== null && !s.last.ok },
+  ], resetKey);
+
   const metrics: Metric[] = [
     { label: 'Method', value: cfg.method === 'windows' ? 'Windows' : cfg.method === 'trust' ? 'PI trust' : 'explicit', icon: KeyRound, tone: cfg.method === 'windows' ? 'good' : cfg.method === 'trust' ? 'warn' : 'bad' },
     { label: 'Identity', value: id, icon: IdCard, tone: id === 'piadmin' ? 'bad' : undefined },
@@ -331,6 +340,7 @@ export default function SecuritySim() {
       </TryFrame>
 
       <RailPortal>
+        <Checklist tasks={tasks} done="Authentication picks your identities, PIWorld adds one for everyone, and each request needs the right access on PIPOINT, DataSecurity and PtSecurity." />
         <Scenarios items={SCENARIOS} current={scenario} onPick={pick} />
         <Section title="Connect as">
           <Choice<Method>

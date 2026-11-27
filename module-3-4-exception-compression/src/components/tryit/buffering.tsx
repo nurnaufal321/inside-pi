@@ -4,7 +4,7 @@ import { Block, Cylinder, Ent, Link, Pill, Slab, Token, type LinkKind, type Pack
 import { polyLength, pointAt, screenPath, type GridPt, type P as Pt } from '../iso/iso';
 import { BUF } from '../../lessons/buffering';
 import type { Metric } from '../../lessons/types';
-import { Action, Choice, RailPortal, Scenarios, Section, Slider, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
+import { Action, Choice, Checklist, RailPortal, Scenarios, Section, Slider, TryFrame, useLoop, type LogLine, type Scenario, useTasks } from './kit';
 
 const { I, B, Z, MX, BUS, MEMBERS, QUEUES, MEMBER_PILL, paths } = BUF;
 
@@ -195,6 +195,15 @@ export default function BufferingSim() {
   const free = MEMBERS.reduce((a, _, m) => a + (cfg.modes[m] === 'dismounted' ? 0 : cfg.disk - s.queue[m]), 0);
   const capacity = Math.max(0, Math.round(free / Math.max(1, cfg.rate * MEMBERS.length)));
   const connected = cfg.modes.filter(m => m === 'connected').length;
+  const tasks = useTasks([
+    { text: 'Set Member 2 to network down', watch: 'Its queue grows while Members 1 and 3 carry on. Nothing is lost yet; it is late.', when: cfg.modes[1] === 'down' && s.queue[1] >= 5 },
+    { text: 'Reconnect Member 2', watch: 'The buffer sends its backlog, oldest first, in a burst until the queue is empty.', when: cfg.modes[1] === 'connected' && s.queue[1] === 0 },
+    { text: 'Set Member 3 to -bc stop', watch: '-bc stop keeps queuing but stops sending.', when: cfg.modes[2] === 'stopped' && s.queue[2] >= 3 },
+    { text: 'Set Member 1 to -bc dismount', watch: '-bc dismount stops queuing: Member 1’s data is lost.', when: cfg.modes[0] === 'dismounted' && s.lost[0] > 0 },
+    { text: 'Press pibufss -bc start', watch: 'Both members resume, and Member 3 sends what it queued.', when: connected === MEMBERS.length },
+    { text: 'Set Queue size to 20 and take every member down', watch: 'Watch Capacity count down. Once a queue is full, new data for that server is lost.', when: connected === 0 && cfg.disk <= 20 && totalLost > 0 },
+  ], resetKey);
+
   const metrics: Metric[] = [
     { label: 'Events in', value: String(s.sent), icon: Activity },
     { label: 'Connected', value: `${connected} / 3`, icon: Server, tone: connected === 3 ? 'good' : 'warn' },
@@ -289,6 +298,7 @@ export default function BufferingSim() {
       </TryFrame>
 
       <RailPortal>
+        <Checklist tasks={tasks} done="n-way buffering queues each member separately, so an outage makes data late, not lost, until the queue is full or the member is dismounted." />
         <Scenarios items={SCENARIOS} current={scenario} onPick={pick} />
         <Section title="Members">
           {MEMBERS.map((mb, m) => (

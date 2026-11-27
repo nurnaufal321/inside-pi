@@ -4,7 +4,7 @@ import { Block, Cylinder, Ent, Link, Pill, Slab, Token, type PacketKind } from '
 import { polyLength, pointAt, screenPath, type GridPt, type P as Pt } from '../iso/iso';
 import { ARCH } from '../../lessons/archive-lifecycle';
 import type { Metric } from '../../lessons/types';
-import { Action, Choice, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
+import { Action, Choice, Checklist, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario, useTasks } from './kit';
 
 const { X, SLOT, AX, QX, Z, RX, toArchive, toPiarch } = ARCH;
 
@@ -95,6 +95,8 @@ function freshSim() {
     arriveAcc: 0,
     pullAcc: 0,
     backfillPending: 0,
+    /** Backfill events that reached a historical archive. */
+    backfilled: 0,
     backfillAcc: 0,
     blocked: '' as '' | 'scheduled-full' | 'disk',
     toks: [] as Tok[],
@@ -229,6 +231,7 @@ function step(sim: Sim, cfg: Settings, dt: number) {
       }
       arc.count++;
       sim.written++;
+      sim.backfilled++;
     }
   }
   sim.toks = keep;
@@ -325,6 +328,14 @@ export default function ArchiveLifecycleSim() {
   const s = sim.current;
   const p = s.archives[0];
   const used = Math.min(100, Math.round((p.count / p.cap) * 100));
+  const tasks = useTasks([
+    { text: 'Wait for a shift, or press Force shift', watch: 'A new primary appears and the old one gets an end time.', when: s.shifts >= 1 },
+    { text: 'Set Shift to daily', watch: 'Shifts now happen at midnight, whatever the fill. Each new primary is sized from the past data rate.', when: cfg.schedule === 'daily' && s.shifts >= 2 },
+    { text: 'Set New archive type to dynamic, then Force shift', watch: 'A dynamic archive grows as data arrives, up to its maximum. Compare its height with the fixed ones.', when: s.archives.some(x => x.type === 'dynamic' && !x.converted) },
+    { text: 'Press Backfill', watch: 'Old data lands in the historical archive that covers its time. If that archive is fixed and full, it converts to dynamic so the backfill fits.', when: s.backfilled > 0 },
+    { text: 'Turn on Disk full and wait for the next shift', watch: 'There is no room for a new archive file. With the queue policy, events wait in the event queue.', when: cfg.diskFull && s.blocked === 'disk' },
+  ], resetKey);
+
   const metrics: Metric[] = [
     { label: 'Clock', value: fmtClock(s.now), icon: Clock },
     { label: 'Primary used', value: `${used} %`, icon: Database, tone: s.blocked ? 'bad' : used > 85 ? 'warn' : 'good' },
@@ -366,6 +377,7 @@ export default function ArchiveLifecycleSim() {
       </TryFrame>
 
       <RailPortal>
+        <Checklist tasks={tasks} done="Archives shift when full or on a schedule, backfill finds the archive that covers its time, and a full disk forces a choice between queuing and overwriting." />
         <Scenarios items={SCENARIOS} current={scenario} onPick={pick} />
         <Section title="Data">
           <Slider label="Data rate" value={cfg.rate} min={1} max={14} unit=" ev/s" onChange={v => set({ rate: v })} />

@@ -5,7 +5,7 @@ import { iso, isoPath, polyLength, pointAt, screenPath, type GridPt, type P as P
 import type { Tint } from '../iso/Defs';
 import { TAG_LAYOUT } from '../../lessons/tag-anatomy';
 import type { Metric } from '../../lessons/types';
-import { Choice, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
+import { Choice, Checklist, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario, useTasks } from './kit';
 
 const { T, I, Z, iToT } = TAG_LAYOUT;
 
@@ -198,6 +198,14 @@ export default function TagAnatomySim() {
   }
   const readPt: Pt | null = read ? iso(read.at[0], read.at[1], read.at[2]) : null;
 
+  const tasks = useTasks([
+    { text: 'Turn on Step = 1', watch: 'A read between two stored values now returns the earlier value: a staircase instead of a line.', when: isNum && cfg.step },
+    { text: 'Raise ExcDevPercent to 5 % or more', watch: 'Watch the log: readings inside ExcDev are not sent to the point.', when: isNum && cfg.excPct >= 5 && s.raw > s.sent },
+    { text: 'Switch PointType to float16 and Span to 60', watch: 'Only float16 uses Zero and Span to scale archived values. Values above Zero + Span are stored as Over Range.', when: cfg.type === 'float16' && s.deck.some(d => d.over) },
+    { text: 'Switch PointType to digital', watch: 'One state from the state set is stored. ExcDev is set to zero and ignored, and Step is always on.', when: cfg.type === 'digital' },
+    { text: 'Change Point class to Classic', watch: 'The classic attribute set (InstrumentTag, Location1–Location5) stacks on top of the base set.', when: cfg.cls === 'Classic' },
+  ], resetKey);
+
   const metrics: Metric[] = [
     { label: 'PointType', value: cfg.type, icon: Binary },
     { label: 'Value', value: newest ? (newest.over ? 'Over Range' : label(cfg.type, newest.v)) : '—', icon: TrendingUp, tone: newest?.over ? 'bad' : undefined },
@@ -290,6 +298,7 @@ export default function TagAnatomySim() {
       </TryFrame>
 
       <RailPortal>
+        <Checklist tasks={tasks} done="A point’s type, class and attributes decide what it stores and how a read between two values comes back." />
         <Scenarios items={SCENARIOS} current={scenario} onPick={pick} />
         <Section title="Point">
           <Choice label="PointType" value={cfg.type} options={TYPES} onChange={v => set({ type: v })} />

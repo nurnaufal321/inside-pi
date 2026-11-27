@@ -4,7 +4,7 @@ import { Block, Ent, Link, Pill, Slab, Token, type PacketKind } from '../iso/pri
 import { polyLength, pointAt, screenPath, type GridPt, type P as Pt } from '../iso/iso';
 import { QueueRing, SNAP } from '../../lessons/snapshot-queue';
 import type { Metric } from '../../lessons/types';
-import { Action, Choice, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
+import { Action, Choice, Checklist, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario, useTasks } from './kit';
 
 const { SRC, TABLE, C, Q, A, OVF, TZ, PAGES, TAGS, paths } = SNAP;
 
@@ -300,6 +300,15 @@ export default function SnapshotQueueSim() {
   const cap = Number(cfg.pageSize);
   const future = s.snap.map(sn => sn.value !== null && sn.ts > s.time + 600);
   const behind = s.write !== s.read;
+  const tasks = useTasks([
+    { text: 'Press Send an out-of-order event', watch: 'Its timestamp is older than the snapshot, so it skips compression and goes straight to the event queue (purple).', when: s.stats.ooo > 0 },
+    { text: 'Set Events in to 9 /s and Archive reads to 1 /s', watch: 'The write page runs ahead of the read page and the free pages run out.', when: cfg.rate >= 9 && cfg.archiveRate <= 1 && behind },
+    { text: 'Turn on Archive stalled', watch: 'When every page is full, an overflow queue is created so no data is lost — yet.', when: cfg.stalled && s.overflow > 0 },
+    { text: 'Turn Archive stalled off and raise Archive reads', watch: 'The archive catches up and the overflow queue drains.', when: !cfg.stalled && s.overflow === 0 },
+    { text: 'Press Clock ahead', watch: 'FT-101’s snapshot is an hour ahead, so every new FT-101 event is out of order.', when: future.some(Boolean) },
+    { text: 'Press pisnapss -f', watch: 'The future snapshot is set to NULL and FT-101 events are in order again.', when: !future.some(Boolean) },
+  ], resetKey);
+
   const metrics: Metric[] = [
     { label: 'Events in', value: String(s.stats.in), icon: Activity },
     { label: 'Out of order', value: String(s.stats.ooo), icon: Clock, tone: s.stats.ooo ? 'warn' : undefined },
@@ -393,6 +402,7 @@ export default function SnapshotQueueSim() {
       </TryFrame>
 
       <RailPortal>
+        <Checklist tasks={tasks} done="The snapshot holds one value per point, the event queue absorbs a slow archive, and out-of-order or future timestamps bypass the normal path." />
         <Scenarios items={SCENARIOS} current={scenario} onPick={pick} />
         <Section title="Snapshot">
           <Slider label="Events in" value={cfg.rate} min={1} max={12} unit=" /s" onChange={v => set({ rate: v })} />

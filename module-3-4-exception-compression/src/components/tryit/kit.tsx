@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { Check } from 'lucide-react';
 import Stage from '../iso/Stage';
 import type { LegendItem, Metric } from '../../lessons/types';
 
@@ -182,4 +183,65 @@ export function Scenarios({ items, current, onPick }: { items: Scenario[]; curre
       {items[current] && <p className="ctl-hint">{items[current].hint}</p>}
     </Section>
   );
+}
+
+/* ---------- guided checklist ---------- */
+
+export interface Task {
+  /** What to do, starting with a verb. */
+  text: string;
+  /** What to look at once it's done: a metric, a link, the log. */
+  watch: string;
+  done: boolean;
+}
+
+/**
+ * A guided list of things to try. Tasks tick as the sim sees them happen;
+ * the first open task is highlighted and shows what to watch.
+ */
+export function Checklist({ tasks, done: doneText }: { tasks: Task[]; done: string }) {
+  const current = tasks.findIndex(t => !t.done);
+  const count = tasks.filter(t => t.done).length;
+  return (
+    <div className="ctl-section">
+      <span className="eyebrow ctl-section__title ctl-tasks__head">
+        <span>Try this</span>
+        <span>{count} / {tasks.length}</span>
+      </span>
+      <ol className="ctl-tasks">
+        {tasks.map((t, i) => (
+          <li key={t.text} className={`${t.done ? 'is-done' : ''}${i === current ? ' is-current' : ''}`}>
+            <span className="box">{t.done ? <Check style={{ width: 11, height: 11 }} strokeWidth={3} /> : i + 1}</span>
+            <span>
+              {t.text}
+              {i === current && <small>{t.watch}</small>}
+            </span>
+          </li>
+        ))}
+      </ol>
+      {current === -1 && <p className="ctl-hint">{doneText}</p>}
+    </div>
+  );
+}
+
+export interface TaskDef {
+  text: string;
+  watch: string;
+  /** True while the sim is in the state this task asks for. */
+  when: boolean;
+}
+
+/**
+ * Turns live conditions into checklist tasks. A task ticks the first time its
+ * condition holds while the previous task is already done, and stays ticked
+ * until `resetKey` changes.
+ */
+export function useTasks(defs: TaskDef[], resetKey: number): Task[] {
+  const ref = useRef({ key: resetKey, done: [] as boolean[] });
+  if (ref.current.key !== resetKey) ref.current = { key: resetKey, done: [] };
+  const done = ref.current.done;
+  defs.forEach((t, i) => {
+    if (!done[i] && t.when && (i === 0 || done[i - 1])) done[i] = true;
+  });
+  return defs.map((t, i) => ({ text: t.text, watch: t.watch, done: !!done[i] }));
 }
