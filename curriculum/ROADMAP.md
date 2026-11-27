@@ -65,15 +65,15 @@ Module spec: [`07-da-operations.md`](07-da-operations.md)
 | Backups & Health Checks | `da-backups` | ✅ |
 | Tuning Parameters | `da-tuning` | ✅ |
 
-## 08. Interfaces 🛠
+## 08. Interfaces ✅
 Bundles: `overview-of-pi-interfaces`, `pi-universal-interface-uniint-framework`, `pi-interface-configuration-utility-icu`, `pi-to-pi-interface`
 Module spec: [`08-interfaces.md`](08-interfaces.md)
 
 | Lesson | id | Status |
 |---|---|---|
-| UniInt & Scan Classes | `if-uniint` | ⏳ |
-| Interface Failover | `if-failover` | ⏳ |
-| PI to PI | `if-pi-to-pi` | ⏳ |
+| UniInt & Scan Classes | `if-uniint` | ✅ |
+| Interface Failover | `if-failover` | ✅ |
+| PI to PI | `if-pi-to-pi` | ✅ |
 
 Long tail, linked from these lessons: OPC DA/HDA, RDBMS, UFL, Modbus, DNP3, SNMP, Perfmon, Ping, TCP Response, simulator interfaces, and the batch interfaces (ABB 800xA, AVEVA Batch Management, DeltaV, Syncade, FactoryTalk, PharmaSuite, SIMATIC, PAS-X).
 

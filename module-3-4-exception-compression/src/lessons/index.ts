@@ -19,6 +19,7 @@ import daBackups from './da-backups';
 import daTuning from './da-tuning';
 import ifUniint from './if-uniint';
 import ifFailover from './if-failover';
+import ifPiToPi from './if-pi-to-pi';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -52,4 +53,5 @@ export const LESSONS: Lesson[] = [
   daTuning,
   ifUniint,
   ifFailover,
+  ifPiToPi,
 ];

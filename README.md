@@ -8,7 +8,7 @@ An interactive, isometric course on the **AVEVA PI System**, starting with PI Da
 
 ## The course
 
-Eighteen lessons in seven chapters so far:
+Twenty-one lessons in eight chapters so far:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -30,6 +30,9 @@ Eighteen lessons in seven chapters so far:
 | 07. Data Archive Operations | Collectives & HA | 9 |
 | | Backups & Health Checks | 9 |
 | | Tuning Parameters | 8 |
+| 08. PI Interfaces | UniInt & Scan Classes | 9 |
+| | Interface Failover | 9 |
+| | PI to PI | 8 |
 
 Every lesson has:
 
