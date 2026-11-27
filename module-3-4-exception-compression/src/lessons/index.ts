@@ -11,6 +11,7 @@ import afAttributes from './af-attributes';
 import afEventFrames from './af-event-frames';
 import afSecurity from './af-security';
 import anExpressions from './an-expressions';
+import anRollupsSqc from './an-rollups-sqc';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -34,4 +35,5 @@ export const LESSONS: Lesson[] = [
   afEventFrames,
   afSecurity,
   anExpressions,
+  anRollupsSqc,
 ];
