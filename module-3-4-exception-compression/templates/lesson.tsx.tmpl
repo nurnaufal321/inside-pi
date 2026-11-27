@@ -1,0 +1,103 @@
+import { lazy } from 'react';
+import { Activity, Database, Server } from 'lucide-react';
+import { Block, Ent, Flow, Link, Pill } from '../components/iso/primitives';
+import { straight } from '../components/iso/routes';
+import type { GridPt } from '../components/iso/iso';
+import type { Lesson, SceneProps } from './types';
+
+/*
+ * Scaffolded by `npm run new-lesson`. Replace every TODO.
+ * Layout rules (docs/iso-kit.md): space nodes ~7.5 grid units apart, and make the
+ * last leg of each arrow travel in -x or -y so it lands on a visible front face.
+ */
+
+const A: [number, number] = [0, 7.5];
+const B: [number, number] = [0, 0];
+const C: [number, number] = [0, -7.5];
+
+const aToB: GridPt[] = straight(A, B);
+const bToC: GridPt[] = straight(B, C);
+
+const TOP = { x: -46, y: -100 };
+const BOTTOM = { x: 14, y: 50 };
+
+/** Layout shared with the Try it simulation. */
+export const LAYOUT = { A, B, C, TOP, BOTTOM, paths: { aToB, bToC } };
+
+function Scene({ step }: SceneProps) {
+  return (
+    <g>
+      <Link pts={aToB} />
+      <Link pts={bToC} show={step >= 1} />
+      <Flow pts={aToB} n={2} dur={1.8} kind="blue" />
+      <Flow pts={bToC} n={1} dur={2} kind="ok" show={step >= 1} />
+
+      <Ent x={A[0]} y={A[1]}>
+        <Block label="TODO A" icon={Activity} tint="grey" glow={step === 0 ? 'var(--grey-side-b)' : undefined} />
+        <Pill text="todo-a" {...BOTTOM} mono />
+      </Ent>
+      <Ent x={B[0]} y={B[1]}>
+        <Block label="TODO B" icon={Server} tint="blue" dim={step < 1} glow={step === 1 ? 'var(--blue-side-b)' : undefined} />
+        {step === 1 && <Pill text="TODO" {...TOP} />}
+      </Ent>
+      <Ent x={C[0]} y={C[1]}>
+        <Block label="TODO C" icon={Database} tint="purple" dim={step < 2} />
+      </Ent>
+    </g>
+  );
+}
+
+/** One [x, y, zoom] per step. Aim ~40–50 px above the node in focus. */
+const CAMERA: [number, number, number][] = [
+  [-90, 0, 1.3],
+  [0, -40, 1.3],
+  [0, -20, 1],
+];
+
+const lesson: Lesson = {
+  id: '__ID__',
+  chapter: '__CHAPTER__',
+  title: '__TITLE__',
+  subtitle: 'TODO one-sentence promise of the lesson.',
+  minutes: 8,
+  level: 'Beginner',
+  viewBox: '-420 -250 840 500',
+  camera: s => CAMERA[s],
+  Scene,
+  legend: [
+    { label: 'TODO', color: 'var(--pkt-blue)' },
+    { label: 'TODO', color: 'var(--pkt-ok)' },
+  ],
+  learn: [
+    { text: 'TODO', at: 0 },
+    { text: 'TODO', at: 1 },
+  ],
+  steps: [
+    {
+      short: 'TODO',
+      title: 'TODO',
+      tag: 'concept',
+      body: ['TODO. `code` and *emphasis* are supported.'],
+      callout: { kind: 'idea', text: 'TODO' },
+      metrics: [{ label: 'TODO', value: '—', icon: Activity }],
+    },
+    {
+      short: 'TODO',
+      title: 'TODO',
+      tag: 'mechanism',
+      body: ['TODO'],
+      changed: [{ kind: 'add', text: 'TODO' }],
+    },
+    {
+      short: 'Recap',
+      title: 'TODO',
+      tag: 'recap',
+      body: ['TODO'],
+    },
+  ],
+  // Every URL must come from the PI docs MCP (search_pi_docs → get_page).
+  docs: [],
+  TryIt: lazy(() => import('../components/tryit/__ID__')),
+};
+
+export default lesson;

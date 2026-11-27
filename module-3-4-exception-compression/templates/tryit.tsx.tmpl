@@ -1,0 +1,128 @@
+import { useCallback, useRef, useState } from 'react';
+import { Activity, Database, Server } from 'lucide-react';
+import { Block, Ent, Link, Pill, Token, type PacketKind } from '../iso/primitives';
+import { pointAt, polyLength, screenPath, type P as Pt } from '../iso/iso';
+import { LAYOUT } from '../../lessons/__ID__';
+import type { Metric } from '../../lessons/types';
+import { RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
+
+/*
+ * Scaffolded by `npm run new-lesson`. A live sim: tokens travel the lesson's paths,
+ * rail controls change the rules. Keep the sim state in a ref and re-render each frame.
+ */
+
+type Seg = keyof typeof LAYOUT.paths;
+interface Pkt { id: number; seg: Seg; t: number; kind: PacketKind }
+
+interface Settings { rate: number; broken: boolean }
+const BASE: Settings = { rate: 2, broken: false };
+
+const SCENARIOS: (Scenario & { set: Partial<Settings> })[] = [
+  { title: 'Normal', hint: 'TODO what to watch for.', set: {} },
+  { title: 'Break it', hint: 'TODO what goes wrong.', set: { broken: true } },
+];
+
+const SPEED = 130;
+const ROUTES = Object.fromEntries(
+  Object.entries(LAYOUT.paths).map(([k, v]) => {
+    const pts = screenPath(v);
+    return [k, { pts, len: polyLength(pts) }];
+  }),
+) as Record<Seg, { pts: Pt[]; len: number }>;
+
+function freshSim() {
+  return { acc: 0, nextId: 1, logId: 1, pkts: [] as Pkt[], stats: { sent: 0, done: 0, lost: 0 }, log: [] as LogLine[] };
+}
+type Sim = ReturnType<typeof freshSim>;
+
+function say(sim: Sim, text: string, tone?: LogLine['tone']) {
+  sim.log.push({ id: sim.logId++, text, tone });
+  if (sim.log.length > 8) sim.log.shift();
+}
+
+function step(sim: Sim, cfg: Settings, dt: number) {
+  sim.acc += dt * cfg.rate;
+  while (sim.acc >= 1) {
+    sim.acc -= 1;
+    sim.pkts.push({ id: sim.nextId++, seg: 'aToB', t: 0, kind: 'blue' });
+    sim.stats.sent++;
+  }
+  const next: Pkt[] = [];
+  for (const p of sim.pkts) {
+    p.t += (dt * SPEED) / ROUTES[p.seg].len;
+    if (p.t < 1) { next.push(p); continue; }
+    if (p.seg === 'aToB') {
+      if (cfg.broken) { sim.stats.lost++; say(sim, `#${p.id} lost at B`, 'bad'); continue; }
+      next.push({ ...p, seg: 'bToC', t: 0, kind: 'ok' });
+    } else {
+      sim.stats.done++;
+      say(sim, `#${p.id} reached C`, 'good');
+    }
+  }
+  sim.pkts = next;
+}
+
+export default function __COMPONENT__Sim() {
+  const sim = useRef(freshSim());
+  const [cfg, setCfg] = useState<Settings>(BASE);
+  const [scenario, setScenario] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
+  const [, setFrame] = useState(0);
+
+  useLoop(!paused, dt => {
+    step(sim.current, cfg, dt);
+    setFrame(f => (f + 1) % 1e6);
+  });
+
+  const set = (patch: Partial<Settings>) => setCfg(c => ({ ...c, ...patch }));
+  const pick = (i: number) => { setScenario(i); setCfg({ ...BASE, ...SCENARIOS[i].set }); };
+  const reset = useCallback(() => { sim.current = freshSim(); setResetKey(k => k + 1); setPaused(false); }, []);
+
+  const s = sim.current;
+  const { A, B, C, BOTTOM, paths } = LAYOUT;
+  const metrics: Metric[] = [
+    { label: 'Sent', value: String(s.stats.sent), icon: Activity },
+    { label: 'Arrived', value: String(s.stats.done), icon: Database, tone: 'good' },
+    { label: 'Lost', value: String(s.stats.lost), icon: Server, tone: s.stats.lost ? 'bad' : undefined },
+  ];
+
+  return (
+    <>
+      <TryFrame
+        viewBox="-420 -250 840 500"
+        camera={[0, -20, 1]}
+        metrics={metrics}
+        legend={[{ label: 'in flight', color: 'var(--pkt-blue)' }, { label: 'delivered', color: 'var(--pkt-ok)' }]}
+        paused={paused}
+        onTogglePause={() => setPaused(p => !p)}
+        onReset={reset}
+        resetKey={resetKey}
+        log={s.log}
+      >
+        <Link pts={paths.aToB} />
+        <Link pts={paths.bToC} kind={cfg.broken ? 'bad' : 'solid'} />
+        {s.pkts.map(p => {
+          const [x, y] = pointAt(ROUTES[p.seg].pts, p.t);
+          return <Token key={p.id} x={x} y={y} kind={p.kind} />;
+        })}
+        <Ent x={A[0]} y={A[1]}><Block label="TODO A" icon={Activity} tint="grey" /></Ent>
+        <Ent x={B[0]} y={B[1]}>
+          <Block label="TODO B" icon={Server} tint="blue" glow={cfg.broken ? 'var(--red)' : undefined} />
+          {cfg.broken && <Pill text="broken" tone="bad" {...BOTTOM} />}
+        </Ent>
+        <Ent x={C[0]} y={C[1]}><Block label="TODO C" icon={Database} tint="purple" /></Ent>
+      </TryFrame>
+
+      <RailPortal>
+        <Scenarios items={SCENARIOS} current={scenario} onPick={pick} />
+        <Section title="Controls">
+          <Slider label="Rate" value={cfg.rate} min={1} max={8} unit=" /s" onChange={v => set({ rate: v })} />
+        </Section>
+        <Section title="Break something">
+          <Toggle label="Break B" on={cfg.broken} onChange={v => set({ broken: v })} tone="bad" />
+        </Section>
+      </RailPortal>
+    </>
+  );
+}

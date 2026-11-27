@@ -29,6 +29,10 @@ jobs:
         working-directory: module-3-4-exception-compression
         run: npm ci
 
+      - name: Check lessons
+        working-directory: module-3-4-exception-compression
+        run: npm run check
+
       - name: Build
         working-directory: module-3-4-exception-compression
         run: npx vite build
