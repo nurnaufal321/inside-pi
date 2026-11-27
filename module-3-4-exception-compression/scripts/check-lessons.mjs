@@ -45,7 +45,7 @@ try {
       if (!src.includes('<Checklist')) warn.push(`${l.id}: Try it has no Checklist`);
     }
   }
-  for (const f of files) if (!seen.has(f) && !['types'].includes(f)) warn.push(`src/lessons/${f}.tsx is not registered in LESSONS`);
+  for (const f of files) if (!seen.has(f) && f !== 'types' && !f.endsWith('-kit')) warn.push(`src/lessons/${f}.tsx is not registered in LESSONS`);
   for (const c of CHAPTERS) if (!LESSONS.some(l => l.chapter === c.id)) warn.push(`chapter ${c.id} has no lessons`);
   console.log(`Checked ${LESSONS.length} lessons in ${CHAPTERS.length} chapters.`);
 } finally {

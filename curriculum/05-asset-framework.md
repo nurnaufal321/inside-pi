@@ -91,3 +91,58 @@ An attribute holds one piece of data about an element. It can store a constant v
 
 ### Real-World Engineering Gotcha
 In a formula, the UOM chosen for each parameter is the unit the *equation* needs, and PI AF converts the input into it. Choose a different unit from the one the equation assumes (cm instead of m) and the result is off by the conversion factor.
+
+---
+
+## Module 5.3: Event Frames (`af-event-frames`)
+
+### Core Concept
+An event frame names a period of time, ties it to the assets involved, and calculates its attributes over that period, so you search for events rather than timestamps.
+
+### Verified PI Technical Facts (from MCP)
+- An event frame has a name, start time, end time, attributes and referenced elements; create them from templates. — [Structure of event frames](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1021084.html)
+- The primary referenced element defaults to the first element added; deleting it does not pick a new one. — [Primary referenced element](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1020550.html)
+- `.\Elements[.]|Attribute` reaches the primary element's attribute. — [Data attribute references to primary elements](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1021872.html)
+- Templates define attributes such as reason codes; index frequently searched ones; substitution parameters reuse one template across assets; BTO rules apply. — [Event frame templates](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1022312.html)
+- With no client time context, values are calculated over the event frame's range; default-time PI point references return the value at the end time; supplied ranges are intersected, and no overlap returns No Data. — [Understand time ranges for event frames and transfers](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1020923.html)
+- `%EndTime%` is empty and `%Duration%` runs to now for open event frames. — [List of PI AF substitution parameters](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1022031.html)
+- Capture Values saves values in a PI AF table: faster, stable, preserves short-lived data; recapture is automatic when start/end change; adding attributes requires a recapture, which can lose data if references changed. — [Value capture for event frames and transfers](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1021509.html)
+- Search by Active Between, Starting After, name, element, template, category, attribute value and duration. — [Search for event frames](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1021371.html)
+
+### Interactive Visual Scene
+A time axis on the AF floor holds event-frame boxes (yellow open, orange closed, green captured). TT-101 on the Data Archive feeds the axis; each event references P-101 behind it; captured values flow into an AF table.
+
+### Interactive Controls ("Play With It")
+Pump running hot; Start / End event frame; Capture values on end; Avg Temp attribute template; Recapture values; Duration search (any / ≥ 30 min).
+
+### Step-by-Step Guided Walkthrough
+Events · Structure · Element · Template · Time range · In progress · Capture · Recapture (gotcha) · Search · Recap.
+
+### Real-World Engineering Gotcha
+Attributes added after values were captured are missing from those captures until you recapture.
+
+---
+
+## Module 5.4: AF Security & Check-in (`af-security`)
+
+### Core Concept
+PI AF identities hold permissions, mappings hand them to Windows groups, and every change checks an object out until it is checked in.
+
+### Verified PI Technical Facts (from MCP)
+- Identities represent sets of permissions; mappings point Windows users/groups or IdP roles at them; since AF 2015 no direct Windows grants; effective = union allowed − union denied; database read/write is required. — [Learn about PI AF identities and mappings](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1020037.html)
+- Administrators (all), Engineers (all but Admin, cannot delete databases), World (read all, mapped to Everyone); grant minimum permissions. — [List of PI Asset Framework (AF) identities](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1019424.html)
+- Read/Write vs Read Data/Write Data (non-configuration values), Delete, Execute, Admin (security, forced undo check-out), Annotate. — [List of access permissions](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1020021.html)
+- Child Permission settings (update for modified identities is the default on 2.6+; replace can overwrite custom permissions); composition keeps permissions identical; weak inherits nothing. — [Understand permission inheritance of element objects](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1020015.html)
+- Changes check objects out; red check marks; Check In; Undo Check Out; "locked by user" errors; Admin can undo for all users. — [Learn how to check-in database changes](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1021683.html)
+
+### Interactive Visual Scene
+Windows groups (x 20) → mappings → AF identities (x 10) → element T-101 (x 0); Alice in front of T-101 for check-outs.
+
+### Interactive Controls ("Play With It")
+Bob's groups (Engineering Team, Operators, PI Admins); Operators denies Write Data; Database allows write; Read / Write / Edit / Check in; Alice edits; Undo Alice's check-out.
+
+### Step-by-Step Guided Walkthrough
+Who · Identities · Built-in · Rights · Combine · Database (gotcha) · Inherit · Check out · Locked (gotcha) · Recap.
+
+### Real-World Engineering Gotcha
+An unchecked-in edit locks the object for everyone else until it is checked in or an Admin undoes the check-out.

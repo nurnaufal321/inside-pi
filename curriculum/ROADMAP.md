@@ -33,7 +33,7 @@ Module spec: [`AVEVA_PI_Data_Archive_Interactive_Curriculum.md`](AVEVA_PI_Data_A
 
 ---
 
-## 05. Asset Framework 🛠 (2 of 4)
+## 05. Asset Framework ✅
 Bundles: `pi-server-f-af-pse`, `af-sdk-getting-started`
 Module spec: [`05-asset-framework.md`](05-asset-framework.md)
 
@@ -41,32 +41,52 @@ Module spec: [`05-asset-framework.md`](05-asset-framework.md)
 |---|---|---|
 | Elements & Templates | `af-elements-templates` | ✅ |
 | Attributes & Data References | `af-attributes` | ✅ |
-| Event Frames | `af-event-frames` | ⏳ |
-| AF Security & Check-in | `af-security` | ⏳ |
+| Event Frames | `af-event-frames` | ✅ |
+| AF Security & Check-in | `af-security` | ✅ |
 
-## 06. AF Analytics ⏳
+## 06. AF Analytics ✅
 Bundles: `pi-server-f-af-analytics`
+Module spec: [`06-af-analytics.md`](06-af-analytics.md)
 
-Lessons (draft): Expressions & Scheduling · Rollups & SQC · Event Frame Generation · Backfill & Recalculation
+| Lesson | id | Status |
+|---|---|---|
+| Expressions & Scheduling | `an-expressions` | ✅ |
+| Rollups & SQC | `an-rollups-sqc` | ✅ |
+| Event Frame Generation | `an-ef-generation` | ✅ |
+| Backfill & Recalculation | `an-backfill` | ✅ |
 
-## 07. Data Archive Operations ⏳
+## 07. Data Archive Operations ✅
 Bundles: `pi-server-s-buf-ha`, `pi-server-f-da-smt`, `pi-server-s-da-reference`, `pi-server-s-da-admin`
+Module spec: [`07-da-operations.md`](07-da-operations.md)
 
-Lessons (draft): Collectives & HA · Backups & Archive Health · Tuning Parameters & SMT
+| Lesson | id | Status |
+|---|---|---|
+| Collectives & HA | `da-collectives` | ✅ |
+| Backups & Health Checks | `da-backups` | ✅ |
+| Tuning Parameters | `da-tuning` | ✅ |
 
-## 08. Interfaces ⏳
+## 08. Interfaces ✅
 Bundles: `overview-of-pi-interfaces`, `pi-universal-interface-uniint-framework`, `pi-interface-configuration-utility-icu`, `pi-to-pi-interface`
+Module spec: [`08-interfaces.md`](08-interfaces.md)
 
-Lessons (draft): UniInt & Scan Classes · Configuring with ICU · Interface Failover · PI to PI
+| Lesson | id | Status |
+|---|---|---|
+| UniInt & Scan Classes | `if-uniint` | ✅ |
+| Interface Failover | `if-failover` | ✅ |
+| PI to PI | `if-pi-to-pi` | ✅ |
 
-Long tail, covered as links from these lessons rather than as separate lessons: OPC DA/HDA, RDBMS, UFL, Modbus, DNP3, SNMP, Perfmon, Ping, TCP Response, simulator interfaces, and the batch interfaces (ABB 800xA, AVEVA Batch Management, DeltaV, Syncade, FactoryTalk, PharmaSuite, SIMATIC, PAS-X).
+Long tail, linked from these lessons: OPC DA/HDA, RDBMS, UFL, Modbus, DNP3, SNMP, Perfmon, Ping, TCP Response, simulator interfaces, and the batch interfaces (ABB 800xA, AVEVA Batch Management, DeltaV, Syncade, FactoryTalk, PharmaSuite, SIMATIC, PAS-X).
 
-## 09. Connectors & Adapters ⏳
-Bundles: `overview-of-pi-connectors`, `pi-connector-administration`, `adapter-for-opc-ua`, `adapter-for-mqtt`, `adapter-for-modbus-tcp`, `omf-with-pi-web-api`
+## 09. Connectors & Adapters 🛠
+Bundles: `overview-of-pi-connectors`, `pi-connector-administration`, `adapter-for-opc-ua`, `adapter-for-mqtt`, `omf-with-pi-web-api`
+Module spec: [`09-connectors.md`](09-connectors.md)
 
-Lessons (draft): Connector Architecture (Relay, Data Collection Manager) · Adapters & OMF · OPC UA and MQTT End to End
+| Lesson | id | Status |
+|---|---|---|
+| Connectors, Relay & DCM | `cn-connectors` | ⏳ |
+| Adapters & OMF | `cn-adapters-omf` | ⏳ |
 
-Long tail, linked: the connectors for BACnet, CygNet, EtherNet/IP, FANUC FOCAS, HART-IP, IEC 60870-5-104, IEC 61850, MQTT Sparkplug, OPC UA Gen 1/2, Ping, SIMATIC PCS 7, UFL and Wonderware Historian; the adapters for BACnet, DNP3, RDBMS and Structured Data Files.
+Long tail, linked: the connectors for BACnet, CygNet, EtherNet/IP, FANUC FOCAS, HART-IP, IEC 60870-5-104, IEC 61850, MQTT Sparkplug, OPC UA Gen 1/2, Ping, SIMATIC PCS 7, UFL and Wonderware Historian; the adapters for BACnet, DNP3, Modbus TCP, RDBMS and Structured Data Files.
 
 ## 10. Visualization ⏳
 Bundles: `pi-vision`, `pi-vision-api-reference`, `pi-datalink`, `pi-processbook-to-pi-vision-migration-utility`, `pi-manual-logger`, `rtreports`
