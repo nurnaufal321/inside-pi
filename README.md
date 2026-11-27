@@ -8,7 +8,7 @@ An interactive, isometric course on the **AVEVA PI System**, starting with PI Da
 
 ## The course
 
-Ten lessons in five chapters so far:
+Eleven lessons in five chapters so far:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -22,6 +22,7 @@ Ten lessons in five chapters so far:
 | 05. Asset Framework | Elements & Templates | 10 |
 | | Attributes & Data References | 10 |
 | | Event Frames | 10 |
+| | AF Security & Check-in | 10 |
 
 Every lesson has:
 

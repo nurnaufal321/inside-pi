@@ -120,3 +120,29 @@ Events · Structure · Element · Template · Time range · In progress · Captu
 
 ### Real-World Engineering Gotcha
 Attributes added after values were captured are missing from those captures until you recapture.
+
+---
+
+## Module 5.4: AF Security & Check-in (`af-security`)
+
+### Core Concept
+PI AF identities hold permissions, mappings hand them to Windows groups, and every change checks an object out until it is checked in.
+
+### Verified PI Technical Facts (from MCP)
+- Identities represent sets of permissions; mappings point Windows users/groups or IdP roles at them; since AF 2015 no direct Windows grants; effective = union allowed − union denied; database read/write is required. — [Learn about PI AF identities and mappings](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1020037.html)
+- Administrators (all), Engineers (all but Admin, cannot delete databases), World (read all, mapped to Everyone); grant minimum permissions. — [List of PI Asset Framework (AF) identities](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1019424.html)
+- Read/Write vs Read Data/Write Data (non-configuration values), Delete, Execute, Admin (security, forced undo check-out), Annotate. — [List of access permissions](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1020021.html)
+- Child Permission settings (update for modified identities is the default on 2.6+; replace can overwrite custom permissions); composition keeps permissions identical; weak inherits nothing. — [Understand permission inheritance of element objects](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1020015.html)
+- Changes check objects out; red check marks; Check In; Undo Check Out; "locked by user" errors; Admin can undo for all users. — [Learn how to check-in database changes](https://docs.aveva.com/bundle/pi-server-f-af-pse/page/1021683.html)
+
+### Interactive Visual Scene
+Windows groups (x 20) → mappings → AF identities (x 10) → element T-101 (x 0); Alice in front of T-101 for check-outs.
+
+### Interactive Controls ("Play With It")
+Bob's groups (Engineering Team, Operators, PI Admins); Operators denies Write Data; Database allows write; Read / Write / Edit / Check in; Alice edits; Undo Alice's check-out.
+
+### Step-by-Step Guided Walkthrough
+Who · Identities · Built-in · Rights · Combine · Database (gotcha) · Inherit · Check out · Locked (gotcha) · Recap.
+
+### Real-World Engineering Gotcha
+An unchecked-in edit locks the object for everyone else until it is checked in or an Admin undoes the check-out.

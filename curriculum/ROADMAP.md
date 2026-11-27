@@ -33,7 +33,7 @@ Module spec: [`AVEVA_PI_Data_Archive_Interactive_Curriculum.md`](AVEVA_PI_Data_A
 
 ---
 
-## 05. Asset Framework 🛠 (3 of 4)
+## 05. Asset Framework ✅
 Bundles: `pi-server-f-af-pse`, `af-sdk-getting-started`
 Module spec: [`05-asset-framework.md`](05-asset-framework.md)
 
@@ -42,7 +42,7 @@ Module spec: [`05-asset-framework.md`](05-asset-framework.md)
 | Elements & Templates | `af-elements-templates` | ✅ |
 | Attributes & Data References | `af-attributes` | ✅ |
 | Event Frames | `af-event-frames` | ✅ |
-| AF Security & Check-in | `af-security` | ⏳ |
+| AF Security & Check-in | `af-security` | ✅ |
 
 ## 06. AF Analytics ⏳
 Bundles: `pi-server-f-af-analytics`
