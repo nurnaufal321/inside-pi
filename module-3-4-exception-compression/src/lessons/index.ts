@@ -6,12 +6,14 @@ import snapshotQueue from './snapshot-queue';
 import buffering from './buffering';
 import archiveLifecycle from './archive-lifecycle';
 import security from './security';
+import afElementsTemplates from './af-elements-templates';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
   { id: 'data-flow', title: 'Data Flow', color: '#3fa456' },
   { id: 'reliability', title: 'Reliability', color: '#2f86ce' },
   { id: 'security', title: 'Security', color: '#d9577a' },
+  { id: 'asset-framework', title: 'Asset Framework', color: '#8a6fd1' },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -22,4 +24,5 @@ export const LESSONS: Lesson[] = [
   buffering,
   archiveLifecycle,
   security,
+  afElementsTemplates,
 ];
