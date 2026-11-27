@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Content checks the type checker can't do. Loads the lesson registry through Vite's SSR loader.
 import { createServer } from 'vite';
-import { readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -35,6 +35,12 @@ try {
     for (const d of l.docs) if (!/^https:\/\/docs\.aveva\.com\/bundle\/[\w-]+\/page\//.test(d.url)) e(`docs URL is not a docs.aveva.com bundle page: ${d.url}`);
     const todo = JSON.stringify({ t: l.title, s: l.subtitle, steps: l.steps, learn: l.learn, legend: l.legend });
     if (todo.includes('TODO')) e('still contains TODO text');
+    const tryFile = join(root, 'src/components/tryit', `${l.id}.tsx`);
+    if (existsSync(tryFile)) {
+      const src = readFileSync(tryFile, 'utf8');
+      if (src.includes('TODO')) e(`src/components/tryit/${l.id}.tsx still contains TODO text`);
+      if (!src.includes('<Checklist')) warn.push(`${l.id}: Try it has no Checklist`);
+    }
   }
   for (const f of files) if (!seen.has(f) && !['types'].includes(f)) warn.push(`src/lessons/${f}.tsx is not registered in LESSONS`);
   for (const c of CHAPTERS) if (!LESSONS.some(l => l.chapter === c.id)) warn.push(`chapter ${c.id} has no lessons`);

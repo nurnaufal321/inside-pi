@@ -55,6 +55,7 @@ For anything more complex, write the `GridPt[]` by hand (see `lessons/data-pipel
 - `TryFrame`: the live stage plus the event-log card. Props: `viewBox camera metrics legend paused onTogglePause onReset resetKey log`.
 - `RailPortal`: renders controls into the right rail.
 - `useLoop(running, dt => …)`: a requestAnimationFrame loop (`dt` is in seconds, capped at 0.05).
+- `Checklist`: the guided "Try this" list at the top of the rail. Tasks are `{ text, watch, done }`; the first open task is highlighted with its `watch` hint.
 - Controls: `Scenarios` (preset picker), `Section`, `Slider`, `Toggle` (`tone="bad"` for failure switches), `Choice`, `Action` (a button).
 - Pattern: keep sim state in a `useRef`, mutate it in `step(sim, cfg, dt)`, force a re-render each frame, and move tokens with `pointAt(screenPath(path), t)`. Export the scene's layout from the lesson file (`export const LAYOUT = …`), so the walkthrough and the sim share coordinates.
 

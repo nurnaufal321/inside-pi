@@ -4,7 +4,7 @@ import { Block, Cylinder, Ent, Link, Pill, Token, type PacketKind } from '../iso
 import { pointAt, polyLength, screenPath } from '../iso/iso';
 import { AF_LAYOUT, Zones } from '../../lessons/af-elements-templates';
 import type { Metric } from '../../lessons/types';
-import { Action, Choice, RailPortal, Scenarios, Section, Toggle, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
+import { Action, Checklist, Choice, RailPortal, Scenarios, Section, Toggle, TryFrame, useLoop, type LogLine, type Scenario, type Task } from './kit';
 
 /*
  * A small AF model. The Pump template holds attribute templates and a tag pattern.
@@ -52,7 +52,11 @@ const R_PUSH = paths.ptToE.map(route);
 interface Pkt { id: number; lane: number; t: number; kind: PacketKind; push?: boolean }
 
 function freshSim() {
-  return { acc: 0, nextId: 1, logId: 1, pkts: [] as Pkt[], values: [0, 0, 0], edits: 0, log: [] as LogLine[] };
+  return {
+    acc: 0, nextId: 1, logId: 1, pkts: [] as Pkt[], values: [0, 0, 0], edits: 0, log: [] as LogLine[],
+    /** What the reader has done so far, for the checklist. */
+    got: { locked: false, vibration: false, drift: false, broken: false, fixed: false, extension: false },
+  };
 }
 type Sim = ReturnType<typeof freshSim>;
 
@@ -116,6 +120,7 @@ export default function AfTemplatesSim() {
     sim.current.edits++;
     push();
     const lockedCount = m.locked.filter(Boolean).length;
+    if (lockedCount) sim.current.got.drift = true;
     say(sim.current, lockedCount
       ? `Pattern changed; ${lockedCount} locked-in ref${lockedCount > 1 ? 's' : ''} not updated`
       : 'Tag pattern changed on Pump', lockedCount ? 'warn' : 'info');
@@ -124,6 +129,11 @@ export default function AfTemplatesSim() {
   const createOrUpdate = () => {
     const locked = NAMES.map(n => PATTERNS[m.pattern].resolve(n));
     setM(x => ({ ...x, locked }));
+    const got = sim.current.got;
+    if (locked.every(n => POINTS.has(n))) {
+      got.locked = true;
+      if (got.broken) got.fixed = true;
+    } else got.broken = true;
     locked.forEach((name, i) => {
       say(sim.current, POINTS.has(name) ? `${NAMES[i]} locked to ${name}` : `${NAMES[i]}: no point ${name}`, POINTS.has(name) ? 'good' : 'bad');
     });
@@ -136,6 +146,7 @@ export default function AfTemplatesSim() {
 
   const toggleVibration = (on: boolean) => {
     setM(x => ({ ...x, vibration: on }));
+    if (on) sim.current.got.vibration = true;
     sim.current.edits++;
     push();
     say(sim.current, on ? 'Vibration added to all 3 pumps' : 'Vibration removed from all 3 pumps', 'info');
@@ -145,6 +156,7 @@ export default function AfTemplatesSim() {
     if (m.extension) return;
     if (!m.allowExt) { say(sim.current, 'P-103: extensions not allowed', 'bad'); return; }
     setM(x => ({ ...x, extension: true }));
+    sim.current.got.extension = true;
     say(sim.current, 'P-103 + Seal Temp (extension)', 'good');
   };
 
@@ -154,6 +166,16 @@ export default function AfTemplatesSim() {
   const lockedN = m.locked.filter(Boolean).length;
   const liveN = [0, 1, 2].filter(i => live(m, i)).length;
   const drifted = m.locked.filter((l, i) => l !== null && l !== PATTERNS[m.pattern].resolve(NAMES[i])).length;
+
+  const g = s.got;
+  const tasks: Task[] = [
+    { text: 'Press Create or Update Data Reference', watch: 'Watch the green dots start and Getting data reach 3 / 3: each pump is now locked to its own PI point.', done: g.locked },
+    { text: 'Turn on the Vibration attribute template', watch: 'Watch blue dots carry the change to all three pumps: one template edit, and each pump has 4 attributes.', done: g.vibration },
+    { text: 'Switch the Flow tag pattern to %..\\Element%_%Element%', watch: 'Watch Out of date jump to 3: the template changed, but the locked-in references didn’t follow.', done: g.drift },
+    { text: 'Press Create or Update Data Reference again', watch: 'Watch the links turn red: each pump now looks for Area1_P-10x.Flow, which doesn’t exist.', done: g.broken },
+    { text: 'Fix it: switch the pattern back, then Create or Update', watch: 'Watch Getting data return to 3 / 3.', done: g.fixed },
+    { text: 'Add Seal Temp to P-103, then allow extensions and add it', watch: 'It’s refused until Pump allows extensions. Then only P-103 gets a 5th attribute.', done: g.extension },
+  ];
 
   const metrics: Metric[] = [
     { label: 'Attributes', value: String(attrs), icon: Layers },
@@ -230,6 +252,10 @@ export default function AfTemplatesSim() {
       </TryFrame>
 
       <RailPortal>
+        <Checklist
+          tasks={tasks}
+          done="That’s the lesson: the template defines attributes once, substitution picks each pump’s point, Create or Update locks it in, and locked references ignore later template edits until you update or reset them."
+        />
         <Scenarios items={SCENARIOS} current={scenario} onPick={pick} />
         <Section title="Pump template">
           <Choice<Pattern>

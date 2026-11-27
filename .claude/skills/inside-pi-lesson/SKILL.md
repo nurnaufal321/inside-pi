@@ -57,6 +57,7 @@ This creates `src/lessons/<id>.tsx` and `src/components/tryit/<id>.tsx` from `te
 - **Camera.** Give one `[x, y, zoom]` per step, aimed 40–50 px above the focus node. The recap zooms out to the whole scene (about 0.9–1.0).
 - **`learn`.** 4–6 items, each with `at` set to the step that teaches it.
 - **Try it.** Export the scene layout as `LAYOUT` from the lesson, so the sim reuses the same coordinates. Write a real model of the mechanism (not just decoration), and give it scenarios that show both the normal case and a "break something" case. Log meaningful events to the event log.
+- **Try-it checklist (required).** Open the rail with a `Checklist` of 4–6 tasks that walks the reader through the mechanism in order: do the normal thing, change a rule, break it, fix it. Each task has a verb-first `text`, a `watch` line naming the metric, link or log entry to look at, and a `done` flag the sim sets when it sees the task happen (`sim.got.*`). The `done` message is the lesson's one-sentence takeaway. A reader should never have to ask what the playground is for.
 - Use distinct lucide-react icons, and check that each one exists in the installed version (`node_modules/lucide-react`).
 
 Lessons from the pilot (`af-elements-templates`):
@@ -78,7 +79,7 @@ Both must pass; `check` rejects leftover TODOs, bad `learn.at` values, missing r
 
 Then start the dev server (`npx vite --port 5173` in the background, or the `inside-pi` entry in `.claude/launch.json`) and open `http://localhost:5173/inside-pi/#/<id>/1` in the in-app browser. Step routes are 1-based, and the Try it is `#/<id>/try`. Then:
 - Step through every step (`#/<id>/<n>`). Check that the focus node is in frame, no pill overlaps another, and no arrow crosses a block face.
-- Open Try it, run each scenario, and check that the metrics and log react.
+- Open Try it, work through the checklist from a fresh reset, and check that each task ticks when you do it and the closing message appears. Run each scenario and check that the metrics and log react.
 - Repeat at phone width (`resize_window` mobile) and in dark theme.
 - Fix the scene or camera and look again. Report anything you couldn't fix.
 

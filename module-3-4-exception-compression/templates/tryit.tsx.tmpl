@@ -4,11 +4,13 @@ import { Block, Ent, Link, Pill, Token, type PacketKind } from '../iso/primitive
 import { pointAt, polyLength, screenPath, type P as Pt } from '../iso/iso';
 import { LAYOUT } from '../../lessons/__ID__';
 import type { Metric } from '../../lessons/types';
-import { RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
+import { Checklist, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario, type Task } from './kit';
 
 /*
  * Scaffolded by `npm run new-lesson`. A live sim: tokens travel the lesson's paths,
  * rail controls change the rules. Keep the sim state in a ref and re-render each frame.
+ * The Checklist at the top of the rail tells the reader what to try: set a `got` flag
+ * wherever the sim sees each task happen.
  */
 
 type Seg = keyof typeof LAYOUT.paths;
@@ -31,7 +33,11 @@ const ROUTES = Object.fromEntries(
 ) as Record<Seg, { pts: Pt[]; len: number }>;
 
 function freshSim() {
-  return { acc: 0, nextId: 1, logId: 1, pkts: [] as Pkt[], stats: { sent: 0, done: 0, lost: 0 }, log: [] as LogLine[] };
+  return {
+    acc: 0, nextId: 1, logId: 1, pkts: [] as Pkt[], stats: { sent: 0, done: 0, lost: 0 }, log: [] as LogLine[],
+    /** What the reader has done so far, for the checklist. */
+    got: { delivered: false, lost: false },
+  };
 }
 type Sim = ReturnType<typeof freshSim>;
 
@@ -52,10 +58,11 @@ function step(sim: Sim, cfg: Settings, dt: number) {
     p.t += (dt * SPEED) / ROUTES[p.seg].len;
     if (p.t < 1) { next.push(p); continue; }
     if (p.seg === 'aToB') {
-      if (cfg.broken) { sim.stats.lost++; say(sim, `#${p.id} lost at B`, 'bad'); continue; }
+      if (cfg.broken) { sim.stats.lost++; sim.got.lost = true; say(sim, `#${p.id} lost at B`, 'bad'); continue; }
       next.push({ ...p, seg: 'bToC', t: 0, kind: 'ok' });
     } else {
       sim.stats.done++;
+      sim.got.delivered = true;
       say(sim, `#${p.id} reached C`, 'good');
     }
   }
@@ -81,6 +88,12 @@ export default function __COMPONENT__Sim() {
 
   const s = sim.current;
   const { A, B, C, BOTTOM, paths } = LAYOUT;
+  // 4–6 tasks that walk the reader through the lesson's mechanism, in order.
+  const tasks: Task[] = [
+    { text: 'TODO Watch a packet reach C', watch: 'Watch Arrived count up.', done: s.got.delivered },
+    { text: 'TODO Turn on Break B', watch: 'Watch the red link and the Lost count.', done: s.got.lost },
+  ];
+
   const metrics: Metric[] = [
     { label: 'Sent', value: String(s.stats.sent), icon: Activity },
     { label: 'Arrived', value: String(s.stats.done), icon: Database, tone: 'good' },
@@ -115,6 +128,7 @@ export default function __COMPONENT__Sim() {
       </TryFrame>
 
       <RailPortal>
+        <Checklist tasks={tasks} done="TODO one-sentence takeaway once every task is done." />
         <Scenarios items={SCENARIOS} current={scenario} onPick={pick} />
         <Section title="Controls">
           <Slider label="Rate" value={cfg.rate} min={1} max={8} unit=" /s" onChange={v => set({ rate: v })} />
