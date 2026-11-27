@@ -1,30 +1,60 @@
 import { lazy } from 'react';
-import { Activity, Boxes, Database, EyeOff, Fan, GitBranch, LayoutTemplate, Layers, Lock, Plus, Puzzle, RefreshCw, Variable } from 'lucide-react';
-import { Block, Cylinder, Ent, Flow, Link, Pill } from '../components/iso/primitives';
+import { Activity, Boxes, Network, Server, Database, EyeOff, Fan, GitBranch, LayoutTemplate, Layers, Lock, Plus, Puzzle, RefreshCw, Variable } from 'lucide-react';
+import { Block, Cylinder, Ent, Flow, Link, Pill, Slab } from '../components/iso/primitives';
 import { straight, viaY } from '../components/iso/routes';
 import type { GridPt } from '../components/iso/iso';
 import type { Lesson, SceneProps } from './types';
 
 /*
- * Columns: PI points (x −12) · elements (x 0) · library (x 12, base at 22).
+ * Columns: PI points (x −12) · elements (x 0) · library (x 12; the base template sits in front of Pump at y 10).
  * A 3×3 iso grid needs wider spacing than a single row: 12 between columns, 9 between rows.
  */
-const BT: [number, number] = [22, 0];
+const BT: [number, number] = [12, 10];
 const PT: [number, number] = [12, 0];
 const E: [number, number][] = [[0, 9], [0, 0], [0, -9]];
 const T: [number, number][] = [[-12, 9], [-12, 0], [-12, -9]];
 const NAMES = ['P-101', 'P-102', 'P-103'];
 
 const btToPt: GridPt[] = straight(BT, PT);
-const ptToE: GridPt[][] = [viaY(PT, E[0]), straight(PT, E[1]), viaY(PT, E[2])];
-const eToT: GridPt[][] = E.map((e, i) => straight(e, T[i], 0, 2.4, 1.9));
-const tToE: GridPt[][] = eToT.map(p => [...p].reverse());
+// P-101's route turns at x 5 so it doesn't cross the base template in front of Pump.
+const ptToE: GridPt[][] = [[[9.6, 1.5, 0], [5, 1.5, 0], [5, E[0][1], 0], [2.4, E[0][1], 0]], straight(PT, E[1]), viaY(PT, E[2])];
+/*
+ * Values flow point → element, so the arrow does too. It travels +x into the element,
+ * which would bury the arrowhead behind the block, so it stops 4.5 units short.
+ */
+const tToE: GridPt[][] = T.map((t, i) => straight(t, E[i], 0, 1.9, 4.5));
 
 const TOP = { x: -46, y: -100 };
 const BOTTOM = { x: 14, y: 50 };
 
 /** Layout shared with the Try it simulation. */
-export const AF_LAYOUT = { BT, PT, E, T, NAMES, TOP, BOTTOM, paths: { btToPt, ptToE, eToT, tToE } };
+export const AF_LAYOUT = { BT, PT, E, T, NAMES, TOP, BOTTOM, paths: { btToPt, ptToE, tToE } };
+
+/** Floors that show which server each object lives on. Shared with the Try it. */
+export function Zones({ archiveLabel = 'top' }: { archiveLabel?: 'top' | 'front' }) {
+  return (
+    <g>
+      <Ent x={-12} y={0}>
+        <Slab ax={3.4} ay={12.6} h={4} />
+      </Ent>
+      <Ent x={6} y={0}>
+        <Slab ax={9.4} ay={12.6} h={4} />
+      </Ent>
+      {archiveLabel === 'top' ? (
+        <Ent x={-12} y={-12.6}>
+          <Pill text="PI Data Archive" icon={Server} tone="dark" x={0} y={-44} />
+        </Ent>
+      ) : (
+        <Ent x={-12} y={12.6}>
+          <Pill text="PI Data Archive" icon={Server} tone="dark" x={10} y={24} />
+        </Ent>
+      )}
+      <Ent x={4} y={12.6}>
+        <Pill text="PI AF Server · AF database" icon={Network} tone="dark" x={0} y={24} />
+      </Ent>
+    </g>
+  );
+}
 
 function Scene({ step }: SceneProps) {
   const created = step >= 3;
@@ -36,9 +66,10 @@ function Scene({ step }: SceneProps) {
 
   return (
     <g>
+      <Zones />
       <Link pts={btToPt} show={base} />
       {ptToE.map((p, i) => <Link key={`c${i}`} pts={p} show={created} kind={propagate ? 'solid' : created && step > 3 ? 'muted' : 'solid'} />)}
-      {eToT.map((p, i) => <Link key={`r${i}`} pts={p} show={refs} kind={locked ? 'solid' : 'muted'} />)}
+      {tToE.map((p, i) => <Link key={`r${i}`} pts={p} show={refs} kind={locked ? 'solid' : 'muted'} />)}
 
       <Flow pts={btToPt} n={2} dur={1.8} kind="blue" show={step === 7} />
       {ptToE.map((p, i) => <Flow key={`f${i}`} pts={p} n={2} dur={1.8} kind="blue" show={step === 3 || propagate} delay={i * 0.2} />)}
@@ -46,20 +77,15 @@ function Scene({ step }: SceneProps) {
 
       {T.map((t, i) => (
         <Ent key={NAMES[i]} x={t[0]} y={t[1]}>
-          <Cylinder rx={26} h={40} tint="purple" dim={!refs} icon={i === 2 ? Database : undefined} glow={step === 4 || step === 5 ? 'var(--purple-side-b)' : undefined} />
-          <Pill text={`${NAMES[i]}.Flow`} x={14} y={42} mono />
+          <Cylinder rx={26} h={40} tint="purple" dim={!refs} glow={step === 4 || step === 5 ? 'var(--purple-side-b)' : undefined} />
+          <Pill text={`${NAMES[i]}.Flow`} x={-44} y={30} mono />
         </Ent>
       ))}
-      {refs && (
-        <Ent x={T[2][0]} y={T[2][1]}>
-          <Pill text="PI Data Archive" tone="dark" x={-50} y={-86} />
-        </Ent>
-      )}
 
       {E.map((e, i) => (
         <Ent key={NAMES[i]} x={e[0]} y={e[1]}>
           <Block label={NAMES[i]} icon={Fan} tint={created || step === 0 ? 'green' : 'grey'} dim={step > 0 && step < 3} glow={step === 0 || propagate || (ext && i === 2) ? 'var(--green-side-b)' : undefined} />
-          {step === 0 && i === 0 && <Pill text="Flow · Pressure · Speed — by hand" icon={Activity} tone="warn" {...TOP} />}
+          {step === 0 && i === 0 && <Pill text="Flow · Pressure · Speed — by hand" icon={Activity} tone="warn" x={14} y={78} />}
           {step === 3 && i === 0 && <Pill text="parent-child" icon={GitBranch} {...TOP} />}
           {step === 5 && i === 0 && <Pill text="locked in" icon={Lock} tone="good" {...TOP} />}
           {propagate && i === 0 && <Pill text="+ Vibration" icon={Plus} tone="good" {...TOP} />}
@@ -93,9 +119,9 @@ const CAMERA: [number, number, number][] = [
   [20, -40, 0.95],
   [-110, -70, 1.05],
   [60, -10, 1.0],
-  [230, 80, 1.2],
+  [98, 75, 1.2],
   [126, -105, 1.3],
-  [10, -10, 0.85],
+  [0, 10, 0.82],
 ];
 
 const lesson: Lesson = {

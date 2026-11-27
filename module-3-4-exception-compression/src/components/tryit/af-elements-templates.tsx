@@ -1,8 +1,8 @@
 import { useCallback, useRef, useState } from 'react';
-import { Activity, Database, Fan, LayoutTemplate, Layers, Lock, Puzzle, RefreshCw, RotateCcw, Unlink } from 'lucide-react';
+import { Activity, Fan, LayoutTemplate, Layers, Lock, Puzzle, RefreshCw, RotateCcw, Unlink } from 'lucide-react';
 import { Block, Cylinder, Ent, Link, Pill, Token, type PacketKind } from '../iso/primitives';
 import { pointAt, polyLength, screenPath } from '../iso/iso';
-import { AF_LAYOUT } from '../../lessons/af-elements-templates';
+import { AF_LAYOUT, Zones } from '../../lessons/af-elements-templates';
 import type { Metric } from '../../lessons/types';
 import { Action, Choice, RailPortal, Scenarios, Section, Toggle, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
 
@@ -12,7 +12,7 @@ import { Action, Choice, RailPortal, Scenarios, Section, Toggle, TryFrame, useLo
  * Values flow from a PI point only when the locked-in name matches a point that exists.
  */
 
-const { BT, PT, E, T, NAMES, TOP, BOTTOM, paths } = AF_LAYOUT;
+const { BT, PT, E, T, NAMES, BOTTOM, paths } = AF_LAYOUT;
 const PARENT = 'Area1';
 
 type Pattern = 'element' | 'parent';
@@ -117,35 +117,35 @@ export default function AfTemplatesSim() {
     push();
     const lockedCount = m.locked.filter(Boolean).length;
     say(sim.current, lockedCount
-      ? `Template pattern → ${PATTERNS[pattern].label}. ${lockedCount} locked-in reference${lockedCount > 1 ? 's' : ''} unchanged.`
-      : `Template pattern → ${PATTERNS[pattern].label}.`, lockedCount ? 'warn' : 'info');
+      ? `Pattern changed; ${lockedCount} locked-in ref${lockedCount > 1 ? 's' : ''} not updated`
+      : 'Tag pattern changed on Pump', lockedCount ? 'warn' : 'info');
   };
 
   const createOrUpdate = () => {
     const locked = NAMES.map(n => PATTERNS[m.pattern].resolve(n));
     setM(x => ({ ...x, locked }));
     locked.forEach((name, i) => {
-      say(sim.current, POINTS.has(name) ? `${NAMES[i]}.Flow → ${name} (locked in)` : `${NAMES[i]}.Flow → ${name}: no such PI point`, POINTS.has(name) ? 'good' : 'bad');
+      say(sim.current, POINTS.has(name) ? `${NAMES[i]} locked to ${name}` : `${NAMES[i]}: no point ${name}`, POINTS.has(name) ? 'good' : 'bad');
     });
   };
 
   const resetToTemplate = () => {
     setM(x => ({ ...x, locked: [null, null, null] }));
-    say(sim.current, 'Reset to Template: data references back to the template; run Create or Update again.', 'warn');
+    say(sim.current, 'Reset to Template: refs unlocked', 'warn');
   };
 
   const toggleVibration = (on: boolean) => {
     setM(x => ({ ...x, vibration: on }));
     sim.current.edits++;
     push();
-    say(sim.current, on ? 'Pump + Vibration → propagated to 3 elements' : 'Pump − Vibration → removed from 3 elements', 'info');
+    say(sim.current, on ? 'Vibration added to all 3 pumps' : 'Vibration removed from all 3 pumps', 'info');
   };
 
   const addExtension = () => {
     if (m.extension) return;
-    if (!m.allowExt) { say(sim.current, 'P-103: can’t add Seal Temp — Pump does not allow extensions', 'bad'); return; }
+    if (!m.allowExt) { say(sim.current, 'P-103: extensions not allowed', 'bad'); return; }
     setM(x => ({ ...x, extension: true }));
-    say(sim.current, 'P-103 + Seal Temp (extension, not on the template)', 'good');
+    say(sim.current, 'P-103 + Seal Temp (extension)', 'good');
   };
 
   const s = sim.current;
@@ -167,7 +167,7 @@ export default function AfTemplatesSim() {
     <>
       <TryFrame
         viewBox="-420 -250 840 500"
-        camera={[20, -15, 1.0]}
+        camera={[-30, 5, 0.88]}
         metrics={metrics}
         legend={[
           { label: 'template change', color: 'var(--pkt-blue)' },
@@ -179,9 +179,10 @@ export default function AfTemplatesSim() {
         resetKey={resetKey}
         log={s.log}
       >
+        <Zones archiveLabel="front" />
         <Link pts={paths.btToPt} />
         {paths.ptToE.map((p, i) => <Link key={`c${i}`} pts={p} kind="muted" />)}
-        {paths.eToT.map((p, i) => (
+        {paths.tToE.map((p, i) => (
           <Link key={`r${i}`} pts={p} show={m.locked[i] !== null} kind={live(m, i) ? 'solid' : 'bad'} />
         ))}
 
@@ -193,8 +194,8 @@ export default function AfTemplatesSim() {
 
         {T.map((t, i) => (
           <Ent key={`t${i}`} x={t[0]} y={t[1]}>
-            <Cylinder rx={26} h={40} tint="purple" dim={!live(m, i)} icon={i === 2 ? Database : undefined} />
-            <Pill text={`${NAMES[i]}.Flow`} x={14} y={42} mono />
+            <Cylinder rx={26} h={40} tint="purple" dim={!live(m, i)} />
+            <Pill text={`${NAMES[i]}.Flow`} x={-44} y={30} mono />
           </Ent>
         ))}
 
@@ -208,7 +209,8 @@ export default function AfTemplatesSim() {
                 text={name ? `→ ${name}` : 'no data reference'}
                 icon={name ? Lock : Unlink}
                 tone={!name ? 'warn' : ok ? 'good' : 'bad'}
-                {...TOP}
+                x={10}
+                y={-88}
                 mono={!!name}
               />
               <Pill text={`${perEl + (i === 2 && m.extension ? 1 : 0)} attributes${i === 2 && m.extension ? ' · +ext' : ''}`} {...BOTTOM} mono />
@@ -218,8 +220,8 @@ export default function AfTemplatesSim() {
 
         <Ent x={PT[0]} y={PT[1]}>
           <Block label="Pump" icon={LayoutTemplate} tint="blue" />
-          <Pill text={PATTERNS[m.pattern].label} x={14} y={78} mono />
-          <Pill text={`Flow · Pressure · Speed${m.vibration ? ' · Vibration' : ''}`} x={14} y={50} />
+          <Pill text={PATTERNS[m.pattern].label} x={30} y={52} mono />
+          <Pill text={`${perEl} attribute templates`} icon={Layers} x={30} y={78} />
         </Ent>
         <Ent x={BT[0]} y={BT[1]}>
           <Block label={['Rotating', 'Equipment']} tint="grey" />

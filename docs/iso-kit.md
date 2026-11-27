@@ -14,6 +14,11 @@ Every lesson scene and Try-it simulation is drawn with the primitives in `module
 - Point the camera **40–50 px above** the node in focus, because the metric chips cover the top of the stage.
 - Standard pill offsets relative to an `Ent`: `TOP = { x: -46, y: -100 }` (state or annotation) and `BOTTOM = { x: 14, y: 50 }` (process name, `mono`).
 - Raised tiers: put a `Slab` under a group and set `z` (for example `Z = 10`) on the `Ent`s and path points on it.
+- **Arrows follow the flow.** If packets travel A → B, the arrow points A → B. When that arrow must travel +x or +y into a block, end it about **4.5 units** short (`straight(a, b, 0, 1.9, 4.5)`) so the block doesn't hide the arrowhead.
+- **Label every server or system.** Put a low `Slab` (`h={4}`) under each system's nodes and a `tone="dark"` pill naming it (PI Data Archive, PI AF Server…). Put the label on an edge no node or metric chip covers.
+- **Icons mean something.** Give every node of a kind the same icon (or none). Don't put an icon on one cylinder of a row.
+- **Keep the scene compact.** Aim for under about 780 px wide so it fits narrow screens; tuck secondary nodes in front of or behind main ones instead of extending the row.
+- **Short text in the scene and the log.** Pills hold a few words; log lines fit in one column (about 40 characters).
 - `viewBox` is normally `'-420 -250 840 500'`. `camera(step)` returns `[x, y, zoom]` in viewBox pixels, with zoom from about 0.9 (overview) to 1.4 (close-up).
 
 ## Primitives (`primitives.tsx`)

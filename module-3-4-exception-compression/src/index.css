@@ -470,7 +470,7 @@ a { color: inherit; text-decoration: none; }
 .log { padding-bottom: 10px; }
 .log__rows { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 18px; margin: 9px 0 0; padding: 0; font-size: 11.5px; min-height: 40px; }
 .log__rows li { display: flex; gap: 8px; min-width: 0; color: var(--ink-2); animation: rise 0.3s ease; }
-.log__rows li span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.log__rows li span { min-width: 0; overflow-wrap: anywhere; }
 .log__rows li b { flex: none; color: var(--muted-2); font-weight: 600; }
 .log__rows li.is-good span { color: var(--green-ink); }
 .log__rows li.is-bad span { color: #c0392b; }

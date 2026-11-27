@@ -63,6 +63,9 @@ Lessons from the pilot (`af-elements-templates`):
 - A **grid** of nodes (for example 3 columns × 3 rows) needs more room than a single row. Use about 12 units between columns and 9 between rows, or diagonal neighbours overlap on screen.
 - Only label one node in a repeated row (for example `elements` under P-101), not every one.
 - Long code pills (configuration strings) go *below* their node (`x={14} y={78}`, under the BOTTOM pill), not in the TOP slot, where they collide with neighbours.
+- Arrows must point the way the packets move. Reviewers notice dots flowing against an arrow straight away.
+- Label each PI component the scene shows (PI Data Archive, PI AF Server, interface node…) with a floor slab and a dark pill. Don't leave the reader to infer it.
+- Check at narrow width that no pill is clipped or covered, and that no node has a stray icon the others in its row lack.
 - Don't put a claim in the Try-it log that the docs don't make (for example what Reset to Template does to extensions).
 
 ### 5. Verify
