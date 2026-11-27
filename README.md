@@ -8,7 +8,7 @@ An interactive, isometric course on the **AVEVA PI System**, starting with PI Da
 
 ## The course
 
-Fifteen lessons in six chapters so far:
+Eighteen lessons in seven chapters so far:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -27,6 +27,9 @@ Fifteen lessons in six chapters so far:
 | | Rollups & SQC | 9 |
 | | Event Frame Generation | 9 |
 | | Backfill & Recalculation | 9 |
+| 07. Data Archive Operations | Collectives & HA | 9 |
+| | Backups & Health Checks | 9 |
+| | Tuning Parameters | 8 |
 
 Every lesson has:
 
