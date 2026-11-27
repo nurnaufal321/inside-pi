@@ -15,6 +15,7 @@ import anRollupsSqc from './an-rollups-sqc';
 import anEfGeneration from './an-ef-generation';
 import anBackfill from './an-backfill';
 import daCollectives from './da-collectives';
+import daBackups from './da-backups';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -43,4 +44,5 @@ export const LESSONS: Lesson[] = [
   anEfGeneration,
   anBackfill,
   daCollectives,
+  daBackups,
 ];
