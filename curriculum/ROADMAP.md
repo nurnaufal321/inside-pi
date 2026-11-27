@@ -65,12 +65,17 @@ Module spec: [`07-da-operations.md`](07-da-operations.md)
 | Backups & Health Checks | `da-backups` | ✅ |
 | Tuning Parameters | `da-tuning` | ✅ |
 
-## 08. Interfaces ⏳
+## 08. Interfaces 🛠
 Bundles: `overview-of-pi-interfaces`, `pi-universal-interface-uniint-framework`, `pi-interface-configuration-utility-icu`, `pi-to-pi-interface`
+Module spec: [`08-interfaces.md`](08-interfaces.md)
 
-Lessons (draft): UniInt & Scan Classes · Configuring with ICU · Interface Failover · PI to PI
+| Lesson | id | Status |
+|---|---|---|
+| UniInt & Scan Classes | `if-uniint` | ⏳ |
+| Interface Failover | `if-failover` | ⏳ |
+| PI to PI | `if-pi-to-pi` | ⏳ |
 
-Long tail, covered as links from these lessons rather than as separate lessons: OPC DA/HDA, RDBMS, UFL, Modbus, DNP3, SNMP, Perfmon, Ping, TCP Response, simulator interfaces, and the batch interfaces (ABB 800xA, AVEVA Batch Management, DeltaV, Syncade, FactoryTalk, PharmaSuite, SIMATIC, PAS-X).
+Long tail, linked from these lessons: OPC DA/HDA, RDBMS, UFL, Modbus, DNP3, SNMP, Perfmon, Ping, TCP Response, simulator interfaces, and the batch interfaces (ABB 800xA, AVEVA Batch Management, DeltaV, Syncade, FactoryTalk, PharmaSuite, SIMATIC, PAS-X).
 
 ## 09. Connectors & Adapters ⏳
 Bundles: `overview-of-pi-connectors`, `pi-connector-administration`, `adapter-for-opc-ua`, `adapter-for-mqtt`, `adapter-for-modbus-tcp`, `omf-with-pi-web-api`

@@ -17,6 +17,7 @@ import anBackfill from './an-backfill';
 import daCollectives from './da-collectives';
 import daBackups from './da-backups';
 import daTuning from './da-tuning';
+import ifUniint from './if-uniint';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -26,6 +27,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'asset-framework', title: 'Asset Framework', color: '#8a6fd1' },
   { id: 'af-analytics', title: 'AF Analytics', color: '#e08a3c' },
   { id: 'da-operations', title: 'Data Archive Operations', color: '#2aa39a' },
+  { id: 'interfaces', title: 'PI Interfaces', color: '#c4683f' },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -47,4 +49,5 @@ export const LESSONS: Lesson[] = [
   daCollectives,
   daBackups,
   daTuning,
+  ifUniint,
 ];
