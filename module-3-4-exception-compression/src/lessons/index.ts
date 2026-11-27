@@ -8,6 +8,7 @@ import archiveLifecycle from './archive-lifecycle';
 import security from './security';
 import afElementsTemplates from './af-elements-templates';
 import afAttributes from './af-attributes';
+import afEventFrames from './af-event-frames';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -27,4 +28,5 @@ export const LESSONS: Lesson[] = [
   security,
   afElementsTemplates,
   afAttributes,
+  afEventFrames,
 ];
