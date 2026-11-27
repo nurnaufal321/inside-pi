@@ -10,6 +10,7 @@ import afElementsTemplates from './af-elements-templates';
 import afAttributes from './af-attributes';
 import afEventFrames from './af-event-frames';
 import afSecurity from './af-security';
+import anExpressions from './an-expressions';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -17,6 +18,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'reliability', title: 'Reliability', color: '#2f86ce' },
   { id: 'security', title: 'Security', color: '#d9577a' },
   { id: 'asset-framework', title: 'Asset Framework', color: '#8a6fd1' },
+  { id: 'af-analytics', title: 'AF Analytics', color: '#e08a3c' },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -31,4 +33,5 @@ export const LESSONS: Lesson[] = [
   afAttributes,
   afEventFrames,
   afSecurity,
+  anExpressions,
 ];
