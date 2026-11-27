@@ -304,7 +304,7 @@ a { color: inherit; text-decoration: none; }
 .course { flex: 1; overflow-y: auto; margin-top: 12px; padding-right: 6px; }
 .mod__head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   width: 100%;
   padding: 4px 0;
@@ -314,9 +314,14 @@ a { color: inherit; text-decoration: none; }
   font-size: 14px;
   font-weight: 600;
 }
-.mod__head .chev { width: 12px; transition: transform 0.15s; color: var(--ink-2); }
+.mod__head .chev { flex: none; display: block; width: 12px; height: 12px; margin-top: 4px; transform-box: fill-box; transform-origin: center; transition: transform 0.15s; color: var(--ink-2); }
+.mod__head > .i { flex: none; margin-top: 1px; }
+/* number in its own column so a wrapped title lines up under itself, not under the number */
+.mod__num { flex: none; min-width: 22px; }
+.mod__title { flex: 1; min-width: 0; font-size: 13px; letter-spacing: -0.02em; line-height: 1.35; padding-top: 1px; }
+.mod__num { font-size: 13px; padding-top: 1px; }
 .mod.is-open .mod__head .chev { transform: rotate(90deg); }
-.mod__count { margin-left: auto; font-size: 11px; font-weight: 400; color: var(--muted); }
+.mod__count { flex: none; margin-left: auto; padding: 2px 0 0 6px; font-size: 11px; font-weight: 400; color: var(--muted); }
 .mod__lessons { position: relative; list-style: none; margin: 2px 0 6px 17px; padding: 0; }
 .mod__lessons::before { content: ""; position: absolute; left: 0; top: 0; bottom: 13px; border-left: 1.2px solid var(--line-strong); }
 .lesson { position: relative; padding: 2px 0 2px 14px; }

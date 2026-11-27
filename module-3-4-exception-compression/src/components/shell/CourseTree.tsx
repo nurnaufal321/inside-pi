@@ -42,7 +42,8 @@ export default function CourseTree({ currentId, progress, open, onNavigate }: Pr
               <button className="mod__head" onClick={() => setExpanded(e => ({ ...e, [ch.id]: !isOpen }))}>
                 <ChevronRight className="chev" strokeWidth={2.4} />
                 <Folder className="i" style={{ width: 17, height: 17, color: ch.color }} fill={ch.color} strokeWidth={1.4} />
-                <span>{String(ci + 1).padStart(2, '0')}. {ch.title}</span>
+                <span className="mod__num">{String(ci + 1).padStart(2, '0')}.</span>
+                <span className="mod__title">{ch.title}</span>
                 <span className="mod__count">{chDone}/{lessons.length}</span>
               </button>
               {isOpen && (
