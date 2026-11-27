@@ -14,6 +14,7 @@ import anExpressions from './an-expressions';
 import anRollupsSqc from './an-rollups-sqc';
 import anEfGeneration from './an-ef-generation';
 import anBackfill from './an-backfill';
+import daCollectives from './da-collectives';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -22,6 +23,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'security', title: 'Security', color: '#d9577a' },
   { id: 'asset-framework', title: 'Asset Framework', color: '#8a6fd1' },
   { id: 'af-analytics', title: 'AF Analytics', color: '#e08a3c' },
+  { id: 'da-operations', title: 'Data Archive Operations', color: '#2aa39a' },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -40,4 +42,5 @@ export const LESSONS: Lesson[] = [
   anRollupsSqc,
   anEfGeneration,
   anBackfill,
+  daCollectives,
 ];

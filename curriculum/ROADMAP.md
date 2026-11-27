@@ -55,10 +55,15 @@ Module spec: [`06-af-analytics.md`](06-af-analytics.md)
 | Event Frame Generation | `an-ef-generation` | ✅ |
 | Backfill & Recalculation | `an-backfill` | ✅ |
 
-## 07. Data Archive Operations ⏳
+## 07. Data Archive Operations 🛠
 Bundles: `pi-server-s-buf-ha`, `pi-server-f-da-smt`, `pi-server-s-da-reference`, `pi-server-s-da-admin`
+Module spec: [`07-da-operations.md`](07-da-operations.md)
 
-Lessons (draft): Collectives & HA · Backups & Archive Health · Tuning Parameters & SMT
+| Lesson | id | Status |
+|---|---|---|
+| Collectives & HA | `da-collectives` | ⏳ |
+| Backups & Health Checks | `da-backups` | ⏳ |
+| Tuning Parameters | `da-tuning` | ⏳ |
 
 ## 08. Interfaces ⏳
 Bundles: `overview-of-pi-interfaces`, `pi-universal-interface-uniint-framework`, `pi-interface-configuration-utility-icu`, `pi-to-pi-interface`
