@@ -35,10 +35,13 @@ try {
     for (const d of l.docs) if (!/^https:\/\/docs\.aveva\.com\/bundle\/[\w-]+\/page\//.test(d.url)) e(`docs URL is not a docs.aveva.com bundle page: ${d.url}`);
     const todo = JSON.stringify({ t: l.title, s: l.subtitle, steps: l.steps, learn: l.learn, legend: l.legend });
     if (todo.includes('TODO')) e('still contains TODO text');
-    const tryFile = join(root, 'src/components/tryit', `${l.id}.tsx`);
+    // The Try it file is whatever the lesson lazily imports (not always named after the id).
+    const lessonSrc = readFileSync(join(root, 'src/lessons', `${l.id}.tsx`), 'utf8');
+    const tryName = lessonSrc.match(/import\('\.\.\/components\/tryit\/([\w-]+)'\)/)?.[1] ?? l.id;
+    const tryFile = join(root, 'src/components/tryit', `${tryName}.tsx`);
     if (existsSync(tryFile)) {
       const src = readFileSync(tryFile, 'utf8');
-      if (src.includes('TODO')) e(`src/components/tryit/${l.id}.tsx still contains TODO text`);
+      if (src.includes('TODO')) e(`src/components/tryit/${tryName}.tsx still contains TODO text`);
       if (!src.includes('<Checklist')) warn.push(`${l.id}: Try it has no Checklist`);
     }
   }

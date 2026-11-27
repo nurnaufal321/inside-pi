@@ -4,7 +4,7 @@ import { Block, Cylinder, Ent, Link, Pill, Slab, Token, type PacketKind } from '
 import { iso, polyLength, pointAt, screenPath, type P as Pt } from '../iso/iso';
 import { PIPE } from '../../lessons/data-pipeline';
 import type { Metric } from '../../lessons/types';
-import { Action, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
+import { Action, Checklist, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario, useTasks } from './kit';
 
 type Seg = keyof typeof PIPE.paths;
 
@@ -259,6 +259,14 @@ export default function PipelineSim() {
 
   const s = sim.current;
   const kept = s.stats.raw ? Math.round((s.stats.archived / s.stats.raw) * 100) : 0;
+  const tasks = useTasks([
+    { text: 'Drag ExcDev and CompDev down to 0.5', watch: 'Almost every scan is now sent and stored. Compare Kept % with the default settings.', when: cfg.excDev <= 0.5 && cfg.compDev <= 0.5 && s.stats.archived > 0 },
+    { text: 'Turn on Network down', watch: 'pibufss holds every reported event: Buffered counts up instead of data being lost.', when: cfg.networkDown && s.buffered > 0 },
+    { text: 'Turn the network back on', watch: 'The buffer replays what it held. Watch Buffered drain to 0.', when: !cfg.networkDown && s.buffered === 0 },
+    { text: 'Turn on Archive busy', watch: 'piarchss stops reading and the event queue fills: archive queuing, not data loss.', when: cfg.archiveBusy && s.queue >= 5 },
+    { text: 'Press Send a late event', watch: 'Its timestamp is old, so it skips the compression test and goes straight to the queue (purple).', when: s.stats.late > 0 },
+  ], resetKey);
+
   const metrics: Metric[] = [
     { label: 'Raw scans', value: String(s.stats.raw), icon: Activity },
     { label: 'Sent', value: String(s.stats.sent), icon: Filter },
@@ -317,6 +325,7 @@ export default function PipelineSim() {
       </TryFrame>
 
       <RailPortal>
+        <Checklist tasks={tasks} done="Two filters decide what is kept; the buffer and the event queue turn outages into late data, not lost data." />
         <Scenarios items={SCENARIOS} current={scenario} onPick={pick} />
         <Section title="Interface">
           <Slider label="Scan rate" value={cfg.rate} min={1} max={10} unit=" /s" onChange={v => set({ rate: v })} />

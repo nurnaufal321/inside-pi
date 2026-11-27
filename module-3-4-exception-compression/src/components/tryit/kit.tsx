@@ -223,3 +223,25 @@ export function Checklist({ tasks, done: doneText }: { tasks: Task[]; done: stri
     </div>
   );
 }
+
+export interface TaskDef {
+  text: string;
+  watch: string;
+  /** True while the sim is in the state this task asks for. */
+  when: boolean;
+}
+
+/**
+ * Turns live conditions into checklist tasks. A task ticks the first time its
+ * condition holds while the previous task is already done, and stays ticked
+ * until `resetKey` changes.
+ */
+export function useTasks(defs: TaskDef[], resetKey: number): Task[] {
+  const ref = useRef({ key: resetKey, done: [] as boolean[] });
+  if (ref.current.key !== resetKey) ref.current = { key: resetKey, done: [] };
+  const done = ref.current.done;
+  defs.forEach((t, i) => {
+    if (!done[i] && t.when && (i === 0 || done[i - 1])) done[i] = true;
+  });
+  return defs.map((t, i) => ({ text: t.text, watch: t.watch, done: !!done[i] }));
+}

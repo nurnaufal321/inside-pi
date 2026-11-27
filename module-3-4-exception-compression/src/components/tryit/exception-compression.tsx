@@ -19,7 +19,7 @@ import {
   type PIPointConfig,
   type SignalPreset,
 } from '../../sim/piCompressionEngine';
-import { Action, Choice, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario } from './kit';
+import { Action, Choice, Checklist, RailPortal, Scenarios, Section, Slider, Toggle, TryFrame, useLoop, type LogLine, type Scenario, useTasks } from './kit';
 
 const { H, GAP, Y0, I, P, iToDeck, deckToP } = EXC_LAYOUT;
 const N = 120;
@@ -155,6 +155,8 @@ export default function ExceptionCompressionSim() {
   const [k, setK] = useState(0);
   const [paused, setPaused] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  /** Only the stage's Reset clears the checklist; scenario and shape changes restart the signal but keep progress. */
+  const [taskKey, setTaskKey] = useState(0);
   const acc = useRef(0);
   const log = useRef<LogLine[]>([]);
   const logId = useRef(1);
@@ -252,6 +254,14 @@ export default function ExceptionCompressionSim() {
 
   const rawCount = k + 1;
   const reduction = Math.round((1 - a.archived / rawCount) * 100);
+  const tasks = useTasks([
+    { text: 'Set ExcDev to 0 and turn Compressing off', watch: 'Nearly every scan is reported and stored. This is the cost both filters remove.', when: cfg.excDev === 0 && !cfg.compressing && k >= 8 },
+    { text: 'Raise ExcDev to 4', watch: 'The interface only sends a value once it moves more than ExcDev from the last reported one. P marks the previous value that travels with it.', when: cfg.excDev >= 4 && !cfg.compressing },
+    { text: 'Turn Compressing back on', watch: 'The green door fans from the last archived value A through S ± CompDev. A value outside it archives the old snapshot.', when: cfg.compressing && !cfg.step },
+    { text: 'Turn on Step = 1', watch: 'The door is gone: with Step on, the snapshot is compared with the last archived value using CompDev, the green band.', when: cfg.compressing && cfg.step },
+    { text: 'Switch Shape to steady and ExcMax to 20 s', watch: 'The flat signal stays inside the deadband, but once ExcMax has passed the next value is sent anyway (M).', when: cfg.preset === 'steady' && cfg.excMax <= 20 },
+  ], taskKey);
+
   const metrics: Metric[] = [
     { label: 'Raw scans', value: String(rawCount), icon: Activity },
     { label: 'After exception', value: String(a.reported), icon: Filter },
@@ -273,7 +283,7 @@ export default function ExceptionCompressionSim() {
         ]}
         paused={paused}
         onTogglePause={() => setPaused(p => !p)}
-        onReset={() => { restart(cfg); setPaused(false); }}
+        onReset={() => { restart(cfg); setPaused(false); setTaskKey(t => t + 1); }}
         resetKey={resetKey}
         log={log.current}
       >
@@ -335,6 +345,7 @@ export default function ExceptionCompressionSim() {
       </TryFrame>
 
       <RailPortal>
+        <Checklist tasks={tasks} done="Exception on the interface and compression on the server each drop values that don’t change the trend; Step and ExcMax change the rules." />
         <Scenarios items={SCENARIOS} current={scenario} onPick={pick} />
         <Section title="Signal">
           <Choice label="Shape" value={cfg.preset} options={PRESETS} onChange={v => set({ preset: v })} />
