@@ -13,6 +13,7 @@ import afSecurity from './af-security';
 import anExpressions from './an-expressions';
 import anRollupsSqc from './an-rollups-sqc';
 import anEfGeneration from './an-ef-generation';
+import anBackfill from './an-backfill';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -38,4 +39,5 @@ export const LESSONS: Lesson[] = [
   anExpressions,
   anRollupsSqc,
   anEfGeneration,
+  anBackfill,
 ];

@@ -8,7 +8,7 @@ An interactive, isometric course on the **AVEVA PI System**, starting with PI Da
 
 ## The course
 
-Eleven lessons in five chapters so far:
+Fifteen lessons in six chapters so far:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -23,6 +23,10 @@ Eleven lessons in five chapters so far:
 | | Attributes & Data References | 10 |
 | | Event Frames | 10 |
 | | AF Security & Check-in | 10 |
+| 06. AF Analytics | Expressions & Scheduling | 9 |
+| | Rollups & SQC | 9 |
+| | Event Frame Generation | 9 |
+| | Backfill & Recalculation | 9 |
 
 Every lesson has:
 

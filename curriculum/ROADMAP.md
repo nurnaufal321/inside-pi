@@ -44,16 +44,16 @@ Module spec: [`05-asset-framework.md`](05-asset-framework.md)
 | Event Frames | `af-event-frames` | ✅ |
 | AF Security & Check-in | `af-security` | ✅ |
 
-## 06. AF Analytics 🛠
+## 06. AF Analytics ✅
 Bundles: `pi-server-f-af-analytics`
 Module spec: [`06-af-analytics.md`](06-af-analytics.md)
 
 | Lesson | id | Status |
 |---|---|---|
-| Expressions & Scheduling | `an-expressions` | ⏳ |
-| Rollups & SQC | `an-rollups-sqc` | ⏳ |
-| Event Frame Generation | `an-ef-generation` | ⏳ |
-| Backfill & Recalculation | `an-backfill` | ⏳ |
+| Expressions & Scheduling | `an-expressions` | ✅ |
+| Rollups & SQC | `an-rollups-sqc` | ✅ |
+| Event Frame Generation | `an-ef-generation` | ✅ |
+| Backfill & Recalculation | `an-backfill` | ✅ |
 
 ## 07. Data Archive Operations ⏳
 Bundles: `pi-server-s-buf-ha`, `pi-server-f-da-smt`, `pi-server-s-da-reference`, `pi-server-s-da-admin`
