@@ -1,15 +1,18 @@
 import { lazy } from 'react';
-import { Activity, Boxes, Database, EyeOff, Fan, GitBranch, LayoutTemplate, Layers, Lock, Plus, Puzzle, RefreshCw, Tag, Variable } from 'lucide-react';
+import { Activity, Boxes, Database, EyeOff, Fan, GitBranch, LayoutTemplate, Layers, Lock, Plus, Puzzle, RefreshCw, Variable } from 'lucide-react';
 import { Block, Cylinder, Ent, Flow, Link, Pill } from '../components/iso/primitives';
 import { straight, viaY } from '../components/iso/routes';
 import type { GridPt } from '../components/iso/iso';
 import type { Lesson, SceneProps } from './types';
 
-/* Columns, left to right on screen: PI points (x −7.5) · elements (x 0) · library (x 7.5, base at 15). */
-const BT: [number, number] = [15, 0];
-const PT: [number, number] = [7.5, 0];
-const E: [number, number][] = [[0, 7.5], [0, 0], [0, -7.5]];
-const T: [number, number][] = [[-7.5, 7.5], [-7.5, 0], [-7.5, -7.5]];
+/*
+ * Columns: PI points (x −12) · elements (x 0) · library (x 12, base at 22).
+ * A 3×3 iso grid needs wider spacing than a single row: 12 between columns, 9 between rows.
+ */
+const BT: [number, number] = [22, 0];
+const PT: [number, number] = [12, 0];
+const E: [number, number][] = [[0, 9], [0, 0], [0, -9]];
+const T: [number, number][] = [[-12, 9], [-12, 0], [-12, -9]];
 const NAMES = ['P-101', 'P-102', 'P-103'];
 
 const btToPt: GridPt[] = straight(BT, PT);
@@ -61,43 +64,38 @@ function Scene({ step }: SceneProps) {
           {step === 5 && i === 0 && <Pill text="locked in" icon={Lock} tone="good" {...TOP} />}
           {propagate && i === 0 && <Pill text="+ Vibration" icon={Plus} tone="good" {...TOP} />}
           {ext && i === 2 && <Pill text="+ Seal Temp (extension)" icon={Puzzle} tone="violet" {...TOP} />}
-          <Pill text="element" {...BOTTOM} mono />
+          {i === 0 && <Pill text="elements" {...BOTTOM} mono />}
         </Ent>
       ))}
 
       <Ent x={PT[0]} y={PT[1]}>
         <Block label="Pump" icon={LayoutTemplate} tint="blue" dim={step === 0} glow={step >= 1 && step <= 2 ? 'var(--blue-side-b)' : propagate ? 'var(--blue-side-b)' : undefined} />
         {step === 2 && <Pill text="Flow · Pressure · Speed" icon={Layers} {...TOP} />}
-        {step === 4 && <Pill text="\\%Server%\%Element%.%Attribute%" icon={Variable} {...TOP} mono />}
+        {step === 4 && <Pill text="\\%Server%\%Element%.%Attribute%" icon={Variable} x={14} y={78} mono />}
         {propagate && <Pill text="edit once" icon={RefreshCw} tone="good" {...TOP} />}
-        <Pill text="element template" {...BOTTOM} mono />
+        <Pill text={base ? 'derived template' : 'element template'} {...BOTTOM} mono />
       </Ent>
 
       <Ent x={BT[0]} y={BT[1]} show={base}>
         <Block label={['Rotating', 'Equipment']} icon={Boxes} tint="grey" glow={step === 7 ? 'var(--grey-side-b)' : undefined} />
-        {step === 7 && <Pill text="base template only" icon={EyeOff} tone="dark" {...TOP} />}
+        {step === 7 && <Pill text="base template only" icon={EyeOff} tone="dark" x={10} y={-92} />}
         <Pill text="base template" {...BOTTOM} mono />
       </Ent>
-      {step === 7 && (
-        <Ent x={PT[0]} y={PT[1]}>
-          <Pill text="derived · inherits all" icon={Tag} x={-60} y={-100} />
-        </Ent>
-      )}
     </g>
   );
 }
 
 const CAMERA: [number, number, number][] = [
-  [0, -45, 1.2],
-  [105, 10, 1.35],
-  [80, 5, 1.3],
-  [30, -20, 1.1],
-  [-60, -45, 1.05],
-  [-70, -45, 1.1],
-  [20, -25, 1.0],
-  [150, 30, 1.25],
-  [105, -95, 1.3],
-  [0, -15, 0.92],
+  [0, -45, 1.05],
+  [168, 40, 1.3],
+  [150, 40, 1.25],
+  [60, -10, 1.0],
+  [20, -40, 0.95],
+  [-110, -70, 1.05],
+  [60, -10, 1.0],
+  [230, 80, 1.2],
+  [126, -105, 1.3],
+  [10, -10, 0.85],
 ];
 
 const lesson: Lesson = {

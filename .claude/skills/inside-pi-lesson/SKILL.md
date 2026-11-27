@@ -59,6 +59,12 @@ This creates `src/lessons/<id>.tsx` and `src/components/tryit/<id>.tsx` from `te
 - **Try it.** Export the scene layout as `LAYOUT` from the lesson, so the sim reuses the same coordinates. Write a real model of the mechanism (not just decoration), and give it scenarios that show both the normal case and a "break something" case. Log meaningful events to the event log.
 - Use distinct lucide-react icons, and check that each one exists in the installed version (`node_modules/lucide-react`).
 
+Lessons from the pilot (`af-elements-templates`):
+- A **grid** of nodes (for example 3 columns × 3 rows) needs more room than a single row. Use about 12 units between columns and 9 between rows, or diagonal neighbours overlap on screen.
+- Only label one node in a repeated row (for example `elements` under P-101), not every one.
+- Long code pills (configuration strings) go *below* their node (`x={14} y={78}`, under the BOTTOM pill), not in the TOP slot, where they collide with neighbours.
+- Don't put a claim in the Try-it log that the docs don't make (for example what Reset to Template does to extensions).
+
 ### 5. Verify
 From `module-3-4-exception-compression/`:
 ```bash
@@ -67,7 +73,7 @@ npm run build
 ```
 Both must pass; `check` rejects leftover TODOs, bad `learn.at` values, missing recap steps and non-docs URLs.
 
-Then start the dev server through the in-app browser (`preview_start` with a `.claude/launch.json` entry: `npm run dev`, port 5173, open `/inside-pi/`). Then:
+Then start the dev server (`npx vite --port 5173` in the background, or the `inside-pi` entry in `.claude/launch.json`) and open `http://localhost:5173/inside-pi/#/<id>/1` in the in-app browser. Step routes are 1-based, and the Try it is `#/<id>/try`. Then:
 - Step through every step (`#/<id>/<n>`). Check that the focus node is in frame, no pill overlaps another, and no arrow crosses a block face.
 - Open Try it, run each scenario, and check that the metrics and log react.
 - Repeat at phone width (`resize_window` mobile) and in dark theme.

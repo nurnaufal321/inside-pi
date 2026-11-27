@@ -1,6 +1,6 @@
 # Inside PI
 
-An interactive, isometric course on **AVEVA PI Data Archive**. Each idea is an animated diagram you step through, from what a PI point is to how a value travels from a sensor into an archive file.
+An interactive, isometric course on the **AVEVA PI System**, starting with PI Data Archive and growing toward everything in PI (see the [roadmap](curriculum/ROADMAP.md)). Each idea is an animated diagram you step through, from what a PI point is to how a value travels from a sensor into an archive file.
 
 **Live site:** https://nurnaufal321.github.io/inside-pi/
 
@@ -8,7 +8,7 @@ An interactive, isometric course on **AVEVA PI Data Archive**. Each idea is an a
 
 ## The course
 
-Seven lessons in four chapters:
+Eight lessons in five chapters so far:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -19,6 +19,7 @@ Seven lessons in four chapters:
 | 03. Reliability | Buffering | 9 |
 | | Archive Lifecycle | 9 |
 | 04. Security | Who Gets In | 10 |
+| 05. Asset Framework | Elements & Templates | 10 |
 
 Every lesson has:
 

@@ -167,7 +167,7 @@ export default function AfTemplatesSim() {
     <>
       <TryFrame
         viewBox="-420 -250 840 500"
-        camera={[30, -25, 0.98]}
+        camera={[20, -15, 1.0]}
         metrics={metrics}
         legend={[
           { label: 'template change', color: 'var(--pkt-blue)' },
@@ -218,7 +218,7 @@ export default function AfTemplatesSim() {
 
         <Ent x={PT[0]} y={PT[1]}>
           <Block label="Pump" icon={LayoutTemplate} tint="blue" />
-          <Pill text={PATTERNS[m.pattern].label} {...TOP} mono />
+          <Pill text={PATTERNS[m.pattern].label} x={14} y={78} mono />
           <Pill text={`Flow · Pressure · Speed${m.vibration ? ' · Vibration' : ''}`} x={14} y={50} />
         </Ent>
         <Ent x={BT[0]} y={BT[1]}>
