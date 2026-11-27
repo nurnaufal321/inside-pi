@@ -20,6 +20,7 @@ import daTuning from './da-tuning';
 import ifUniint from './if-uniint';
 import ifFailover from './if-failover';
 import ifPiToPi from './if-pi-to-pi';
+import cnConnectors from './cn-connectors';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -30,6 +31,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'af-analytics', title: 'AF Analytics', color: '#e08a3c' },
   { id: 'da-operations', title: 'Data Archive Operations', color: '#2aa39a' },
   { id: 'interfaces', title: 'PI Interfaces', color: '#c4683f' },
+  { id: 'connectors', title: 'Connectors & Adapters', color: '#5b7fd6' },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -54,4 +56,5 @@ export const LESSONS: Lesson[] = [
   ifUniint,
   ifFailover,
   ifPiToPi,
+  cnConnectors,
 ];
