@@ -7,6 +7,7 @@ import buffering from './buffering';
 import archiveLifecycle from './archive-lifecycle';
 import security from './security';
 import afElementsTemplates from './af-elements-templates';
+import afAttributes from './af-attributes';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -25,4 +26,5 @@ export const LESSONS: Lesson[] = [
   archiveLifecycle,
   security,
   afElementsTemplates,
+  afAttributes,
 ];
