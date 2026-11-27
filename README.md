@@ -55,16 +55,19 @@ module-3-4-exception-compression/
 
 ## Adding a lesson
 
-1. Copy an existing file in `src/lessons/` (for example `data-pipeline.tsx`).
-2. Fill in `steps`. Each step has a short label, title, tag, body paragraphs, an optional callout, what changed, and metric chips.
-3. Draw the `Scene` with the iso kit. It receives the current `step`, so show, dim or move entities per step.
-4. Set `camera`, which gives one `[x, y, zoom]` per step.
-5. Register the lesson in `src/lessons/index.ts`.
+The full pipeline is written up as a Claude Code skill in [`.claude/skills/inside-pi-lesson/SKILL.md`](.claude/skills/inside-pi-lesson/SKILL.md): research with the PI docs MCP, outline, scaffold, build, verify, ship. [`curriculum/ROADMAP.md`](curriculum/ROADMAP.md) lists every planned chapter.
 
-Layout tips:
-- Arrows look right when their last leg moves in −x or −y, so they land on a block's visible front faces.
-- Space nodes about 7.5 grid units apart.
-- Point the camera about 40–50 px above the node you're focusing on, because the metric chips cover the top of the stage.
+By hand:
+
+```bash
+cd module-3-4-exception-compression
+npm run new-lesson -- <chapter-id> <lesson-id> "<Lesson title>" "<Chapter title>"
+# fill in the TODOs in src/lessons/<id>.tsx and src/components/tryit/<id>.tsx
+npm run check    # content rules: camera, learn, recap, docs URLs, no TODOs
+npm run build
+```
+
+[`docs/iso-kit.md`](docs/iso-kit.md) lists the primitives, the layout rules and the Try-it kit.
 
 ## Deploy
 
