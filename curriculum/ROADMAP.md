@@ -109,10 +109,19 @@ Module spec: [`11-developer-access.md`](11-developer-access.md)
 | AF SDK: Objects & Bulk Calls | `dv-af-sdk` | ✅ |
 | The PI SQL Family | `dv-pi-sql` | ✅ |
 
-## 12. Architecture & Integration ⏳
+## 12. Architecture & Integration 🛠
 Bundles: `pi-server-f-topologies`, `pi-server-f-install`, `pi-server-f-builder`, `pi-cloud-connect`, `pi-integrator-for-business-analytics`, `pi-integrator-for-esri-arcgis`, `pi-opc-ua-server`, `pi-system-connector-3`, `pi-to-connect-agent`, `pi-event-frames-generator`, `pi-autopointsync`
 
-Lessons (draft): Topologies & Install Order · Bulk Edits with PI Builder · Cloud Connect & PI to CONNECT · Integrators · PI OPC UA Server
+Module spec: [`12-architecture.md`](12-architecture.md)
+
+| Lesson | id | Status |
+|---|---|---|
+| Topologies & Sizing | `ar-topologies` | ✅ |
+| Bulk Edits with PI Builder | `ar-builder` | ⏳ |
+| PI to CONNECT | `ar-connect` | ⏳ |
+| PI OPC UA Server | `ar-opc-ua` | ⏳ |
+
+Linked from these lessons: PI System Connector 3, PI Integrator for Business Analytics, PI Cloud Connect.
 
 ## Build order
 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12. One chapter per pull request.

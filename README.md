@@ -8,7 +8,7 @@ An interactive, isometric course on the **AVEVA PI System**, starting with PI Da
 
 ## The course
 
-Twenty-nine lessons in eleven chapters so far:
+Thirty lessons in twelve chapters so far:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -41,6 +41,7 @@ Twenty-nine lessons in eleven chapters so far:
 | 11. Developer Access | PI Web API: WebIDs, Batch & Channels | 10 |
 | | AF SDK: Objects & Bulk Calls | 9 |
 | | The PI SQL Family | 9 |
+| 12. Architecture & Integration | Topologies & Sizing | 9 |
 
 Every lesson has:
 

@@ -28,6 +28,7 @@ import viMigration from './vi-migration';
 import dvWebApi from './dv-web-api';
 import dvAfSdk from './dv-af-sdk';
 import dvPiSql from './dv-pi-sql';
+import arTopologies from './ar-topologies';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -41,6 +42,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'connectors', title: 'Connectors & Adapters', color: '#5b7fd6' },
   { id: 'visualization', title: 'Visualization', color: '#b3922c' },
   { id: 'developer-access', title: 'Developer Access', color: '#cf5fa8' },
+  { id: 'architecture', title: 'Architecture & Integration', color: '#5a9e3a' },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -73,4 +75,5 @@ export const LESSONS: Lesson[] = [
   dvWebApi,
   dvAfSdk,
   dvPiSql,
+  arTopologies,
 ];
