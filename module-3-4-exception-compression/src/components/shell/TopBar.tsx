@@ -76,7 +76,7 @@ export default function TopBar({ view, lessonId, theme, onTheme, onMenu, navColl
       <button className="icon-btn collapse-btn" onClick={onMenu} aria-label={navCollapsed ? 'Show course sidebar' : 'Hide course sidebar'} title={navCollapsed ? 'Show course sidebar' : 'Hide course sidebar'}>
         {navCollapsed ? <PanelLeftOpen className="i" /> : <PanelLeftClose className="i" />}
       </button>
-      <a className="brand" href={stepHref(LESSONS[0].id, 0)}>
+      <a className="brand" href="#/">
         <Logo />
         <span>Inside <mark>PI</mark></span>
       </a>

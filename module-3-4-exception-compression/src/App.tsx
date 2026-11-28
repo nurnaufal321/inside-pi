@@ -5,6 +5,7 @@ import CourseTree from './components/shell/CourseTree';
 import LessonView from './components/shell/LessonView';
 import Rail from './components/shell/Rail';
 import ReferenceView from './components/shell/ReferenceView';
+import HomeView from './components/shell/HomeView';
 import { go, readStore, stepHref, useRoute, writeStore } from './components/shell/route';
 import { LESSONS } from './lessons';
 import { RailSlot } from './components/tryit/kit';
@@ -29,7 +30,7 @@ export default function App() {
   const [railSlot, setRailSlot] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (route.view === 'ref') return;
+    if (route.view === 'ref' || route.view === 'home') return;
     if (!lesson) go(stepHref(LESSONS[0].id, 0));
   }, [lesson, route.view]);
 
@@ -50,8 +51,8 @@ export default function App() {
   }, [theme]);
 
   useEffect(() => {
-    if (lesson) document.title = `${lesson.title} — Inside PI`;
-  }, [lesson]);
+    document.title = lesson && route.view !== 'home' ? `${lesson.title} — Inside PI` : 'Inside PI — how the PI System works';
+  }, [lesson, route.view]);
 
   const replay = useCallback(() => {
     setReplayKey(k => k + 1);
@@ -90,7 +91,9 @@ export default function App() {
         <RailSlot.Provider value={railSlot}>
         <div className={`body${navCollapsed ? ' is-nav-collapsed' : ''}`}>
           <CourseTree currentId={lesson?.id ?? null} progress={progress} open={menuOpen} onNavigate={() => setMenuOpen(false)} />
-          {route.view === 'ref' ? (
+          {route.view === 'home' ? (
+            <HomeView progress={progress} />
+          ) : route.view === 'ref' ? (
             <ReferenceView />
           ) : lesson ? (
             <>
