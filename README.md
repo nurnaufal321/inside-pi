@@ -8,7 +8,7 @@ An interactive, isometric course on the **AVEVA PI System**, starting with PI Da
 
 ## The course
 
-Twenty-six lessons in ten chapters so far:
+Twenty-seven lessons in eleven chapters so far:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -38,6 +38,7 @@ Twenty-six lessons in ten chapters so far:
 | 10. Visualization | PI Vision Displays & Symbols | 10 |
 | | PI DataLink | 9 |
 | | ProcessBook to PI Vision | 9 |
+| 11. Developer Access | PI Web API: WebIDs, Batch & Channels | 10 |
 
 Every lesson has:
 
