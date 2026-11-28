@@ -106,7 +106,7 @@ Module spec: [`11-developer-access.md`](11-developer-access.md)
 | Lesson | id | Status |
 |---|---|---|
 | PI Web API: WebIDs, Batch & Channels | `dv-web-api` | ✅ |
-| AF SDK: Objects & Bulk Calls | `dv-af-sdk` | ⏳ |
+| AF SDK: Objects & Bulk Calls | `dv-af-sdk` | ✅ |
 | The PI SQL Family | `dv-pi-sql` | ⏳ |
 
 ## 12. Architecture & Integration ⏳
