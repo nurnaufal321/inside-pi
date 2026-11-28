@@ -33,13 +33,9 @@ export default function HomeView({ progress }: { progress: Record<string, number
     <main className="sheet sheet--wide home">
       <section className="home__hero">
         <div className="home__intro">
-          <span className="eyebrow">An interactive guide to the AVEVA PI System</span>
-          <h1 className="home__title">See how PI works, one mechanism at a time.</h1>
-          <p className="home__lead">
-            Inside PI turns the moving parts of a PI System — exception and compression, buffering, AF templates,
-            analytics, interfaces, connectors, PI Vision, the developer APIs — into small isometric scenes you can step
-            through and play with.
-          </p>
+          <span className="eyebrow">AVEVA PI System, visualised</span>
+          <h1 className="home__title">See how PI works.</h1>
+          <p className="home__lead">Small animated scenes of its moving parts, one idea per lesson.</p>
           <div className="home__cta">
             <a className="btn-pop is-green home__btn" href={stepHref(first.id, 0)}>
               <BookOpen className="i" /> Start with {CHAPTERS[0].title} <ArrowRight className="i" />
@@ -58,18 +54,11 @@ export default function HomeView({ progress }: { progress: Record<string, number
       <section className="home__note card">
         <Info className="i" />
         <div>
-          <h2>What this site is — and isn’t</h2>
+          <h2>A study aid, not a course</h2>
           <p>
-            Inside PI is a <b>visual companion for understanding PI concepts</b>: why a value was or wasn’t archived,
-            how a buffer rides out an outage, how a template change reaches every element. Each lesson focuses on one
-            idea so the mental model sticks.
-          </p>
-          <p>
-            It is <b>not a comprehensive course</b>, official training or a configuration guide. Lessons simplify, skip
-            options and edge cases, and the simulations are illustrations rather than exact product behaviour. Facts
-            come from the AVEVA documentation, but always check{' '}
+            Built to help you understand PI concepts. It simplifies, so check{' '}
             <a href="https://docs.aveva.com/category/pi-system" target="_blank" rel="noopener noreferrer">docs.aveva.com</a>{' '}
-            for your version before you change a real system. Inside PI is an independent project, not an AVEVA product.
+            before changing a real system. Not an AVEVA product.
           </p>
         </div>
       </section>
@@ -78,17 +67,17 @@ export default function HomeView({ progress }: { progress: Record<string, number
         <div className="card home__how-card">
           <BookOpen className="i" />
           <h3>Walkthrough</h3>
-          <p>A scene pans to each part as the steps explain it, with what changed and what to watch out for.</p>
+          <p>Follow the scene step by step.</p>
         </div>
         <div className="card home__how-card">
           <FlaskConical className="i" />
           <h3>Try it</h3>
-          <p>A live simulation with a short checklist: do the normal thing, break it, then fix it.</p>
+          <p>Play with a live simulation.</p>
         </div>
         <div className="card home__how-card">
           <BookMarked className="i" />
           <h3>Reference</h3>
-          <p>Every lesson links the docs.aveva.com pages it is based on, for the exact wording.</p>
+          <p>Jump to the official docs.</p>
         </div>
       </section>
 
