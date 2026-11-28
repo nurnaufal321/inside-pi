@@ -118,7 +118,7 @@ Module spec: [`12-architecture.md`](12-architecture.md)
 |---|---|---|
 | Topologies & Sizing | `ar-topologies` | ✅ |
 | Bulk Edits with PI Builder | `ar-builder` | ✅ |
-| PI to CONNECT | `ar-connect` | ⏳ |
+| PI to CONNECT | `ar-connect` | ✅ |
 | PI OPC UA Server | `ar-opc-ua` | ⏳ |
 
 Linked from these lessons: PI System Connector 3, PI Integrator for Business Analytics, PI Cloud Connect.
