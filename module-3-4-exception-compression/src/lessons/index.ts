@@ -31,6 +31,7 @@ import dvPiSql from './dv-pi-sql';
 import arTopologies from './ar-topologies';
 import arBuilder from './ar-builder';
 import arConnect from './ar-connect';
+import arOpcUa from './ar-opc-ua';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -80,4 +81,5 @@ export const LESSONS: Lesson[] = [
   arTopologies,
   arBuilder,
   arConnect,
+  arOpcUa,
 ];

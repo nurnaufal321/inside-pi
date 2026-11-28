@@ -109,7 +109,7 @@ Module spec: [`11-developer-access.md`](11-developer-access.md)
 | AF SDK: Objects & Bulk Calls | `dv-af-sdk` | ✅ |
 | The PI SQL Family | `dv-pi-sql` | ✅ |
 
-## 12. Architecture & Integration 🛠
+## 12. Architecture & Integration ✅
 Bundles: `pi-server-f-topologies`, `pi-server-f-install`, `pi-server-f-builder`, `pi-cloud-connect`, `pi-integrator-for-business-analytics`, `pi-integrator-for-esri-arcgis`, `pi-opc-ua-server`, `pi-system-connector-3`, `pi-to-connect-agent`, `pi-event-frames-generator`, `pi-autopointsync`
 
 Module spec: [`12-architecture.md`](12-architecture.md)
@@ -119,7 +119,7 @@ Module spec: [`12-architecture.md`](12-architecture.md)
 | Topologies & Sizing | `ar-topologies` | ✅ |
 | Bulk Edits with PI Builder | `ar-builder` | ✅ |
 | PI to CONNECT | `ar-connect` | ✅ |
-| PI OPC UA Server | `ar-opc-ua` | ⏳ |
+| PI OPC UA Server | `ar-opc-ua` | ✅ |
 
 Linked from these lessons: PI System Connector 3, PI Integrator for Business Analytics, PI Cloud Connect.
 

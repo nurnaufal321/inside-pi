@@ -8,7 +8,7 @@ An interactive, isometric course on the **AVEVA PI System**, starting with PI Da
 
 ## The course
 
-Thirty-two lessons in twelve chapters so far:
+Thirty-three lessons in twelve chapters:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -44,6 +44,7 @@ Thirty-two lessons in twelve chapters so far:
 | 12. Architecture & Integration | Topologies & Sizing | 9 |
 | | Bulk Edits with PI Builder | 9 |
 | | PI to CONNECT | 9 |
+| | PI OPC UA Server | 9 |
 
 Every lesson has:
 
