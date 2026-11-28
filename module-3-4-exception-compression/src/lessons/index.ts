@@ -24,6 +24,7 @@ import cnConnectors from './cn-connectors';
 import cnAdaptersOmf from './cn-adapters-omf';
 import viDisplays from './vi-displays';
 import viDatalink from './vi-datalink';
+import viMigration from './vi-migration';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -64,4 +65,5 @@ export const LESSONS: Lesson[] = [
   cnAdaptersOmf,
   viDisplays,
   viDatalink,
+  viMigration,
 ];

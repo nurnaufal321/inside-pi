@@ -8,7 +8,7 @@ An interactive, isometric course on the **AVEVA PI System**, starting with PI Da
 
 ## The course
 
-Twenty-three lessons in nine chapters so far:
+Twenty-six lessons in ten chapters so far:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -35,6 +35,9 @@ Twenty-three lessons in nine chapters so far:
 | | PI to PI | 8 |
 | 09. Connectors & Adapters | Connectors, Relay & DCM | 8 |
 | | Adapters & OMF | 9 |
+| 10. Visualization | PI Vision Displays & Symbols | 10 |
+| | PI DataLink | 9 |
+| | ProcessBook to PI Vision | 9 |
 
 Every lesson has:
 

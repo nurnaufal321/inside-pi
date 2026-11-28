@@ -88,15 +88,15 @@ Module spec: [`09-connectors.md`](09-connectors.md)
 
 Long tail, linked: the connectors for BACnet, CygNet, EtherNet/IP, FANUC FOCAS, HART-IP, IEC 60870-5-104, IEC 61850, MQTT Sparkplug, OPC UA Gen 1/2, Ping, SIMATIC PCS 7, UFL and Wonderware Historian; the adapters for BACnet, DNP3, Modbus TCP, RDBMS and Structured Data Files.
 
-## 10. Visualization 🛠
+## 10. Visualization ✅
 Bundles: `pi-vision`, `pi-vision-api-reference`, `pi-datalink`, `pi-processbook-to-pi-vision-migration-utility`, `pi-manual-logger`, `rtreports`
 Module spec: [`10-visualization.md`](10-visualization.md)
 
 | Lesson | id | Status |
 |---|---|---|
-| PI Vision Displays & Symbols | `vi-displays` | ⏳ |
-| PI DataLink | `vi-datalink` | ⏳ |
-| ProcessBook to PI Vision | `vi-migration` | ⏳ |
+| PI Vision Displays & Symbols | `vi-displays` | ✅ |
+| PI DataLink | `vi-datalink` | ✅ |
+| ProcessBook to PI Vision | `vi-migration` | ✅ |
 
 ## 11. Developer Access ⏳
 Bundles: `pi-web-api`, `pi-web-api-reference`, `af-sdk`, `pi-sql-client-odbc`, `pi-sql-client-oledb`, `pi-sql-client-jdbc`, `pi-oledb-enterprise`, `pi-sql-commander-lite`
