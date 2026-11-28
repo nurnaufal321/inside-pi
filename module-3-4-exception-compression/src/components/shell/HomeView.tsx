@@ -1,5 +1,5 @@
 import { AppWindow, ArrowRight, BookMarked, BookOpen, Cable, CircleCheck, Cloud, Code, FlaskConical, Info, Cpu, Factory, LayoutDashboard, Layers, Monitor, Network, PlugZap, Radio, Server, Users } from 'lucide-react';
-import { Block, Cylinder, Ent, Flow, Link, Slab } from '../iso/primitives';
+import { Block, Cylinder, Ent, Flow, Link, Pill, Slab } from '../iso/primitives';
 import type { GridPt } from '../iso/iso';
 import { CHAPTERS, LESSONS } from '../../lessons';
 import { stepHref } from './route';
@@ -47,6 +47,14 @@ const OUT_PATHS: GridPt[][] = [
 ];
 const AF_TO_DA: GridPt[] = [[0, 1.6, H], [0, -1.6, H]];
 
+const LAYERS = [
+  { x: 22, back: -12.5, text: 'Data sources', icon: Factory },
+  { x: 11, back: -12.5, text: 'Collect', icon: Cable },
+  { x: 0, back: -10, text: 'PI Server', icon: Server },
+  { x: -11, back: -12.5, text: 'Serve', icon: Layers },
+  { x: -22, back: -12.5, text: 'Clients', icon: Users },
+];
+
 const chapterHref = (chapter: string, lesson?: string) => {
   const l = lesson ? LESSONS.find(x => x.id === lesson) : LESSONS.find(x => x.chapter === chapter);
   return l ? stepHref(l.id, 0) : '#/';
@@ -54,7 +62,7 @@ const chapterHref = (chapter: string, lesson?: string) => {
 
 function HeroScene() {
   return (
-    <svg className="home__scene" viewBox="-470 -250 960 505" role="img" aria-label="PI System architecture: data sources such as PLCs, OPC servers and devices feed interfaces, connectors and adapters feed PI Data Archive and PI AF, which serve PI Vision, DataLink, the developer APIs, OPC UA and CONNECT, used by browsers, Excel, apps, BI tools, SCADA, MES and the cloud">
+    <svg className="home__scene" viewBox="-470 -290 1000 545" role="img" aria-label="PI System architecture: data sources such as PLCs, OPC servers and devices feed interfaces, connectors and adapters feed PI Data Archive and PI AF, which serve PI Vision, DataLink, the developer APIs, OPC UA and CONNECT, used by browsers, Excel, apps, BI tools, SCADA, MES and the cloud">
       <Ent x={22} y={0}><Slab ax={2.8} ay={10} h={H} tint="orange" /></Ent>
       <Ent x={11} y={0}><Slab ax={2.8} ay={10} h={H} tint="grey" /></Ent>
       <Ent x={0} y={0}><Slab ax={3.2} ay={7} h={H} tint="purple" /></Ent>
@@ -87,6 +95,9 @@ function HeroScene() {
         <a key={n.label.join()} href={chapterHref(n.chapter, n.lesson)} className="home__node">
           <Ent x={-11} y={n.y} z={H}><Block label={n.label} icon={n.icon} tint="green" size={1.6} h={24} /></Ent>
         </a>
+      ))}
+      {LAYERS.map(l => (
+        <Ent key={l.text} x={l.x} y={l.back} z={H}><Pill text={l.text} icon={l.icon} tone="dark" x={-20} y={-30} /></Ent>
       ))}
       {CLIENTS.map(n => (
         <Ent key={n.label.join()} x={-22} y={n.y} z={H}><Block label={n.label} icon={n.icon} tint="yellow" size={1.6} h={24} /></Ent>
@@ -123,7 +134,7 @@ export default function HomeView({ progress }: { progress: Record<string, number
 
       <section className="home__map card">
         <HeroScene />
-        <p className="home__map-cap"><span>Sources</span> → <span>Collect</span> → <span>Store &amp; model</span> → <span>Serve</span> → <span>Clients</span> · click any part to open its chapter</p>
+        <p className="home__map-cap">Click any PI part to open its chapter</p>
       </section>
 
       <section className="home__note card">
