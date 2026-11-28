@@ -117,7 +117,7 @@ Module spec: [`12-architecture.md`](12-architecture.md)
 | Lesson | id | Status |
 |---|---|---|
 | Topologies & Sizing | `ar-topologies` | ✅ |
-| Bulk Edits with PI Builder | `ar-builder` | ⏳ |
+| Bulk Edits with PI Builder | `ar-builder` | ✅ |
 | PI to CONNECT | `ar-connect` | ⏳ |
 | PI OPC UA Server | `ar-opc-ua` | ⏳ |
 
