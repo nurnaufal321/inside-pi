@@ -77,14 +77,14 @@ Module spec: [`08-interfaces.md`](08-interfaces.md)
 
 Long tail, linked from these lessons: OPC DA/HDA, RDBMS, UFL, Modbus, DNP3, SNMP, Perfmon, Ping, TCP Response, simulator interfaces, and the batch interfaces (ABB 800xA, AVEVA Batch Management, DeltaV, Syncade, FactoryTalk, PharmaSuite, SIMATIC, PAS-X).
 
-## 09. Connectors & Adapters 🛠
+## 09. Connectors & Adapters ✅
 Bundles: `overview-of-pi-connectors`, `pi-connector-administration`, `adapter-for-opc-ua`, `adapter-for-mqtt`, `omf-with-pi-web-api`
 Module spec: [`09-connectors.md`](09-connectors.md)
 
 | Lesson | id | Status |
 |---|---|---|
-| Connectors, Relay & DCM | `cn-connectors` | ⏳ |
-| Adapters & OMF | `cn-adapters-omf` | ⏳ |
+| Connectors, Relay & DCM | `cn-connectors` | ✅ |
+| Adapters & OMF | `cn-adapters-omf` | ✅ |
 
 Long tail, linked: the connectors for BACnet, CygNet, EtherNet/IP, FANUC FOCAS, HART-IP, IEC 60870-5-104, IEC 61850, MQTT Sparkplug, OPC UA Gen 1/2, Ping, SIMATIC PCS 7, UFL and Wonderware Historian; the adapters for BACnet, DNP3, Modbus TCP, RDBMS and Structured Data Files.
 

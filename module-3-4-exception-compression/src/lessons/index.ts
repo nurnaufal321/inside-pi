@@ -21,6 +21,7 @@ import ifUniint from './if-uniint';
 import ifFailover from './if-failover';
 import ifPiToPi from './if-pi-to-pi';
 import cnConnectors from './cn-connectors';
+import cnAdaptersOmf from './cn-adapters-omf';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -57,4 +58,5 @@ export const LESSONS: Lesson[] = [
   ifFailover,
   ifPiToPi,
   cnConnectors,
+  cnAdaptersOmf,
 ];

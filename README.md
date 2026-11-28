@@ -8,7 +8,7 @@ An interactive, isometric course on the **AVEVA PI System**, starting with PI Da
 
 ## The course
 
-Twenty-one lessons in eight chapters so far:
+Twenty-three lessons in nine chapters so far:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -33,6 +33,8 @@ Twenty-one lessons in eight chapters so far:
 | 08. PI Interfaces | UniInt & Scan Classes | 9 |
 | | Interface Failover | 9 |
 | | PI to PI | 8 |
+| 09. Connectors & Adapters | Connectors, Relay & DCM | 8 |
+| | Adapters & OMF | 9 |
 
 Every lesson has:
 
