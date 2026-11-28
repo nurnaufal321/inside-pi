@@ -21,6 +21,17 @@ import ifUniint from './if-uniint';
 import ifFailover from './if-failover';
 import ifPiToPi from './if-pi-to-pi';
 import cnConnectors from './cn-connectors';
+import cnAdaptersOmf from './cn-adapters-omf';
+import viDisplays from './vi-displays';
+import viDatalink from './vi-datalink';
+import viMigration from './vi-migration';
+import dvWebApi from './dv-web-api';
+import dvAfSdk from './dv-af-sdk';
+import dvPiSql from './dv-pi-sql';
+import arTopologies from './ar-topologies';
+import arBuilder from './ar-builder';
+import arConnect from './ar-connect';
+import arOpcUa from './ar-opc-ua';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -32,6 +43,9 @@ export const CHAPTERS: Chapter[] = [
   { id: 'da-operations', title: 'Data Archive Operations', color: '#2aa39a' },
   { id: 'interfaces', title: 'PI Interfaces', color: '#c4683f' },
   { id: 'connectors', title: 'Connectors & Adapters', color: '#5b7fd6' },
+  { id: 'visualization', title: 'Visualization', color: '#b3922c' },
+  { id: 'developer-access', title: 'Developer Access', color: '#cf5fa8' },
+  { id: 'architecture', title: 'Architecture & Integration', color: '#5a9e3a' },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -57,4 +71,15 @@ export const LESSONS: Lesson[] = [
   ifFailover,
   ifPiToPi,
   cnConnectors,
+  cnAdaptersOmf,
+  viDisplays,
+  viDatalink,
+  viMigration,
+  dvWebApi,
+  dvAfSdk,
+  dvPiSql,
+  arTopologies,
+  arBuilder,
+  arConnect,
+  arOpcUa,
 ];

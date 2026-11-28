@@ -77,31 +77,51 @@ Module spec: [`08-interfaces.md`](08-interfaces.md)
 
 Long tail, linked from these lessons: OPC DA/HDA, RDBMS, UFL, Modbus, DNP3, SNMP, Perfmon, Ping, TCP Response, simulator interfaces, and the batch interfaces (ABB 800xA, AVEVA Batch Management, DeltaV, Syncade, FactoryTalk, PharmaSuite, SIMATIC, PAS-X).
 
-## 09. Connectors & Adapters 🛠
+## 09. Connectors & Adapters ✅
 Bundles: `overview-of-pi-connectors`, `pi-connector-administration`, `adapter-for-opc-ua`, `adapter-for-mqtt`, `omf-with-pi-web-api`
 Module spec: [`09-connectors.md`](09-connectors.md)
 
 | Lesson | id | Status |
 |---|---|---|
-| Connectors, Relay & DCM | `cn-connectors` | ⏳ |
-| Adapters & OMF | `cn-adapters-omf` | ⏳ |
+| Connectors, Relay & DCM | `cn-connectors` | ✅ |
+| Adapters & OMF | `cn-adapters-omf` | ✅ |
 
 Long tail, linked: the connectors for BACnet, CygNet, EtherNet/IP, FANUC FOCAS, HART-IP, IEC 60870-5-104, IEC 61850, MQTT Sparkplug, OPC UA Gen 1/2, Ping, SIMATIC PCS 7, UFL and Wonderware Historian; the adapters for BACnet, DNP3, Modbus TCP, RDBMS and Structured Data Files.
 
-## 10. Visualization ⏳
+## 10. Visualization ✅
 Bundles: `pi-vision`, `pi-vision-api-reference`, `pi-datalink`, `pi-processbook-to-pi-vision-migration-utility`, `pi-manual-logger`, `rtreports`
+Module spec: [`10-visualization.md`](10-visualization.md)
 
-Lessons (draft): PI Vision Displays & Symbols · Search & Ad Hoc Trends · PI DataLink · ProcessBook Migration · Manual Logger & RtReports
+| Lesson | id | Status |
+|---|---|---|
+| PI Vision Displays & Symbols | `vi-displays` | ✅ |
+| PI DataLink | `vi-datalink` | ✅ |
+| ProcessBook to PI Vision | `vi-migration` | ✅ |
 
-## 11. Developer Access ⏳
+## 11. Developer Access ✅
 Bundles: `pi-web-api`, `pi-web-api-reference`, `af-sdk`, `pi-sql-client-odbc`, `pi-sql-client-oledb`, `pi-sql-client-jdbc`, `pi-oledb-enterprise`, `pi-sql-commander-lite`
 
-Lessons (draft): PI Web API: Controllers & Streams · Batch & Channels · AF SDK Object Model · The PI SQL Family
+Module spec: [`11-developer-access.md`](11-developer-access.md)
 
-## 12. Architecture & Integration ⏳
+| Lesson | id | Status |
+|---|---|---|
+| PI Web API: WebIDs, Batch & Channels | `dv-web-api` | ✅ |
+| AF SDK: Objects & Bulk Calls | `dv-af-sdk` | ✅ |
+| The PI SQL Family | `dv-pi-sql` | ✅ |
+
+## 12. Architecture & Integration ✅
 Bundles: `pi-server-f-topologies`, `pi-server-f-install`, `pi-server-f-builder`, `pi-cloud-connect`, `pi-integrator-for-business-analytics`, `pi-integrator-for-esri-arcgis`, `pi-opc-ua-server`, `pi-system-connector-3`, `pi-to-connect-agent`, `pi-event-frames-generator`, `pi-autopointsync`
 
-Lessons (draft): Topologies & Install Order · Bulk Edits with PI Builder · Cloud Connect & PI to CONNECT · Integrators · PI OPC UA Server
+Module spec: [`12-architecture.md`](12-architecture.md)
+
+| Lesson | id | Status |
+|---|---|---|
+| Topologies & Sizing | `ar-topologies` | ✅ |
+| Bulk Edits with PI Builder | `ar-builder` | ✅ |
+| PI to CONNECT | `ar-connect` | ✅ |
+| PI OPC UA Server | `ar-opc-ua` | ✅ |
+
+Linked from these lessons: PI System Connector 3, PI Integrator for Business Analytics, PI Cloud Connect.
 
 ## Build order
 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12. One chapter per pull request.

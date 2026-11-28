@@ -8,7 +8,7 @@ An interactive, isometric course on the **AVEVA PI System**, starting with PI Da
 
 ## The course
 
-Twenty-one lessons in eight chapters so far:
+Thirty-three lessons in twelve chapters:
 
 | Chapter | Lesson | Steps |
 |---|---|---|
@@ -33,6 +33,18 @@ Twenty-one lessons in eight chapters so far:
 | 08. PI Interfaces | UniInt & Scan Classes | 9 |
 | | Interface Failover | 9 |
 | | PI to PI | 8 |
+| 09. Connectors & Adapters | Connectors, Relay & DCM | 8 |
+| | Adapters & OMF | 9 |
+| 10. Visualization | PI Vision Displays & Symbols | 10 |
+| | PI DataLink | 9 |
+| | ProcessBook to PI Vision | 9 |
+| 11. Developer Access | PI Web API: WebIDs, Batch & Channels | 10 |
+| | AF SDK: Objects & Bulk Calls | 9 |
+| | The PI SQL Family | 9 |
+| 12. Architecture & Integration | Topologies & Sizing | 9 |
+| | Bulk Edits with PI Builder | 9 |
+| | PI to CONNECT | 9 |
+| | PI OPC UA Server | 9 |
 
 Every lesson has:
 
