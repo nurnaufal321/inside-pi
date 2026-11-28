@@ -58,7 +58,7 @@ export default function HomeView({ progress }: { progress: Record<string, number
           <p>
             Built to help you understand PI concepts. Lessons are simplified, so check{' '}
             <a href="https://docs.aveva.com/category/pi-system" target="_blank" rel="noopener noreferrer">docs.aveva.com</a>{' '}
-            before changing a real system. Not an AVEVA product.
+            for the details. Not an AVEVA product.
           </p>
         </div>
       </section>
