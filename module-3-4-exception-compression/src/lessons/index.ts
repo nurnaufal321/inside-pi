@@ -22,6 +22,7 @@ import ifFailover from './if-failover';
 import ifPiToPi from './if-pi-to-pi';
 import cnConnectors from './cn-connectors';
 import cnAdaptersOmf from './cn-adapters-omf';
+import viDisplays from './vi-displays';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -33,6 +34,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'da-operations', title: 'Data Archive Operations', color: '#2aa39a' },
   { id: 'interfaces', title: 'PI Interfaces', color: '#c4683f' },
   { id: 'connectors', title: 'Connectors & Adapters', color: '#5b7fd6' },
+  { id: 'visualization', title: 'Visualization', color: '#b3922c' },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -59,4 +61,5 @@ export const LESSONS: Lesson[] = [
   ifPiToPi,
   cnConnectors,
   cnAdaptersOmf,
+  viDisplays,
 ];
