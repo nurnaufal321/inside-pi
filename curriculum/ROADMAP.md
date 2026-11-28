@@ -98,7 +98,7 @@ Module spec: [`10-visualization.md`](10-visualization.md)
 | PI DataLink | `vi-datalink` | ✅ |
 | ProcessBook to PI Vision | `vi-migration` | ✅ |
 
-## 11. Developer Access 🛠
+## 11. Developer Access ✅
 Bundles: `pi-web-api`, `pi-web-api-reference`, `af-sdk`, `pi-sql-client-odbc`, `pi-sql-client-oledb`, `pi-sql-client-jdbc`, `pi-oledb-enterprise`, `pi-sql-commander-lite`
 
 Module spec: [`11-developer-access.md`](11-developer-access.md)
@@ -107,7 +107,7 @@ Module spec: [`11-developer-access.md`](11-developer-access.md)
 |---|---|---|
 | PI Web API: WebIDs, Batch & Channels | `dv-web-api` | ✅ |
 | AF SDK: Objects & Bulk Calls | `dv-af-sdk` | ✅ |
-| The PI SQL Family | `dv-pi-sql` | ⏳ |
+| The PI SQL Family | `dv-pi-sql` | ✅ |
 
 ## 12. Architecture & Integration ⏳
 Bundles: `pi-server-f-topologies`, `pi-server-f-install`, `pi-server-f-builder`, `pi-cloud-connect`, `pi-integrator-for-business-analytics`, `pi-integrator-for-esri-arcgis`, `pi-opc-ua-server`, `pi-system-connector-3`, `pi-to-connect-agent`, `pi-event-frames-generator`, `pi-autopointsync`

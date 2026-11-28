@@ -27,6 +27,7 @@ import viDatalink from './vi-datalink';
 import viMigration from './vi-migration';
 import dvWebApi from './dv-web-api';
 import dvAfSdk from './dv-af-sdk';
+import dvPiSql from './dv-pi-sql';
 
 export const CHAPTERS: Chapter[] = [
   { id: 'foundations', title: 'Foundations', color: '#d5b07a' },
@@ -71,4 +72,5 @@ export const LESSONS: Lesson[] = [
   viMigration,
   dvWebApi,
   dvAfSdk,
+  dvPiSql,
 ];
