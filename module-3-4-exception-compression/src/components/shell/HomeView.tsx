@@ -54,7 +54,7 @@ export default function HomeView({ progress }: { progress: Record<string, number
       <section className="home__note card">
         <Info className="i" />
         <div>
-          <h2>A study aid, not a course</h2>
+          <h2>Not a full course</h2>
           <p>
             Built to help you understand PI concepts. It simplifies, so check{' '}
             <a href="https://docs.aveva.com/category/pi-system" target="_blank" rel="noopener noreferrer">docs.aveva.com</a>{' '}
