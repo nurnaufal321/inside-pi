@@ -1,4 +1,4 @@
-import { ArrowRight, BookMarked, BookOpen, Cable, CircleCheck, Cloud, Code, FlaskConical, Info, Cpu, Factory, LayoutDashboard, Layers, Network, PlugZap, Radio, Server } from 'lucide-react';
+import { AppWindow, ArrowRight, BookMarked, BookOpen, Cable, CircleCheck, Cloud, Code, FlaskConical, Info, Cpu, Factory, LayoutDashboard, Layers, Monitor, Network, PlugZap, Radio, Server, Users } from 'lucide-react';
 import { Block, Cylinder, Ent, Flow, Link, Slab } from '../iso/primitives';
 import type { GridPt } from '../iso/iso';
 import { CHAPTERS, LESSONS } from '../../lessons';
@@ -6,7 +6,8 @@ import { stepHref } from './route';
 
 /*
  * The whole PI System on one map, flowing right to left like the lessons:
- * data sources (x 22) → collect (x 11) → PI Data Archive and PI AF (x 0) → the ways people and systems use the data (x −11).
+ * data sources (x 22) → collect (x 11) → PI Data Archive and PI AF (x 0) → the ways people and systems use the data (x −11)
+ * → the clients at the far end (x −22).
  * Each node links to the chapter that explains it.
  */
 const H = 4;
@@ -26,6 +27,12 @@ const USE = [
   { y: 0, label: ['PI Web API', 'SDK · SQL'], icon: Code, chapter: 'developer-access' },
   { y: 7, label: ['OPC UA', 'CONNECT'], icon: Cloud, chapter: 'architecture', lesson: 'ar-opc-ua' },
 ];
+const CLIENTS = [
+  { y: -7, label: ['Browser', 'Excel'], icon: Monitor },
+  { y: 0, label: ['Apps', 'BI tools'], icon: AppWindow },
+  { y: 7, label: ['SCADA · MES', 'Cloud'], icon: Users },
+];
+const CLIENT_PATHS: GridPt[][] = CLIENTS.map(n => [[-13.8, n.y, H], [-19, n.y, H]]);
 const DA: [number, number] = [0, -3.5];
 const AF: [number, number] = [0, 3.5];
 const IN_PATHS: GridPt[][] = [
@@ -47,17 +54,20 @@ const chapterHref = (chapter: string, lesson?: string) => {
 
 function HeroScene() {
   return (
-    <svg className="home__scene" viewBox="-350 -195 840 450" role="img" aria-label="PI System architecture: data sources such as PLCs, OPC servers and devices feed interfaces, connectors and adapters feed PI Data Archive and PI AF, which serve PI Vision, DataLink, the developer APIs, OPC UA and CONNECT">
+    <svg className="home__scene" viewBox="-470 -250 960 505" role="img" aria-label="PI System architecture: data sources such as PLCs, OPC servers and devices feed interfaces, connectors and adapters feed PI Data Archive and PI AF, which serve PI Vision, DataLink, the developer APIs, OPC UA and CONNECT, used by browsers, Excel, apps, BI tools, SCADA, MES and the cloud">
       <Ent x={22} y={0}><Slab ax={2.8} ay={10} h={H} tint="orange" /></Ent>
       <Ent x={11} y={0}><Slab ax={2.8} ay={10} h={H} tint="grey" /></Ent>
       <Ent x={0} y={0}><Slab ax={3.2} ay={7} h={H} tint="purple" /></Ent>
       <Ent x={-11} y={0}><Slab ax={2.8} ay={10} h={H} tint="blue" /></Ent>
+      <Ent x={-22} y={0}><Slab ax={2.8} ay={10} h={H} tint="yellow" /></Ent>
       {SRC_PATHS.map((p, i) => <Link key={`s${i}`} pts={p} />)}
       {IN_PATHS.map((p, i) => <Link key={`i${i}`} pts={p} />)}
       {OUT_PATHS.map((p, i) => <Link key={`o${i}`} pts={p} />)}
+      {CLIENT_PATHS.map((p, i) => <Link key={`c${i}`} pts={p} />)}
       <Link pts={AF_TO_DA} kind="muted" arrow={false} />
       {SRC_PATHS.map((p, i) => <Flow key={`fs${i}`} pts={p} n={2} dur={1.2 + i * 0.15} kind="raw" />)}
       {IN_PATHS.map((p, i) => <Flow key={`fi${i}`} pts={p} n={2} dur={1.8 + i * 0.2} kind="ok" />)}
+      {CLIENT_PATHS.map((p, i) => <Flow key={`fc${i}`} pts={p} n={2} dur={1.2 + i * 0.15} kind="blue" />)}
       {OUT_PATHS.map((p, i) => <Flow key={`fo${i}`} pts={p} n={2} dur={1.7 + i * 0.2} kind={i === 0 ? 'blue' : 'violet'} />)}
       {SOURCES.map(n => (
         <Ent key={n.label.join()} x={22} y={n.y} z={H}><Block label={n.label} icon={n.icon} tint="orange" size={1.6} h={24} /></Ent>
@@ -77,6 +87,9 @@ function HeroScene() {
         <a key={n.label.join()} href={chapterHref(n.chapter, n.lesson)} className="home__node">
           <Ent x={-11} y={n.y} z={H}><Block label={n.label} icon={n.icon} tint="green" size={1.6} h={24} /></Ent>
         </a>
+      ))}
+      {CLIENTS.map(n => (
+        <Ent key={n.label.join()} x={-22} y={n.y} z={H}><Block label={n.label} icon={n.icon} tint="yellow" size={1.6} h={24} /></Ent>
       ))}
     </svg>
   );
@@ -110,7 +123,7 @@ export default function HomeView({ progress }: { progress: Record<string, number
 
       <section className="home__map card">
         <HeroScene />
-        <p className="home__map-cap"><span>Sources</span> → <span>Collect</span> → <span>Store &amp; model</span> → <span>Use</span> · click any part to open its chapter</p>
+        <p className="home__map-cap"><span>Sources</span> → <span>Collect</span> → <span>Store &amp; model</span> → <span>Serve</span> → <span>Clients</span> · click any part to open its chapter</p>
       </section>
 
       <section className="home__note card">
